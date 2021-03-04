@@ -1,0 +1,6 @@
+package tiendavirtual.interfaz;
+
+public class Mensajes_recibidos_administrador {
+	public Vista_centro_de_mensajes_administrador _vista_centro_de_mensajes_administrador;
+	public Lista_mensajes_recibidos_administrador _lista_mensajes_recibidos_administrador;
+}
