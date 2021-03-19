@@ -1,8 +1,10 @@
 package tiendavirtual.interfaz;
 
+import vistas.VistaAdmin;
+
 //import basededatos.iAdmin;
 
-public class Admin {
+public class Admin extends VistaAdmin{
 	//public iAdmin _iAdmin;
 	public Vista_centro_de_mensajes_administrador _vista_centro_de_mensajes_administrador;
 	public Vista_Categoria_Admin _vista_Categoria_Admin;
