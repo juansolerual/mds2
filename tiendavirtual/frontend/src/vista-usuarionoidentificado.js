@@ -13,7 +13,8 @@ class VistaUsuarionoidentificado extends PolymerElement {
 
                 }
             </style>
-<vaadin-vertical-layout style="width: 100%; height: 100%; flex-direction: column; align-items: flex-start; justify-content: flex-start;" id="verticalLayout"></vaadin-vertical-layout>
+
+<vaadin-vertical-layout style="width: 100%; height: 100%; flex-direction: column; align-items: flex-start; justify-content:center;" id="verticalLayout"></vaadin-vertical-layout>
 `;
     }
 

@@ -1,5 +1,7 @@
 package tiendavirtual;
 
+import com.vaadin.flow.component.ComponentEvent;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
@@ -13,12 +15,15 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.PWA;
 
-import tiendavirtual.interfaz.Cabecera_Usuario;
-import tiendavirtual.interfaz.Iniciar_sesion;
-import tiendavirtual.interfaz.Producto_usuario;
-import tiendavirtual.interfaz.Productos_Usuario;
-import tiendavirtual.interfaz.Usuario_no_identificado;
-import tiendavirtual.interfaz.Usuario_registrado;
+import basededatos.Categoria;
+import basededatos.BDPrincipal;
+import basededatos.iAdmin;
+import interfaz.Cabecera_Usuario;
+import interfaz.Iniciar_sesion;
+import interfaz.Producto_usuario;
+import interfaz.Productos_Usuario;
+import interfaz.Usuario_no_identificado;
+import interfaz.Usuario_registrado;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -57,7 +62,7 @@ public class MainView extends VerticalLayout {
 	Usuario_registrado usuarioRegistrado;
 	
 	Iniciar_sesion _iniciar_sesion = new Iniciar_sesion();
-
+	
 	
 	
     public MainView (@Autowired GreetService service) {
@@ -66,6 +71,8 @@ public class MainView extends VerticalLayout {
     		
     	
     	add(usuarioNoIdentificado);
+    	
+    	
         
         login();
         
@@ -77,7 +84,6 @@ public class MainView extends VerticalLayout {
         	
         	//cbn.layout.remove(cbn.lg);
         	//cbn.layout.add(cbn.ccbn);
-        	
         	
         	
         	
