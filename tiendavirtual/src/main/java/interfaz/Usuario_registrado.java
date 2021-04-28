@@ -1,8 +1,10 @@
 package interfaz;
 
+import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.KeyPressEvent;
 import com.vaadin.flow.component.KeyUpEvent;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 import vistas.VistaUsuarioregistrado;
@@ -36,6 +38,16 @@ public class Usuario_registrado extends VistaUsuarioregistrado{
 				System.out.println(_cabecera_usuario_registrado.getBusquedaText().getValue());
 
 			}
+		});
+		
+		_cabecera_usuario_registrado.getDivLogo().addClickListener(new ComponentEventListener<ClickEvent<Div>>() {
+
+			@Override
+			public void onComponentEvent(ClickEvent<Div> event) {
+				// TODO Auto-generated method stub
+				
+			}
+			
 		});
 		
 		

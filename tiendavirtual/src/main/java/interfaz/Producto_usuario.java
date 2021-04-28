@@ -16,7 +16,28 @@ public class Producto_usuario extends VistaProductolista{
 	private event _anadir_al_carrito;
 	public Productos_Usuario _productos_Usuario;
 	public Button anadirCarrito;
+	public Button editarProducto;
 	public Text precio;
+	public Text nombreProducto;
+	public Div avatar;
+
+	
+
+	public Div getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(Div avatar) {
+		this.avatar = avatar;
+	}
+
+	public Text getNombreProducto() {
+		return nombreProducto;
+	}
+
+	public void setNombreProducto(Text nombreProducto) {
+		this.nombreProducto = nombreProducto;
+	}
 
 	public Button getAnadirCarrito() {
 		return anadirCarrito;
@@ -39,7 +60,7 @@ public class Producto_usuario extends VistaProductolista{
 		throw new UnsupportedOperationException();
 	}
 
-	public Producto_usuario() {
+	public Producto_usuario(boolean admin) {
 		System.out.println("Producto creado");
 		
 		/*Image image = new Image(null, new ClassResource("/images/button-img.jpg");
@@ -48,7 +69,7 @@ public class Producto_usuario extends VistaProductolista{
 		
 		*/
 		
-		Div avatar = new Div();
+		avatar = new Div();
 	    avatar.setWidth("152px");
 	    avatar.setHeight("152px");
 	    avatar.getStyle()
@@ -81,13 +102,20 @@ public class Producto_usuario extends VistaProductolista{
 	    //img.setSrc("https://picsum.photos/200");
 	    //avatar.add(img);
 	    Div name = new Div();
-	    name.add(new Text("Nombre Producto"));
+	    nombreProducto = new Text("Nombre");
+	    name.add(nombreProducto);
 	    name.getStyle().set("color", "blue");
 	    precio = new Text("0,00 euros");
 	    VerticalLayout vlav = new VerticalLayout(avatar);
 	    VerticalLayout vl = new VerticalLayout(name, precio);
-	    anadirCarrito = new Button("Añadir Carrito");
-	    vl.add(anadirCarrito);
+	    if (admin) {
+	    	editarProducto = new Button("Editar producto");
+		    vl.add(editarProducto);
+	    }else {
+	    	anadirCarrito = new Button("Añadir Carrito");
+		    vl.add(anadirCarrito);
+	    }
+	    
 	    Button verDescripcion = new Button("Ver descripción");
 	    vl.add(verDescripcion);
 	    //HorizontalLayout hl = new HorizontalLayout(avatar, vl);
@@ -96,4 +124,6 @@ public class Producto_usuario extends VistaProductolista{
 	    this.getVaadinHorizontalLayout().setSpacing(false);
 	    this.getVaadinHorizontalLayout().getStyle().set("border","1px solid blue");
 	}
+
+	
 }

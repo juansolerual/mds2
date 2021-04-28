@@ -1,6 +1,8 @@
 package interfaz;
 
-public class Cabecera_administrador {
+import vistas.VistaCabeceraadministrador;
+
+public class Cabecera_administrador extends VistaCabeceraadministrador{
 	public Admin _admin;
 	public Barra_busqueda_administrador _barra_busqueda_administrador;
 

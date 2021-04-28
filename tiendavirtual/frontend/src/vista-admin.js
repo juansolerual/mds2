@@ -9,9 +9,12 @@ class VistaAdmin extends PolymerElement {
                 :host {
                     display: block;
                     height: 100%;
+        			width: 100%;
+
                 }
             </style>
-<vaadin-vertical-layout style="width: 100%; height: 100%;"></vaadin-vertical-layout>
+<vaadin-vertical-layout style="width: 100%; height: 100%; flex-direction: column; align-items: flex-start; justify-content:center;" id="vaadinVerticalLayout"></vaadin-vertical-layout>
+
 `;
     }
 

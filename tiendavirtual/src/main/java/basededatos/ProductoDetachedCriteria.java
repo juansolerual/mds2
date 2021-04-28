@@ -20,8 +20,8 @@ import org.orm.criteria.*;
 
 public class ProductoDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression ID;
-	public final IntegerExpression pertenece_a_Id;
-	public final AssociationExpression pertenece_a_;
+	public final IntegerExpression aplica_ofertaId;
+	public final AssociationExpression aplica_oferta;
 	public final IntegerExpression pertenece_aId;
 	public final AssociationExpression pertenece_a;
 	public final StringExpression caracteristicas;
@@ -37,8 +37,8 @@ public class ProductoDetachedCriteria extends AbstractORMDetachedCriteria {
 	public ProductoDetachedCriteria() {
 		super(basededatos.Producto.class, basededatos.ProductoCriteria.class);
 		ID = new IntegerExpression("ID", this.getDetachedCriteria());
-		pertenece_a_Id = new IntegerExpression("pertenece_a_.ID", this.getDetachedCriteria());
-		pertenece_a_ = new AssociationExpression("pertenece_a_", this.getDetachedCriteria());
+		aplica_ofertaId = new IntegerExpression("aplica_oferta.ID", this.getDetachedCriteria());
+		aplica_oferta = new AssociationExpression("aplica_oferta", this.getDetachedCriteria());
 		pertenece_aId = new IntegerExpression("pertenece_a.ID", this.getDetachedCriteria());
 		pertenece_a = new AssociationExpression("pertenece_a", this.getDetachedCriteria());
 		caracteristicas = new StringExpression("caracteristicas", this.getDetachedCriteria());
@@ -55,8 +55,8 @@ public class ProductoDetachedCriteria extends AbstractORMDetachedCriteria {
 	public ProductoDetachedCriteria(DetachedCriteria aDetachedCriteria) {
 		super(aDetachedCriteria, basededatos.ProductoCriteria.class);
 		ID = new IntegerExpression("ID", this.getDetachedCriteria());
-		pertenece_a_Id = new IntegerExpression("pertenece_a_.ID", this.getDetachedCriteria());
-		pertenece_a_ = new AssociationExpression("pertenece_a_", this.getDetachedCriteria());
+		aplica_ofertaId = new IntegerExpression("aplica_oferta.ID", this.getDetachedCriteria());
+		aplica_oferta = new AssociationExpression("aplica_oferta", this.getDetachedCriteria());
 		pertenece_aId = new IntegerExpression("pertenece_a.ID", this.getDetachedCriteria());
 		pertenece_a = new AssociationExpression("pertenece_a", this.getDetachedCriteria());
 		caracteristicas = new StringExpression("caracteristicas", this.getDetachedCriteria());
@@ -70,8 +70,8 @@ public class ProductoDetachedCriteria extends AbstractORMDetachedCriteria {
 		asignado_a = new AssociationExpression("asignado_a", this.getDetachedCriteria());
 	}
 	
-	public OfertaDetachedCriteria createPertenece_a_Criteria() {
-		return new OfertaDetachedCriteria(createCriteria("pertenece_a_"));
+	public OfertaDetachedCriteria createAplica_ofertaCriteria() {
+		return new OfertaDetachedCriteria(createCriteria("aplica_oferta"));
 	}
 	
 	public CategoriaDetachedCriteria createPertenece_aCriteria() {

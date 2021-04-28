@@ -2,21 +2,66 @@ package vistas;
 
 import com.vaadin.flow.templatemodel.TemplateModel;
 
+import basededatos.BDPrincipal;
+import basededatos.Categoria;
+import basededatos.Foto;
+import basededatos.FotoDAO;
+import basededatos.Oferta;
 import basededatos.Producto;
+import basededatos.ProductoDAO;
+import basededatos.iAdmin;
 import interfaz.Producto_usuario;
+import tiendavirtual.Uploader;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.orm.PersistentException;
+
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.HasComponents;
+import com.vaadin.flow.component.HtmlComponent;
+import com.vaadin.flow.component.Key;
+import com.vaadin.flow.component.Shortcuts;
 import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.dependency.JsModule;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.dom.Element;
+import com.vaadin.flow.internal.MessageDigestUtil;
+import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.Notification.Position;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.upload.Upload;
+import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.datepicker.DatePicker;
 
 /**
  * A Designer generated component for the vista-producto_usuario template.
@@ -31,6 +76,12 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
    
 
 	
+	private boolean image1b = false;
+	private boolean image2b = false;
+	private boolean image3b = false;
+	private boolean image4b = false;
+	private boolean image5b = false;
+	public String url = "";
 
 	
 
@@ -48,24 +99,424 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 	private Image image4;
 	@Id("image5")
 	private Image image5;
-	@Id("precio")
-	private TextField precio;
 	@Id("addCarritoButton")
 	private Button addCarritoButton;
 	@Id("cantidad")
-	private Select cantidad;
+	private ComboBox cantidad;
 	@Id("descripcion")
 	private HorizontalLayout descripcion;
 	@Id("caracteristicas")
 	private HorizontalLayout caracteristicas;
 	@Id("valoraciones")
 	private HorizontalLayout valoraciones;
+	@Id("caracteristicasText")
+	private TextArea caracteristicasText;
+	@Id("descripcionText")
+	private TextArea descripcionText;
+	@Id("precio")
+	private TextField precio;
+	@Id("buttonCrearCategoria")
+	private Button buttonCrearCategoria;
+	@Id("nombreProducto")
+	private TextField nombreProducto;
+	@Id("oferta")
+	private ComboBox<Oferta> oferta;
+	@Id("buttonCrearOferta")
+	private Button buttonCrearOferta;
+	@Id("categoria1")
+	private ComboBox<Categoria> categoria;
 
 	/**
      * Creates a new VistaProducto_usuario.
      */
-    public VistaProductousuario(Producto producto) {
+    public VistaProductousuario(Producto producto, boolean admin) {
         // You can initialise any data required for the connected UI components here.
+    	buttonCrearCategoria.setVisible(false);
+    	categoria.setReadOnly(true);
+    	categoria.setVisible(false);
+    	buttonCrearOferta.setVisible(false);
+    	oferta.setReadOnly(true);
+    	oferta.setVisible(false);
+    	cantidad.setLabel("Cantidad");
+		iAdmin adm = new BDPrincipal();
+		List<Categoria> categorias = adm.cargarCategorias();
+		List<Oferta> ofertas = adm.cargarOfertas();
+		//categoria= new ComboBox<>();
+		//String[] items = new String[categorias.length];
+		
+		//this.categoria.setItems(categorias);
+		
+		Dialog dialogUpload = new Dialog();
+		HorizontalLayout dialogUploadHorizontal = new HorizontalLayout();
+		dialogUpload.setCloseOnOutsideClick(true);
+		Label tituloUploadDialog = new Label("Subir imagen");
+		dialogUploadHorizontal.add(tituloUploadDialog);
+		dialogUpload.setWidth("800px");
+		dialogUpload.setHeight("600px");
+		dialogUpload.setMinHeight("600px");
+		dialogUpload.setMinWidth("800px");
+		dialogUpload.setCloseOnEsc(true);
+		dialogUpload.setCloseOnOutsideClick(true);
+		
+		dialogUpload.setModal(false);
+		dialogUpload.setDraggable(true);
+		dialogUpload.setResizable(true);
+		
+		
+		MemoryBuffer buffer = new MemoryBuffer();
+		Upload upload = new Upload(buffer);
+		upload.setAcceptedFileTypes("image/jpeg", "image/png", "image/gif");
+
+		Div output = new Div();
+
+		upload.addSucceededListener(event -> {
+		    Component component = createComponent(event.getMIMEType(),
+		            event.getFileName(), buffer.getInputStream());
+		    File targetFile = new File("src/main/resources/targetFile.tmp");
+
+		    try {
+				FileUtils.copyInputStreamToFile(buffer.getInputStream(), targetFile);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    url = Uploader.upload(targetFile);
+		    System.out.println(url);
+		    System.out.println("index of title  "  + url.indexOf("title"));
+		    System.out.println("https://i.imgur.com/" + url.subSequence(15, 22) + ".jpg");
+		    url = "https://i.imgur.com/" + url.subSequence(15, 22) + ".jpg";
+		    output.removeAll();
+		    showOutput(event.getFileName(), component, output);
+		});
+		
+		Button guardarUploadButton = new Button("Guardar foto");
+		guardarUploadButton.getStyle().set("margin", "20px");
+		
+		guardarUploadButton.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
+
+			@Override
+			public void onComponentEvent(ClickEvent<Button> event) {
+				// TODO Auto-generated method stub
+				if (image1b) {
+					Div avatar = new Div();
+				    avatar.setWidth("152px");
+				    avatar.setHeight("152px");
+				    avatar.getStyle()
+				      .set("background-color", "gray")
+				      .set("border-radius", "12px")
+				      .set("margin", "16px")
+				      .set("background", "url("+url+")")
+				      .set("cursor", "pointer");
+				    fotos.add(avatar);
+				    //image1.add(avatar);
+				    image1.setSrc(url);
+				    dialogUpload.close();
+				    
+				    
+				}
+			}
+		});
+		dialogUpload.add(dialogUploadHorizontal,upload, output, guardarUploadButton);
+		
+		image1.addClickListener(event -> {
+			image1b = true;
+			dialogUpload.open();
+			});
+
+		
+		categoria.setItemLabelGenerator(Categoria::getNombreCategoria);
+		categoria.setItems(categorias);
+		oferta.setItemLabelGenerator(Oferta::getNombreOferta);
+		oferta.setItems(ofertas);
+
+    	if (producto != null) {
+    		System.out.println("NOMBRE: ");
+        	System.out.println(producto.getNombreProducto());
+        	if(producto.getAplica_oferta().getPorcentajeOferta()) {
+        		precio.setValue(String.valueOf(producto.getPrecio()-(producto.getPrecio()*(producto.getAplica_oferta().getPrecioOferta()/100))));
+        	}else {
+        		precio.setValue(String.valueOf(producto.getAplica_oferta().getPrecioOferta()));
+        	}
+        	
+        	nombreProducto.setValue(producto.getNombreProducto());
+        	caracteristicasText.setValue(producto.getCaracteristicas());
+        	descripcionText.setValue(producto.getDescripcion());
+    	}
+    	
+    	if (admin) {
+        	buttonCrearCategoria.setVisible(true);
+        	categoria.setReadOnly(false);
+        	categoria.setVisible(true);
+        	categoria.setRequiredIndicatorVisible(true);
+        	buttonCrearOferta.setVisible(true);
+        	oferta.setReadOnly(false);
+        	oferta.setVisible(true);
+        	oferta.setRequiredIndicatorVisible(true);
+        	
+        	//oferta.addValueChangeListener(listener)
+
+        	precio.setReadOnly(false);
+        	nombreProducto.setReadOnly(false);
+        	caracteristicasText.setReadOnly(false);
+        	descripcionText.setReadOnly(false);
+        	//addCarritoButton.setEnabled(false);
+        	addCarritoButton.setText("Guardar producto");
+        	//addCarritoButton.setVisible(false);
+        	cantidad.setEnabled(false);
+        	//cantidad.setVisible(false);
+        	
+        	addCarritoButton.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
+        		
+        		
+				
+				@Override
+				public void onComponentEvent(ClickEvent<Button> event) {
+					
+					if (oferta.isEmpty() || categoria.isEmpty()) {
+						Notification.show(
+    					        "Oferta y Categoeria deben estar seleccionadas.", 3000,
+    					        Position.MIDDLE);
+						return;
+					}
+					
+					if (precio.isEmpty()) {
+						Notification.show(
+    					        "El precio es obligatorio", 3000,
+    					        Position.MIDDLE);
+						return;
+					}
+					
+					if (precio.getValue().contains(",")) {
+						Notification.show(
+    					        "El separador de decimales debe ser un punto (Ejemplo 1.1€)", 3000,
+    					        Position.MIDDLE);
+						return;
+					}
+					
+					try {
+				        double d = Double.parseDouble(precio.getValue());
+				    } catch (NumberFormatException nfe) {
+				    	Notification.show(
+    					        "Compruebe el valor del precio.", 3000,
+    					        Position.MIDDLE);
+				    	return;
+				    }
+					// TODO Auto-generated method stub
+					Producto aProducto = new Producto();
+					aProducto.setNombreProducto(nombreProducto.getValue());
+					aProducto.setDescripcion(descripcionText.getValue());
+					aProducto.setCaracteristicas(caracteristicasText.getValue());
+					aProducto.setPrecio(Double.parseDouble(precio.getValue()));
+					aProducto.setAplica_oferta(oferta.getValue());
+					aProducto.setPertenece_a(categoria.getValue());
+					int resultado = adm.guardarProducto(aProducto);
+					Producto productoDAO = null;
+					try {
+						productoDAO = ProductoDAO.getProductoByORMID(resultado);
+					} catch (PersistentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					Foto foto = new Foto();
+				    foto.setURLFoto(url);
+				    foto.setIsPrincipal(true);
+				    foto.setPertenece_a(productoDAO);
+				    try {
+						FotoDAO.save(foto);
+					} catch (PersistentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				    
+				    
+				    
+					if (resultado != -1) {
+						Notification notification =  Notification.show(
+    					        "El producto se ha guardado correctamente.", 3000,
+    					        Position.MIDDLE);
+						aProducto = new Producto();
+						nombreProducto.setValue("");
+						descripcionText.setValue("");
+						caracteristicasText.setValue("");
+						precio.setValue("");
+						oferta.clear();
+						categoria.clear();
+					}else {
+						Notification notification =  Notification.show(
+    					        "Ha habido un error guardando el producto.", 3000,
+    					        Position.MIDDLE);
+					}
+				}
+			});
+        	
+        	Dialog dialog = new Dialog();
+    		HorizontalLayout dialogHorizontal = new HorizontalLayout();
+    		dialog.setCloseOnOutsideClick(true);
+    		Label tituloDialog = new Label("Nueva categoría");
+    		dialogHorizontal.add(tituloDialog);
+    		dialog.setWidth("800px");
+    		dialog.setHeight("600px");
+    		dialog.setMinHeight("600px");
+    		dialog.setMinWidth("800px");
+    		
+    		dialog.setModal(false);
+    		dialog.setDraggable(true);
+    		dialog.setResizable(true);
+    		//dialog.add(new Text("Close me with the esc-key or an outside click"));
+    		TextField nombreCategoria = new TextField("Nombre categoría:");
+    		nombreCategoria.getStyle().set("margin", "20px").set("width", "400px");
+    		
+    		TextField descripcion = new TextField("Descripción:");
+    		descripcion.getStyle().set("margin", "20px").set("width", "400px");
+
+    		Button guardar = new Button("Guardar");
+    		guardar.getStyle().set("margin", "20px");
+    		
+    		Button cancelButton = new Button("Cancelar", event -> {
+    		    dialog.close();
+    		});
+    		cancelButton.getStyle().set("margin", "20px");
+
+    		// Cancel action on ESC press
+    		Shortcuts.addShortcutListener(dialog, () -> {
+    		    dialog.close();
+    		}, Key.ESCAPE);
+    		
+    		guardar.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
+
+    			@Override
+    			public void onComponentEvent(ClickEvent<Button> event) {
+    				// TODO Auto-generated method stub
+    				iAdmin adm = new BDPrincipal();
+    				basededatos.Categoria aCategoria = new basededatos.Categoria();
+    				aCategoria.setNombreCategoria(nombreCategoria.getValue());
+    				aCategoria.setDescripcion(descripcion.getValue());
+    				int result = adm.guardarCategoria(aCategoria);
+    				if(result != -1) {
+    					Notification notification =  Notification.show(
+    					        "La categoría ha sido creada correctamente", 3000,
+    					        Position.MIDDLE);
+    					nombreCategoria.setValue("");
+    					descripcion.setValue("");
+    					dialog.close();
+    					categorias.add(aCategoria);
+    					categoria.setItems(categorias);
+
+    				}else {
+    					Notification notification =  Notification.show(
+    					        "Ha habido un error. Inténtalo de nuevo.", 3000,
+    					        Position.TOP_CENTER);
+    				}
+    			}
+    			
+    		});
+    		VerticalLayout dialogVertical = new VerticalLayout(nombreCategoria, descripcion);
+    		HorizontalLayout dialogButtons = new HorizontalLayout(guardar, cancelButton);
+    		dialogHorizontal.getStyle().set("margin", "20px").set("width", "100%");
+    		dialogVertical.getStyle().set("margin", "20px").set("width", "100%");
+    		Label mesageEsc = new Label("pulsa ESC para salir");
+
+    		dialog.add(dialogHorizontal, dialogVertical, dialogButtons, mesageEsc);
+    		
+    		buttonCrearCategoria.addClickListener(event -> dialog.open());
+    		
+    		// DIALOGO OFERTA
+    		
+    		Dialog dialogOferta = new Dialog();
+    		HorizontalLayout dialogOfertaHorizontal = new HorizontalLayout();
+    		dialog.setCloseOnOutsideClick(true);
+    		Label tituloOfertaDialog = new Label("Nueva oferta");
+    		dialogOfertaHorizontal.add(tituloDialog);
+    		dialogOferta.setWidth("800px");
+    		dialogOferta.setHeight("600px");
+    		dialogOferta.setMinHeight("600px");
+    		dialogOferta.setMinWidth("800px");
+    		
+    		dialogOferta.setModal(false);
+    		dialogOferta.setDraggable(true);
+    		dialogOferta.setResizable(true);
+    		//dialog.add(new Text("Close me with the esc-key or an outside click"));
+    		TextField nombreOferta= new TextField("Nombre oferta:");
+    		nombreOferta.getStyle().set("margin", "20px").set("width", "400px");
+    		
+    		TextField precioOferta = new TextField("Precio:");
+    		precioOferta.getStyle().set("margin", "20px").set("width", "400px");
+
+    		Checkbox porcentajeOferta = new Checkbox(false);
+    		porcentajeOferta.setLabel("Si la oferta es un porcentaje, activar.");
+    		porcentajeOferta.getStyle().set("margin", "20px").set("width", "400px");
+    		
+    		DatePicker fechaCaducidad = new DatePicker();
+    		fechaCaducidad.setLabel("Fecha de caducidad de la oferta");
+    		LocalDate now = LocalDate.now();
+    		fechaCaducidad.setValue(now);
+
+    		Checkbox activada = new Checkbox(true);
+    		activada.setLabel("Si la oferta es un porcentaje, activar.");
+    		activada.getStyle().set("margin", "20px").set("width", "400px");
+    		
+    		Button guardarOferta = new Button("Guardar");
+    		guardarOferta.getStyle().set("margin", "20px");
+    		
+    		Button cancelOfertaButton = new Button("Cancelar", event -> {
+    			dialogOferta.close();
+    		});
+    		cancelOfertaButton.getStyle().set("margin", "20px");
+
+    		// Cancel action on ESC press
+    		Shortcuts.addShortcutListener(dialog, () -> {
+    			dialogOferta.close();
+    		}, Key.ESCAPE);
+    		
+    		guardarOferta.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
+
+    			@Override
+    			public void onComponentEvent(ClickEvent<Button> event) {
+    				// TODO Auto-generated method stub
+    				iAdmin adm = new BDPrincipal();
+    				basededatos.Oferta aOferta= new basededatos.Oferta();
+    				aOferta.setNombreOferta(nombreOferta.getValue());
+    				aOferta.setPrecioOferta(Double.parseDouble(precioOferta.getValue()));
+    				aOferta.setActivada(activada.getValue());
+    				aOferta.setFechaCaducidadOferta(java.sql.Date.valueOf(fechaCaducidad.getValue()));
+    				aOferta.setPorcentajeOferta(porcentajeOferta.getValue());
+    				int result = adm.guardarOferta(aOferta);
+    				if(result != -1) {
+    					Notification notification =  Notification.show(
+    					        "La oferta ha sido creada correctamente", 3000,
+    					        Position.MIDDLE);
+    					nombreOferta.setValue("");
+    					precioOferta.setValue("");
+    					fechaCaducidad.clear();
+    					porcentajeOferta.setValue(false);
+    					dialogOferta.close();
+    					ofertas.add(aOferta);
+    					oferta.setItems(ofertas);
+
+    				}else {
+    					Notification notification =  Notification.show(
+    					        "Ha habido un error. Inténtalo de nuevo.", 3000,
+    					        Position.TOP_CENTER);
+    				}
+    			}
+    			
+    		});
+    		VerticalLayout dialogOfertaVertical = new VerticalLayout(nombreOferta, precioOferta, porcentajeOferta, fechaCaducidad, activada);
+    		HorizontalLayout dialogOfertaButtons = new HorizontalLayout(guardarOferta, cancelOfertaButton);
+    		dialogOfertaHorizontal.getStyle().set("margin", "20px").set("width", "100%");
+    		dialogOfertaVertical.getStyle().set("margin", "20px").set("width", "100%");
+    		Label mesageOfertaEsc = new Label("pulsa ESC para salir");
+
+    		dialogOferta.add(dialogOfertaHorizontal, dialogOfertaVertical, dialogOfertaButtons, mesageOfertaEsc);
+    		
+    		buttonCrearCategoria.addClickListener(event -> dialog.open());
+    		buttonCrearOferta.addClickListener(event -> dialogOferta.open());
+    	}
+    	
+    	
+    	
+    	
+    	
     }
 
     /**
@@ -73,5 +524,65 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
      */
     public interface VistaProductousuarioModel extends TemplateModel {
         // Add setters and getters for template properties here.
+    }
+    
+    private Component createComponent(String mimeType, String fileName,
+            InputStream stream) {
+        if (mimeType.startsWith("text")) {
+            return createTextComponent(stream);
+        } else if (mimeType.startsWith("image")) {
+            Image image = new Image();
+            try {
+
+                byte[] bytes = IOUtils.toByteArray(stream);
+                image.getElement().setAttribute("src", new StreamResource(
+                        fileName, () -> new ByteArrayInputStream(bytes)));
+                try (ImageInputStream in = ImageIO.createImageInputStream(
+                        new ByteArrayInputStream(bytes))) {
+                    final Iterator<ImageReader> readers = ImageIO
+                            .getImageReaders(in);
+                    if (readers.hasNext()) {
+                        ImageReader reader = readers.next();
+                        try {
+                            reader.setInput(in);
+                            image.setWidth(reader.getWidth(0) + "px");
+                            image.setHeight(reader.getHeight(0) + "px");
+                        } finally {
+                            reader.dispose();
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            image.setSizeFull();
+            return image;
+        }
+        Div content = new Div();
+        String text = String.format("Mime type: '%s'\nSHA-256 hash: '%s'",
+                mimeType, MessageDigestUtil.sha256(stream.toString()));
+        content.setText(text);
+        return content;
+
+    }
+
+    private Component createTextComponent(InputStream stream) {
+        String text;
+        try {
+            text = IOUtils.toString(stream, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            text = "exception reading stream";
+        }
+        return new Text(text);
+    }
+
+    private void showOutput(String text, Component content,
+            HasComponents outputContainer) {
+        HtmlComponent p = new HtmlComponent(Tag.P);
+        p.setHeight("320px");
+        p.setWidth("320px");
+        p.getElement().setText(text);
+        outputContainer.add(p);
+        outputContainer.add(content);
     }
 }

@@ -20,8 +20,8 @@ import org.orm.criteria.*;
 
 public class ProductoCriteria extends AbstractORMCriteria {
 	public final IntegerExpression ID;
-	public final IntegerExpression pertenece_a_Id;
-	public final AssociationExpression pertenece_a_;
+	public final IntegerExpression aplica_ofertaId;
+	public final AssociationExpression aplica_oferta;
 	public final IntegerExpression pertenece_aId;
 	public final AssociationExpression pertenece_a;
 	public final StringExpression caracteristicas;
@@ -37,8 +37,8 @@ public class ProductoCriteria extends AbstractORMCriteria {
 	public ProductoCriteria(Criteria criteria) {
 		super(criteria);
 		ID = new IntegerExpression("ID", this);
-		pertenece_a_Id = new IntegerExpression("pertenece_a_.ID", this);
-		pertenece_a_ = new AssociationExpression("pertenece_a_", this);
+		aplica_ofertaId = new IntegerExpression("aplica_oferta.ID", this);
+		aplica_oferta = new AssociationExpression("aplica_oferta", this);
 		pertenece_aId = new IntegerExpression("pertenece_a.ID", this);
 		pertenece_a = new AssociationExpression("pertenece_a", this);
 		caracteristicas = new StringExpression("caracteristicas", this);
@@ -60,8 +60,8 @@ public class ProductoCriteria extends AbstractORMCriteria {
 		this(TiendavirtualPersistentManager.instance().getSession());
 	}
 	
-	public OfertaCriteria createPertenece_a_Criteria() {
-		return new OfertaCriteria(createCriteria("pertenece_a_"));
+	public OfertaCriteria createAplica_ofertaCriteria() {
+		return new OfertaCriteria(createCriteria("aplica_oferta"));
 	}
 	
 	public CategoriaCriteria createPertenece_aCriteria() {

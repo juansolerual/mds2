@@ -1,5 +1,7 @@
 package basededatos;
 
+import java.util.List;
+
 public interface iUsuario_no_identificado {
 
 	public boolean loginUsuario(Usuario aUsuario);
@@ -18,13 +20,13 @@ public interface iUsuario_no_identificado {
 
 	public Categoria cargarCategoria(int aId);
 
-	public Categoria[] cargarCategorias();
+	public List<Categoria> cargarCategorias();
 
 	public Oferta cargarOferta(int aIdOferta);
 
-	public Oferta[] cargarOfertas();
+	public List<Oferta> cargarOfertas();
 
 	public Producto cargarProducto(int aIdProducto);
 
-	public Producto[] cargarProductos();
+	public List<Producto> cargarProductos();
 }

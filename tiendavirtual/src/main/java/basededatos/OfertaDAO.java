@@ -323,10 +323,10 @@ public class OfertaDAO {
 	
 	public static boolean deleteAndDissociate(basededatos.Oferta oferta)throws PersistentException {
 		try {
-			if (oferta.getContiene() != null) {
-				oferta.getContiene().setPertenece_a_(null);
+			basededatos.Producto[] lContienes = oferta.contiene.toArray();
+			for(int i = 0; i < lContienes.length; i++) {
+				lContienes[i].setAplica_oferta(null);
 			}
-			
 			return delete(oferta);
 		}
 		catch(Exception e) {
@@ -337,10 +337,10 @@ public class OfertaDAO {
 	
 	public static boolean deleteAndDissociate(basededatos.Oferta oferta, org.orm.PersistentSession session)throws PersistentException {
 		try {
-			if (oferta.getContiene() != null) {
-				oferta.getContiene().setPertenece_a_(null);
+			basededatos.Producto[] lContienes = oferta.contiene.toArray();
+			for(int i = 0; i < lContienes.length; i++) {
+				lContienes[i].setAplica_oferta(null);
 			}
-			
 			try {
 				session.delete(oferta);
 				return true;

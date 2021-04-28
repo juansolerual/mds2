@@ -4,6 +4,7 @@ import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -14,10 +15,12 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.PWA;
+import com.vaadin.flow.server.VaadinSession;
 
 import basededatos.Categoria;
 import basededatos.BDPrincipal;
 import basededatos.iAdmin;
+import interfaz.Admin;
 import interfaz.Cabecera_Usuario;
 import interfaz.Iniciar_sesion;
 import interfaz.Producto_usuario;
@@ -60,6 +63,7 @@ public class MainView extends VerticalLayout {
 	
 	Usuario_no_identificado usuarioNoIdentificado = new Usuario_no_identificado();
 	Usuario_registrado usuarioRegistrado;
+	VaadinSession session;
 	
 	Iniciar_sesion _iniciar_sesion = new Iniciar_sesion();
 	
@@ -72,8 +76,11 @@ public class MainView extends VerticalLayout {
     	
     	add(usuarioNoIdentificado);
     	
-    	
-        
+    	session = VaadinSession.getCurrent();
+    	session.setAttribute("username", "No_user");
+        session.setAttribute("MainView", this);
+        session.setAttribute("usuarioNoIdentificado", usuarioNoIdentificado);
+
         login();
         
     }
@@ -86,13 +93,18 @@ public class MainView extends VerticalLayout {
         	//cbn.layout.add(cbn.ccbn);
         	
         	
-        	
-        	
+    		    
+
     	    if (e.getUsername().equals("admin")) {
     	    	
     	    	//Administrador ad = new Administrador();
     	    	//remove(cbn);
     	    	//add(ad);
+    	    	session.setAttribute("username", "admin");
+
+    	    	Admin admin = new Admin();
+    	    	remove(usuarioNoIdentificado);
+    	    	add(admin);
     	    	
     	    	System.out.println("admin");
     	    		
@@ -116,6 +128,11 @@ public class MainView extends VerticalLayout {
     	    else if (e.getUsername().equals("usuario")) {
     	    	
     	    	usuarioRegistrado = new Usuario_registrado();
+    	    	
+    	    	session.setAttribute("username", "usuario");
+
+    	        session.setAttribute("usuarioRegistrado", usuarioRegistrado);
+
     	    	remove(usuarioNoIdentificado);
     	    	add(usuarioRegistrado);
     	    	//vlayout.remove(_iniciar_sesion);

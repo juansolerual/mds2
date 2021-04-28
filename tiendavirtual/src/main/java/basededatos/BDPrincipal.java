@@ -5,26 +5,28 @@ import interfaz.Usuario_registrado;
 import interfaz.Encargado_de_compras;
 import interfaz.App_transportes;
 
+import java.util.List;
+
 import org.orm.PersistentException;
 
 import interfaz.Admin;
 
 public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrado, iEncargado_de_compras, iApp_transportes, iAdmin {
-	public BD_Foto _bD_Foto;
-	public BD_Valoracion _bD_Valoracion;
-	public BD_Anuncio _bD_Anuncio;
-	public BD_LineaDePedido _bD_LineaDePedido;
-	public BD_Producto _bD_Producto;
-	public BD_Categoria _bD_Categoria;
-	public BD_Enviado _bD_Enviado;
-	public BD_Pendiente _bD_Pendiente;
-	public BD_Entregado _bD_Entregado;
-	public BD_Oferta _bD_Oferta;
-	public BD_Transportista _bD_Transportista;
+	public BD_Valoracion _bD_Valoracion = new BD_Valoracion();
+	public BD_Anuncio _bD_Anuncio = new BD_Anuncio();
+	public BD_LineaDePedido _bD_LineaDePedido = new BD_LineaDePedido();
+	public BD_Producto _bD_Producto = new BD_Producto();
+	public BD_Categoria _bD_Categoria = new BD_Categoria();
+	public BD_Enviado _bD_Enviado = new BD_Enviado();
+	public BD_Pendiente _bD_Pendiente = new BD_Pendiente();
+	public BD_Entregado _bD_Entregado = new BD_Entregado();
+	public BD_Oferta _bD_Oferta = new BD_Oferta();
+	public BD_Transportista _bD_Transportista = new BD_Transportista();
 	public BD_Cliente _bD_Cliente = new BD_Cliente();
-	public BD_Administrador _bD_Administrador;
-	public BD_EncargadoCompras _bD_EncargadoCompras;
-	public BD_Mensaje _bD_Mensaje;
+	public BD_Administrador _bD_Administrador = new BD_Administrador();
+	public BD_EncargadoCompras _bD_EncargadoCompras = new BD_EncargadoCompras();
+	public BD_Mensaje _bD_Mensaje = new BD_Mensaje();
+
 
 	public Usuario_no_identificado get_Usuario_no_identificado() {
 		throw new UnsupportedOperationException();
@@ -51,17 +53,15 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 	}
 
 	public boolean nuevo_usuario() {
-		boolean result = false;
+		Usuario usuario = UsuarioDAO.createUsuario();
+		usuario.setNombre("prueba");
 		try {
-			Usuario usuario = UsuarioDAO.createUsuario();
-			usuario.setNombre("Prueba");
-			
-			result = _bD_Cliente.nuevo_usuario(usuario);
+			return _bD_Cliente.nuevo_usuario(usuario);
 		} catch (PersistentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return result;
+		return false;
 	}
 
 	public Lineas_de_Pedido[] cargarCarrito() {
@@ -88,24 +88,46 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 		throw new UnsupportedOperationException();
 	}
 
-	public Categoria[] cargarCategorias() {
-		throw new UnsupportedOperationException();
-	}
+	public List<Categoria> cargarCategorias() {
+		List<Categoria> cls = null;
+		try {
+			cls = _bD_Categoria.cargarCategorias();
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cls;	
+		}
 
 	public Oferta cargarOferta(int aIdOferta) {
 		throw new UnsupportedOperationException();
 	}
 
-	public Oferta[] cargarOfertas() {
-		throw new UnsupportedOperationException();
+	public List<Oferta> cargarOfertas() {
+		List<Oferta> cls = null;
+		try {
+			cls = _bD_Oferta.cargarOfertas();
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cls;	
 	}
+	
 
 	public Producto cargarProducto(int aIdProducto) {
 		throw new UnsupportedOperationException();
 	}
 
-	public Producto[] cargarProductos() {
-		throw new UnsupportedOperationException();
+	public List<Producto> cargarProductos() {
+		List<Producto> cls = null;
+		try {
+			cls = _bD_Producto.cargarProductos();
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cls;	
 	}
 
 	public boolean guardarCambiosUsuario(Usuario aUsuario) {
@@ -209,7 +231,26 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 	}
 
 	public int guardarOferta(Oferta aOferta) {
-		throw new UnsupportedOperationException();
+		int Id_oferta = -1;
+		Oferta temp = null;
+		try {
+			temp = OfertaDAO.loadOfertaByQuery("Oferta.nombreOferta='"+aOferta.getNombreOferta()+"'", null);
+		} catch (PersistentException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		if (temp != null) {
+			return -1;
+		}
+		try {
+			Id_oferta = _bD_Oferta.guardarOferta(aOferta);
+			
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return Id_oferta;
 	}
 
 	public boolean eliminarProducto(int aIdProducto) {
@@ -217,11 +258,38 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 	}
 
 	public int guardarProducto(Producto aProducto) {
-		throw new UnsupportedOperationException();
+		int Id_producto = -1;
+		try {
+			Id_producto = _bD_Producto.guardarProducto(aProducto);
+			
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return Id_producto;
 	}
 
 	public int guardarCategoria(Categoria aCategoria) {
-		throw new UnsupportedOperationException();
+		int Id_categoria = -1;
+		Categoria temp = null;
+		try {
+			temp = CategoriaDAO.loadCategoriaByQuery("Categoria.nombreCategoria='"+aCategoria.getNombreCategoria()+"'", null);
+		} catch (PersistentException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		if (temp != null) {
+			return -1;
+		}
+		try {
+			Id_categoria = _bD_Categoria.guardarCategoria(aCategoria);
+			
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return Id_categoria;
 	}
 
 	public Transportista[] cargarTransportistas() {
@@ -255,4 +323,16 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 	public boolean crearEncargadoCompras(Encargado_compras aEncargadoCompras) {
 		throw new UnsupportedOperationException();
 	}
+	
+	public List<Producto> cargarProductos(String string){
+		List<Producto> cls = null;
+		try {
+			cls = _bD_Producto.cargarProductos(string);
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cls;	
+	}
+
 }

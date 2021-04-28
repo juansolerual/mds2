@@ -323,8 +323,8 @@ public class ProductoDAO {
 	
 	public static boolean deleteAndDissociate(basededatos.Producto producto)throws PersistentException {
 		try {
-			if (producto.getPertenece_a_() != null) {
-				producto.getPertenece_a_().setContiene(null);
+			if (producto.getAplica_oferta() != null) {
+				producto.getAplica_oferta().contiene.remove(producto);
 			}
 			
 			if (producto.getPertenece_a() != null) {
@@ -353,8 +353,8 @@ public class ProductoDAO {
 	
 	public static boolean deleteAndDissociate(basededatos.Producto producto, org.orm.PersistentSession session)throws PersistentException {
 		try {
-			if (producto.getPertenece_a_() != null) {
-				producto.getPertenece_a_().setContiene(null);
+			if (producto.getAplica_oferta() != null) {
+				producto.getAplica_oferta().contiene.remove(producto);
 			}
 			
 			if (producto.getPertenece_a() != null) {

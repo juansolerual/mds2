@@ -1,8 +1,10 @@
 package basededatos;
 
+import java.util.List;
+
 public interface iAdmin {
 
-	public Categoria[] cargarCategorias();
+	public List<Categoria> cargarCategorias();
 
 	public Categoria cargarCategoria(int aId);
 
@@ -26,7 +28,7 @@ public interface iAdmin {
 
 	public boolean crearAdministrador(Administrador aAdministrador);
 
-	public Oferta[] cargarOfertas();
+	public List<Oferta> cargarOfertas();
 
 	public Oferta cargarOferta(int aIdOferta);
 
@@ -34,7 +36,7 @@ public interface iAdmin {
 
 	public int guardarOferta(Oferta aOferta);
 
-	public Producto[] cargarProductos();
+	public List<Producto> cargarProductos();
 
 	public Producto cargarProducto(int aIdProducto);
 

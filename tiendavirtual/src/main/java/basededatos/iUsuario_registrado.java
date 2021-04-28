@@ -1,12 +1,14 @@
 package basededatos;
 
+import java.util.List;
+
 public interface iUsuario_registrado {
 
-	public Producto[] cargarProductos();
+	public List<Producto> cargarProductos();
 
-	public Categoria[] cargarCategorias();
+	public List<Categoria> cargarCategorias();
 
-	public Oferta[] cargarOfertas();
+	public List<Oferta> cargarOfertas();
 
 	public Anuncio[] cargarAnuncios();
 
@@ -31,4 +33,6 @@ public interface iUsuario_registrado {
 	public boolean enviarMensaje(Mensaje aMensaje);
 
 	public Mensaje abrirMensaje(int aIdMensaje);
+
+	public List<Producto> cargarProductos(String string);
 }

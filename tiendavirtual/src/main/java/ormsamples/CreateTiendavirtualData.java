@@ -10,7 +10,7 @@ public class CreateTiendavirtualData {
 		PersistentTransaction t = basededatos.TiendavirtualPersistentManager.instance().getSession().beginTransaction();
 		try {
 			basededatos.Producto lbasededatosProducto = basededatos.ProductoDAO.createProducto();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : asignado_a, recibe_valoracion, tieneFoto, limiteFotos, precio, pertenece_a, pertenece_a_
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : asignado_a, recibe_valoracion, tieneFoto, limiteFotos, precio, pertenece_a, aplica_oferta
 			basededatos.ProductoDAO.save(lbasededatosProducto);
 			basededatos.Categoria lbasededatosCategoria = basededatos.CategoriaDAO.createCategoria();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : contiene
@@ -25,7 +25,7 @@ public class CreateTiendavirtualData {
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : tiene, pagado, marcado_por
 			basededatos.PedidoDAO.save(lbasededatosPedido);
 			basededatos.Oferta lbasededatosOferta = basededatos.OfertaDAO.createOferta();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : contiene, activada, precioOferta
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : contiene, porcentajeOferta, activada, precioOferta
 			basededatos.OfertaDAO.save(lbasededatosOferta);
 			basededatos.Cliente lbasededatosCliente = basededatos.ClienteDAO.createCliente();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : realiza

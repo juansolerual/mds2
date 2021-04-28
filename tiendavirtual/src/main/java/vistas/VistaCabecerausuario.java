@@ -9,6 +9,8 @@ import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.Div;
 
 /**
  * A Designer generated component for the vista-cabecerausuario template.
@@ -35,6 +37,38 @@ public class VistaCabecerausuario extends PolymerTemplate<VistaCabecerausuario.V
 	private Button registrarseButton;
 	@Id("iniciarSesionButton")
 	private Button iniciarSesionButton;
+	public HorizontalLayout getHorizontalTitulo() {
+		return horizontalTitulo;
+	}
+
+	public void setHorizontalTitulo(HorizontalLayout horizontalTitulo) {
+		this.horizontalTitulo = horizontalTitulo;
+	}
+
+	public Div getDivLogo() {
+		return divLogo;
+	}
+
+	public void setDivLogo(Div divLogo) {
+		this.divLogo = divLogo;
+	}
+
+	public Element getVerticalLogo() {
+		return verticalLogo;
+	}
+
+	public void setVerticalLogo(Element verticalLogo) {
+		this.verticalLogo = verticalLogo;
+	}
+
+	public Label getLabelTitulo() {
+		return labelTitulo;
+	}
+
+	public void setLabelTitulo(Label labelTitulo) {
+		this.labelTitulo = labelTitulo;
+	}
+
 	public Element getVaadinVerticalLayout() {
 		return vaadinVerticalLayout;
 	}
@@ -101,8 +135,14 @@ public class VistaCabecerausuario extends PolymerTemplate<VistaCabecerausuario.V
 
 	@Id("cerrarSesionButton")
 	private Button cerrarSesionButton;
-	
-
+	@Id("verticalLogo")
+	private Element verticalLogo;
+	@Id("labelTitulo")
+	private Label labelTitulo;
+	@Id("divLogo")
+	private Div divLogo;
+	@Id("horizontalTitulo")
+	private HorizontalLayout horizontalTitulo;
 	/**
      * Creates a new VistaCabecerausuario.
      */

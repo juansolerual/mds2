@@ -34,8 +34,8 @@ public class Producto implements Serializable {
 	}
 	
 	private void this_setOwner(Object owner, int key) {
-		if (key == ORMConstants.KEY_PRODUCTO_PERTENECE_A_) {
-			this.pertenece_a_ = (basededatos.Oferta) owner;
+		if (key == ORMConstants.KEY_PRODUCTO_APLICA_OFERTA) {
+			this.aplica_oferta = (basededatos.Oferta) owner;
 		}
 		
 		else if (key == ORMConstants.KEY_PRODUCTO_PERTENECE_A) {
@@ -65,11 +65,11 @@ public class Producto implements Serializable {
 	@org.hibernate.annotations.GenericGenerator(name="BASEDEDATOS_PRODUCTO_ID_GENERATOR", strategy="native")	
 	private int ID;
 	
-	@OneToOne(optional=false, targetEntity=basededatos.Oferta.class, fetch=FetchType.LAZY)	
-	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@ManyToOne(targetEntity=basededatos.Oferta.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns(value={ @JoinColumn(name="OfertaID", referencedColumnName="ID", nullable=false) }, foreignKey=@ForeignKey(name="FKProducto444947"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
-	private basededatos.Oferta pertenece_a_;
+	private basededatos.Oferta aplica_oferta;
 	
 	@ManyToOne(targetEntity=basededatos.Categoria.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
@@ -159,21 +159,28 @@ public class Producto implements Serializable {
 		return limiteFotos;
 	}
 	
-	public void setPertenece_a_(basededatos.Oferta value) {
-		if (this.pertenece_a_ != value) {
-			basededatos.Oferta lpertenece_a_ = this.pertenece_a_;
-			this.pertenece_a_ = value;
-			if (value != null) {
-				pertenece_a_.setContiene(this);
-			}
-			if (lpertenece_a_ != null && lpertenece_a_.getContiene() == this) {
-				lpertenece_a_.setContiene(null);
-			}
+	public void setAplica_oferta(basededatos.Oferta value) {
+		if (aplica_oferta != null) {
+			aplica_oferta.contiene.remove(this);
+		}
+		if (value != null) {
+			value.contiene.add(this);
 		}
 	}
 	
-	public basededatos.Oferta getPertenece_a_() {
-		return pertenece_a_;
+	public basededatos.Oferta getAplica_oferta() {
+		return aplica_oferta;
+	}
+	
+	/**
+	 * This method is for internal use only.
+	 */
+	public void setORM_Aplica_oferta(basededatos.Oferta value) {
+		this.aplica_oferta = value;
+	}
+	
+	private basededatos.Oferta getORM_Aplica_oferta() {
+		return aplica_oferta;
 	}
 	
 	private void setORM_TieneFoto(java.util.Set value) {

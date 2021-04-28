@@ -22,6 +22,22 @@ public class Oferta implements Serializable {
 	public Oferta() {
 	}
 	
+	private java.util.Set this_getSet (int key) {
+		if (key == ORMConstants.KEY_OFERTA_CONTIENE) {
+			return ORM_contiene;
+		}
+		
+		return null;
+	}
+	
+	@Transient	
+	org.orm.util.ORMAdapter _ormAdapter = new org.orm.util.AbstractORMAdapter() {
+		public java.util.Set getSet(int key) {
+			return this_getSet(key);
+		}
+		
+	};
+	
 	@Column(name="ID", nullable=false, length=10)	
 	@Id	
 	@GeneratedValue(generator="BASEDEDATOS_OFERTA_ID_GENERATOR")	
@@ -38,10 +54,16 @@ public class Oferta implements Serializable {
 	@Column(name="Activada", nullable=false, length=1)	
 	private boolean activada;
 	
-	@OneToOne(mappedBy="pertenece_a_", targetEntity=basededatos.Producto.class, fetch=FetchType.LAZY)	
+	@Column(name="NombreOferta", nullable=true, length=255)	
+	private String nombreOferta;
+	
+	@Column(name="PorcentajeOferta", nullable=false, length=1)	
+	private boolean porcentajeOferta;
+	
+	@OneToMany(mappedBy="aplica_oferta", targetEntity=basededatos.Producto.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
-	private basededatos.Producto contiene;
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	private java.util.Set ORM_contiene = new java.util.HashSet();
 	
 	private void setID(int value) {
 		this.ID = value;
@@ -79,22 +101,32 @@ public class Oferta implements Serializable {
 		return activada;
 	}
 	
-	public void setContiene(basededatos.Producto value) {
-		if (this.contiene != value) {
-			basededatos.Producto lcontiene = this.contiene;
-			this.contiene = value;
-			if (value != null) {
-				contiene.setPertenece_a_(this);
-			}
-			if (lcontiene != null && lcontiene.getPertenece_a_() == this) {
-				lcontiene.setPertenece_a_(null);
-			}
-		}
+	public void setNombreOferta(String value) {
+		this.nombreOferta = value;
 	}
 	
-	public basededatos.Producto getContiene() {
-		return contiene;
+	public String getNombreOferta() {
+		return nombreOferta;
 	}
+	
+	public void setPorcentajeOferta(boolean value) {
+		this.porcentajeOferta = value;
+	}
+	
+	public boolean getPorcentajeOferta() {
+		return porcentajeOferta;
+	}
+	
+	private void setORM_Contiene(java.util.Set value) {
+		this.ORM_contiene = value;
+	}
+	
+	private java.util.Set getORM_Contiene() {
+		return ORM_contiene;
+	}
+	
+	@Transient	
+	public final basededatos.ProductoSetCollection contiene = new basededatos.ProductoSetCollection(this, _ormAdapter, ORMConstants.KEY_OFERTA_CONTIENE, ORMConstants.KEY_PRODUCTO_APLICA_OFERTA, ORMConstants.KEY_MUL_ONE_TO_MANY);
 	
 	public String toString() {
 		return String.valueOf(getID());

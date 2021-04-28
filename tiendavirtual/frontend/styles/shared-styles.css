@@ -10,3 +10,35 @@
   max-width: 250px;
 }
 
+a[highlight] {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.header {
+    padding: 0 var(--lumo-space-m);
+}
+
+.header h1.logo {
+    font-size: 1em;
+    margin: var(--lumo-space-m);
+}
+
+body {
+  font-family: 'Courier New', monospace;
+}
+
+.v-textfield {
+    font-family: 'Courier New', monospace;
+} 
+.v-app input {
+    font-family: 'Courier New', monospace;
+}
+
+html {
+  --lumo-font-family: 'Courier New', monospace;
+}
+
+.divLogo{
+	cursor: pointer;
+}

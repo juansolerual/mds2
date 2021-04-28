@@ -23,8 +23,9 @@ public class OfertaDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final DoubleExpression precioOferta;
 	public final DateExpression fechaCaducidadOferta;
 	public final BooleanExpression activada;
-	public final IntegerExpression contieneId;
-	public final AssociationExpression contiene;
+	public final StringExpression nombreOferta;
+	public final BooleanExpression porcentajeOferta;
+	public final CollectionExpression contiene;
 	
 	public OfertaDetachedCriteria() {
 		super(basededatos.Oferta.class, basededatos.OfertaCriteria.class);
@@ -32,8 +33,9 @@ public class OfertaDetachedCriteria extends AbstractORMDetachedCriteria {
 		precioOferta = new DoubleExpression("precioOferta", this.getDetachedCriteria());
 		fechaCaducidadOferta = new DateExpression("fechaCaducidadOferta", this.getDetachedCriteria());
 		activada = new BooleanExpression("activada", this.getDetachedCriteria());
-		contieneId = new IntegerExpression("contiene.ID", this.getDetachedCriteria());
-		contiene = new AssociationExpression("contiene", this.getDetachedCriteria());
+		nombreOferta = new StringExpression("nombreOferta", this.getDetachedCriteria());
+		porcentajeOferta = new BooleanExpression("porcentajeOferta", this.getDetachedCriteria());
+		contiene = new CollectionExpression("ORM_contiene", this.getDetachedCriteria());
 	}
 	
 	public OfertaDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -42,12 +44,13 @@ public class OfertaDetachedCriteria extends AbstractORMDetachedCriteria {
 		precioOferta = new DoubleExpression("precioOferta", this.getDetachedCriteria());
 		fechaCaducidadOferta = new DateExpression("fechaCaducidadOferta", this.getDetachedCriteria());
 		activada = new BooleanExpression("activada", this.getDetachedCriteria());
-		contieneId = new IntegerExpression("contiene.ID", this.getDetachedCriteria());
-		contiene = new AssociationExpression("contiene", this.getDetachedCriteria());
+		nombreOferta = new StringExpression("nombreOferta", this.getDetachedCriteria());
+		porcentajeOferta = new BooleanExpression("porcentajeOferta", this.getDetachedCriteria());
+		contiene = new CollectionExpression("ORM_contiene", this.getDetachedCriteria());
 	}
 	
 	public ProductoDetachedCriteria createContieneCriteria() {
-		return new ProductoDetachedCriteria(createCriteria("contiene"));
+		return new ProductoDetachedCriteria(createCriteria("ORM_contiene"));
 	}
 	
 	public Oferta uniqueOferta(PersistentSession session) {

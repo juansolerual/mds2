@@ -23,8 +23,9 @@ public class OfertaCriteria extends AbstractORMCriteria {
 	public final DoubleExpression precioOferta;
 	public final DateExpression fechaCaducidadOferta;
 	public final BooleanExpression activada;
-	public final IntegerExpression contieneId;
-	public final AssociationExpression contiene;
+	public final StringExpression nombreOferta;
+	public final BooleanExpression porcentajeOferta;
+	public final CollectionExpression contiene;
 	
 	public OfertaCriteria(Criteria criteria) {
 		super(criteria);
@@ -32,8 +33,9 @@ public class OfertaCriteria extends AbstractORMCriteria {
 		precioOferta = new DoubleExpression("precioOferta", this);
 		fechaCaducidadOferta = new DateExpression("fechaCaducidadOferta", this);
 		activada = new BooleanExpression("activada", this);
-		contieneId = new IntegerExpression("contiene.ID", this);
-		contiene = new AssociationExpression("contiene", this);
+		nombreOferta = new StringExpression("nombreOferta", this);
+		porcentajeOferta = new BooleanExpression("porcentajeOferta", this);
+		contiene = new CollectionExpression("ORM_contiene", this);
 	}
 	
 	public OfertaCriteria(PersistentSession session) {
@@ -45,7 +47,7 @@ public class OfertaCriteria extends AbstractORMCriteria {
 	}
 	
 	public ProductoCriteria createContieneCriteria() {
-		return new ProductoCriteria(createCriteria("contiene"));
+		return new ProductoCriteria(createCriteria("ORM_contiene"));
 	}
 	
 	public Oferta uniqueOferta() {

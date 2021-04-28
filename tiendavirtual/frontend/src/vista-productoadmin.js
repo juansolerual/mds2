@@ -14,7 +14,7 @@ class VistaProductoadmin extends PolymerElement {
                 }
             </style>
 <vaadin-horizontal-layout class="content" style="width: 100%; height: 100%;" id="vaadinHorizontalLayout"></vaadin-horizontal-layout>
-`;
+`;	
     }
 
     static get is() {

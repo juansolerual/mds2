@@ -13,7 +13,7 @@ class VistaCategoria extends PolymerElement {
         			margin: var(--lumo-space-m);
                 }
             </style>
-<vaadin-vertical-layout style="width: 100%; height: 100%; margin: var(--lumo-space-m); flex-direction: row; align-items: flex-start; justify-content: center; flex-wrap: wrap; align-content: flex-start;" id="verticalLayout" class="content"></vaadin-vertical-layout>
+<vaadin-vertical-layout style="width: 100%; height: 100%"; id="verticalLayout" class="content"></vaadin-vertical-layout>
 `;
     }
 

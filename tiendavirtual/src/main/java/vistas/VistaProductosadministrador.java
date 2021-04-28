@@ -6,6 +6,7 @@ import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.polymertemplate.Id;
+import com.vaadin.flow.dom.Element;
 
 /**
  * A Designer generated component for the vista-productosadministrador template.
@@ -19,7 +20,6 @@ public class VistaProductosadministrador extends PolymerTemplate<VistaProductosa
 
     @Id("horizontalProductos")
 	private HorizontalLayout horizontalProductos;
-
 	/**
      * Creates a new VistaProductosadministrador.
      */

@@ -1,14 +1,31 @@
 package basededatos;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Vector;
+
+import org.orm.PersistentException;
+import org.orm.PersistentTransaction;
+
 import basededatos.Producto;
 
 public class BD_Producto {
 	public BDPrincipal _bDPrincipal;
 	public Vector<Producto> _contiene_productos = new Vector<Producto>();
 
-	public Producto[] cargarProductos() {
-		throw new UnsupportedOperationException();
+	public List<Producto> cargarProductos() throws PersistentException {
+		List<Producto> productos = null;
+
+		PersistentTransaction t = TiendavirtualPersistentManager.instance().getSession().beginTransaction();
+		try {
+			productos = ProductoDAO.queryProducto(null, null);
+			
+			t.commit();
+		} catch (Exception e) {
+			t.rollback();
+		}
+
+		return productos;
 	}
 
 	public Producto cargarProducto(int aIdProducto) {
@@ -23,7 +40,49 @@ public class BD_Producto {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean guardarProducto(Producto aProducto) {
-		throw new UnsupportedOperationException();
+	public int guardarProducto(Producto aProducto) throws PersistentException {
+		int id_producto = -1;
+		PersistentTransaction t = TiendavirtualPersistentManager.instance().getSession().beginTransaction();
+		try {
+			
+			
+			
+			
+			Producto prod = ProductoDAO.createProducto();
+			prod.setCaracteristicas(aProducto.getCaracteristicas());
+			prod.setDescripcion(aProducto.getDescripcion());
+			prod.setPrecio(aProducto.getPrecio());
+			prod.setNombreProducto(aProducto.getNombreProducto());
+			prod.setPertenece_a(aProducto.getPertenece_a());
+			prod.setAplica_oferta(aProducto.getAplica_oferta());
+			ProductoDAO.save(prod);
+			id_producto = prod.getORMID();
+			t.commit();
+		} catch (Exception e) {
+			t.rollback();
+		}
+
+		return id_producto;
+	}
+
+	public List<Producto> cargarProductos(String string) throws PersistentException {
+		List<Producto> productos = null;
+
+		PersistentTransaction t = TiendavirtualPersistentManager.instance().getSession().beginTransaction();
+		try {
+			ProductoCriteria productoCriteria = new ProductoCriteria();
+			productoCriteria.nombreProducto.like("%"+string+"%");
+			Producto[] productos2 = ProductoDAO.listProductoByCriteria(productoCriteria);
+			for (Producto producto : productos2) {
+				System.out.println("dentro de carcarProducto ");
+				//productos.add(producto);
+			}
+			productos = Arrays.asList(productos2);
+			t.commit();
+		} catch (Exception e) {
+			t.rollback();
+		}
+
+		return productos;
 	}
 }

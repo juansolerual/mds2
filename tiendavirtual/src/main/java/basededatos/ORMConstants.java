@@ -48,11 +48,11 @@ public interface ORMConstants extends org.orm.util.ORMBaseConstants {
 	
 	final int KEY_PEDIDO_TIENE = -1896255251;
 	
+	final int KEY_PRODUCTO_APLICA_OFERTA = 1223745607;
+	
 	final int KEY_PRODUCTO_ASIGNADO_A = -923679025;
 	
 	final int KEY_PRODUCTO_PERTENECE_A = 1772105610;
-	
-	final int KEY_PRODUCTO_PERTENECE_A_ = -899300843;
 	
 	final int KEY_PRODUCTO_RECIBE_VALORACION = 1491061158;
 	
