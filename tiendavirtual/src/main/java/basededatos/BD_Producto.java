@@ -28,8 +28,19 @@ public class BD_Producto {
 		return productos;
 	}
 
-	public Producto cargarProducto(int aIdProducto) {
-		throw new UnsupportedOperationException();
+	public Producto cargarProducto(int aIdProducto) throws PersistentException {
+		Producto producto = null;
+
+		PersistentTransaction t = TiendavirtualPersistentManager.instance().getSession().beginTransaction();
+		try {
+			producto = ProductoDAO.getProductoByORMID(aIdProducto);
+			
+			t.commit();
+		} catch (Exception e) {
+			t.rollback();
+		}
+
+		return producto;
 	}
 
 	public boolean eliminarProducto(int aIdProducto) {
@@ -84,5 +95,29 @@ public class BD_Producto {
 		}
 
 		return productos;
+	}
+
+	public int editarProducto(Producto producto) throws PersistentException {
+		// TODO Auto-generated method stub
+		int resultado = -1;
+		PersistentTransaction t = TiendavirtualPersistentManager.instance().getSession().beginTransaction();
+		//ProductoDAO.delete(producto);
+		try {
+//			Producto prod = ProductoDAO.createProducto();
+//			prod.setCaracteristicas(producto.getCaracteristicas());
+//			prod.setDescripcion(producto.getDescripcion());
+//			prod.setPrecio(producto.getPrecio());
+//			prod.setNombreProducto(producto.getNombreProducto());
+//			prod.setPertenece_a(producto.getPertenece_a());
+//			prod.setAplica_oferta(producto.getAplica_oferta());
+			ProductoDAO.save(producto);
+			resultado = producto.getORMID();
+			t.commit();
+		} catch (Exception e) {
+			t.rollback();
+		}
+		
+		
+		return resultado;
 	}
 }

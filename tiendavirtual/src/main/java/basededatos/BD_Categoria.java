@@ -43,7 +43,7 @@ public class BD_Categoria {
 			Categoria cat = CategoriaDAO.createCategoria();
 			cat.setDescripcion(aCategoria.getDescripcion());
 			cat.setNombreCategoria(aCategoria.getNombreCategoria());
-			
+			cat.setImagen(aCategoria.getImagen());
 			
 			CategoriaDAO.save(cat);
 			id_categoria = cat.getORMID();

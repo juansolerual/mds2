@@ -1,45 +1,114 @@
 package interfaz;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.hibernate.transform.AliasToEntityMapResultTransformer;
 
 import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.HasComponents;
+import com.vaadin.flow.component.HtmlComponent;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.Shortcuts;
+import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.upload.Upload;
+import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
+import com.vaadin.flow.internal.MessageDigestUtil;
+import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.VaadinSession;
 
 import basededatos.BDPrincipal;
 import basededatos.iAdmin;
 import interfaz.Categoria;
+import tiendavirtual.Uploader;
 import vistas.VistaCategorias;
 import vistas.VistaProductousuario;
 
 public class Categorias extends VistaCategorias {
 	public Elementos_comunes_pantalla_principal _elementos_comunes_pantalla_principal;
-	public VaadinSession session = VaadinSession.getCurrent();
+	public String fotoCategoria = "";
 
 	// public Vector<Categoria> _list_Categoria = new Vector<Categoria>();
 
 	// public cargarCategorias...
 
 	public Categorias() {
+		VaadinSession session = VaadinSession.getCurrent();
 
 		String user = (String) session.getAttribute("username");
+		
 		HorizontalLayout scrollableLayout = new HorizontalLayout();
-		for (int i = 0; i < 50; i++) {
-			scrollableLayout.add(new Categoria());
+		iAdmin adm = new BDPrincipal();
+		List<basededatos.Categoria> categorias = adm.cargarCategorias();
+		for (basededatos.Categoria categoria : categorias) {
+			Categoria cat = new Categoria(categoria);
+			cat.avatar.addClickListener(new ComponentEventListener<ClickEvent<Div>>() {
+				
+				
+
+
+				@Override
+				public void onComponentEvent(ClickEvent<Div> event) {
+					// TODO Auto-generated method stub
+					VaadinSession session = VaadinSession.getCurrent();
+					String user2 = (String) session.getAttribute("username");
+					System.out.println("click categoria");
+					System.out.println("Usuario " + user2);
+					Vista_busqueda_de_productos_categorias  _vista_busqueda_productos_categorias = new Vista_busqueda_de_productos_categorias(categoria);
+
+			    	session.setAttribute("_vista_busqueda_productos_categorias", _vista_busqueda_productos_categorias);
+			    	
+			    	if (user2.equals("usuario")) {
+				    	VerticalLayout verticalLayoutUsuarioIdentificado = (VerticalLayout) session.getAttribute("verticalLayoutUsuarioIdentificado");
+			    		Visualizar_Pantalla_Principal_Usuario_Registrado visualizar_Pantalla_Principal_Usuario_Registrado = (Visualizar_Pantalla_Principal_Usuario_Registrado) session.getAttribute("Visualizar_Pantalla_Principal_Usuario_Registrado");
+			    		verticalLayoutUsuarioIdentificado.remove(visualizar_Pantalla_Principal_Usuario_Registrado);
+			    		verticalLayoutUsuarioIdentificado.add(_vista_busqueda_productos_categorias);
+			    	}
+			    	
+			    	if (user2.equals("No_user")) {
+				    	VerticalLayout verticalLayoutUsuarioNoIdentificado = (VerticalLayout) session.getAttribute("verticalLayoutUsuarioNoIdentificado");
+			    		Visualizar_Pantalla_Usuario_no_registrado visualizar_Pantalla_Usuario_no_registrado = (Visualizar_Pantalla_Usuario_no_registrado) session.getAttribute("Visualizar_Pantalla_Usuario_no_registrado");
+				    	verticalLayoutUsuarioNoIdentificado.remove(visualizar_Pantalla_Usuario_no_registrado);
+						verticalLayoutUsuarioNoIdentificado.add(_vista_busqueda_productos_categorias);
+
+			    	}
+			    	
+			    	if (user2.equals("admin")) {
+			    		VerticalLayout verticalLayoutAdmin = (VerticalLayout) session.getAttribute("verticalLayoutAdmin");
+				    	Visualizar_Pantalla_Principal_Administrador visualizar_Pantalla_Principal_Administrador = (Visualizar_Pantalla_Principal_Administrador) session.getAttribute("visualizar_Pantalla_Principal_Administrador");
+				    	verticalLayoutAdmin.remove(visualizar_Pantalla_Principal_Administrador);
+				    	verticalLayoutAdmin.add(_vista_busqueda_productos_categorias);
+			    	}
+			    	
+				}
+			});
+			
+			scrollableLayout.add(cat);
 		}
 		// Give the layout a defined height that fits the parent layout
 		scrollableLayout.setHeight("100%");
@@ -84,6 +153,33 @@ public class Categorias extends VistaCategorias {
 		    dialog.close();
 		}, Key.ESCAPE);
 		
+		MemoryBuffer buffer = new MemoryBuffer();
+		Upload upload = new Upload(buffer);
+		upload.setAcceptedFileTypes("image/jpeg", "image/png", "image/gif");
+
+		Div output = new Div();
+		output.setWidth("320px");
+		output.setHeight("320px");
+
+		upload.addSucceededListener(event -> {
+			Component component = createComponent(event.getMIMEType(), event.getFileName(), buffer.getInputStream());
+			File targetFile = new File("src/main/resources/targetFile.tmp");
+
+			try {
+				FileUtils.copyInputStreamToFile(buffer.getInputStream(), targetFile);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			fotoCategoria = Uploader.upload(targetFile);
+			System.out.println(fotoCategoria);
+			System.out.println("index of title  " + fotoCategoria.indexOf("title"));
+			System.out.println("https://i.imgur.com/" + fotoCategoria.subSequence(15, 22) + ".jpg");
+			fotoCategoria = "https://i.imgur.com/" + fotoCategoria.subSequence(15, 22) + ".jpg";
+			output.removeAll();
+			showOutput(event.getFileName(), component, output);
+		});
+		
 		guardar.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
 
 			@Override
@@ -93,7 +189,10 @@ public class Categorias extends VistaCategorias {
 				basededatos.Categoria aCategoria = new basededatos.Categoria();
 				aCategoria.setNombreCategoria(nombreCategoria.getValue());
 				aCategoria.setDescripcion(descripcion.getValue());
+				aCategoria.setImagen(fotoCategoria);
 				int result = adm.guardarCategoria(aCategoria);
+				scrollableLayout.add(new Categoria(aCategoria));
+
 				if(result != -1) {
 					Notification notification =  Notification.show(
 					        "La categoría ha sido creada correctamente", 3000,
@@ -109,7 +208,7 @@ public class Categorias extends VistaCategorias {
 			}
 			
 		});
-		VerticalLayout dialogVertical = new VerticalLayout(nombreCategoria, descripcion);
+		VerticalLayout dialogVertical = new VerticalLayout(nombreCategoria, descripcion, upload, output);
 		HorizontalLayout dialogButtons = new HorizontalLayout(guardar, cancelButton);
 		dialogHorizontal.getStyle().set("margin", "20px").set("width", "100%");
 		dialogVertical.getStyle().set("margin", "20px").set("width", "100%");
@@ -162,6 +261,62 @@ public class Categorias extends VistaCategorias {
 		this.getHorizontalLayout().add(primeraLinea, scrollableLayout);
 		this.getHorizontalLayout().getStyle().set("border", "2px solid blue").set("border-radius", "25px");
 
+	}
+	
+	private Component createComponent(String mimeType, String fileName, InputStream stream) {
+		if (mimeType.startsWith("text")) {
+			return createTextComponent(stream);
+		} else if (mimeType.startsWith("image")) {
+			Image image = new Image();
+			try {
+
+				byte[] bytes = IOUtils.toByteArray(stream);
+				image.getElement().setAttribute("src",
+						new StreamResource(fileName, () -> new ByteArrayInputStream(bytes)));
+				try (ImageInputStream in = ImageIO.createImageInputStream(new ByteArrayInputStream(bytes))) {
+					final Iterator<ImageReader> readers = ImageIO.getImageReaders(in);
+					if (readers.hasNext()) {
+						ImageReader reader = readers.next();
+						try {
+							reader.setInput(in);
+							image.setWidth(reader.getWidth(0) + "px");
+							image.setHeight(reader.getHeight(0) + "px");
+						} finally {
+							reader.dispose();
+						}
+					}
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			image.setSizeFull();
+			return image;
+		}
+		Div content = new Div();
+		String text = String.format("Mime type: '%s'\nSHA-256 hash: '%s'", mimeType,
+				MessageDigestUtil.sha256(stream.toString()));
+		content.setText(text);
+		return content;
+
+	}
+
+	private Component createTextComponent(InputStream stream) {
+		String text;
+		try {
+			text = IOUtils.toString(stream, StandardCharsets.UTF_8);
+		} catch (IOException e) {
+			text = "exception reading stream";
+		}
+		return new Text(text);
+	}
+
+	private void showOutput(String text, Component content, HasComponents outputContainer) {
+		HtmlComponent p = new HtmlComponent(Tag.P);
+		p.setHeight("320px");
+		p.setWidth("320px");
+		p.getElement().setText(text);
+		outputContainer.add(p);
+		outputContainer.add(content);
 	}
 
 }

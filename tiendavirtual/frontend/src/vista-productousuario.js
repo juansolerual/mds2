@@ -28,6 +28,9 @@ class VistaProductousuario extends PolymerElement {
   <vaadin-text-field id="precio" placeholder="0.00€" style="align-self: flex-start; margin: var(--lumo-space-m);" label="Precio:">
     Label 
   </vaadin-text-field>
+  <vaadin-text-field id="precioRebajado" placeholder="0.00€" style="align-self: flex-start; margin: var(--lumo-space-m);" label="Precio rebajado:">
+    Label 
+  </vaadin-text-field>
  </vaadin-horizontal-layout>
  <vaadin-horizontal-layout class="content" id="principal" theme="spacing" style="margin: var(--lumo-space-m);">
   <vaadin-horizontal-layout theme="spacing" id="fotos">
@@ -51,10 +54,12 @@ class VistaProductousuario extends PolymerElement {
     </vaadin-button>
    </vaadin-horizontal-layout>
   </vaadin-vertical-layout>
-  <vaadin-combo-box label"Cantidad" id="cantidad">
-   </vaadin-combo-box>
+  <vaadin-combo-box label"cantidad" id="cantidad"></vaadin-combo-box>
   <vaadin-button id="addCarritoButton">
     Agregar al carrito 
+  </vaadin-button>
+  <vaadin-button id="volver">
+    Volver 
   </vaadin-button>
  </vaadin-horizontal-layout>
  <vaadin-horizontal-layout theme="spacing" id="descripcion" style="width:100%; margin: var(--lumo-space-m);">

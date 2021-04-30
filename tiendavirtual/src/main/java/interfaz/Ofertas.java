@@ -1,11 +1,16 @@
 package interfaz;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Vector;
 
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
+import basededatos.BDPrincipal;
+import basededatos.iAdmin;
 import interfaz.Oferta;
 import vistas.VistaOfertas;
 
@@ -15,8 +20,20 @@ public class Ofertas extends VistaOfertas{
 	
 	public Ofertas() {
 		HorizontalLayout scrollableLayout = new HorizontalLayout();
-	    for(int i = 0; i< 50; i++){
-	      scrollableLayout.add(new Oferta());
+		iAdmin adm = new BDPrincipal();
+
+		List<basededatos.Oferta> ofertas = adm.cargarOfertas();
+		for (basededatos.Oferta oferta : ofertas) {
+			java.util.Date date = oferta.getFechaCaducidadOferta();
+			java.util.Date datenow = new java.util.Date();
+			int resultado = datenow.compareTo(date);
+			System.out.println(resultado);
+			if (oferta.getActivada() && resultado == -1 ) {
+				Oferta ofer = new Oferta(oferta);
+			    scrollableLayout.add(ofer);
+			}
+			
+			
 	    }
 	    // Give the layout a defined height that fits the parent layout
 	    scrollableLayout.setHeight("100%");

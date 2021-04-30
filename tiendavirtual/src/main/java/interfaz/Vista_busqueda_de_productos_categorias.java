@@ -111,6 +111,87 @@ public class Vista_busqueda_de_productos_categorias extends VistaBusqueda {
 
 	}
 
+	public Vista_busqueda_de_productos_categorias(basededatos.Categoria cat) {
+		super();
+		iUsuario_registrado usuario = new BDPrincipal();
+		List<Producto> productos = usuario.cargarProductos();
+		VerticalLayout scrollableLayout = new VerticalLayout();
+		scrollableLayout.setId("verticalLayout_productos");
+		
+		for (Producto producto : productos) {
+			if (producto.getPertenece_a().getNombreCategoria().equals(cat.getNombreCategoria())) {
+				System.out.println("Producto ");
+				System.out.println("Producto " + producto.getNombreProducto() + " y categoria " + producto.getPertenece_a().getNombreCategoria());
+				System.out.println("Categoria buscada " + cat.getNombreCategoria());	
+			    scrollableLayout.add(new Producto_busqueda(false, producto));
+			}
+			
+		}
+		
+		VaadinSession session = VaadinSession.getCurrent();
+		try {
+			System.out.println(session.getAttribute("username").toString());
+			
+			
+					/*
+			 * VerticalLayout mainView = (VerticalLayout) session.getAttribute("MainView");
+			 * Usuario_no_identificado user = (Usuario_no_identificado)
+			 * session.getAttribute("usuarioNoIdentificado"); mainView.remove(user);
+			 */
+			
+		} catch(Exception e) {
+			// no username is session
+			System.out.println(e);
+		}
+        
+
+		
+		barraIzquierda = this.getBarraIzquierda().as(VerticalLayout.class);
+		barraDerecha = this.getBarraDerecha().as(VerticalLayout.class);
+		barraDerecha.getStyle().set("width", "85%");
+		barraIzquierda.getStyle().set("width", "15%");
+
+		
+		
+		
+	    
+	    scrollableLayout.setHeight("100%");
+	    scrollableLayout.setWidth("100%");
+	    // Set overflow on the y-axis to "auto".
+	    // It can be also "scroll", but then you 
+	    // have a scroll bar even when one isn't needed.
+	    scrollableLayout.getStyle().set("overflow-y", "auto");
+	    // Another element to show that it stays in the same place
+	    Div staticElement = new Div();
+	    staticElement.getStyle().set("margin", "20px");
+	    staticElement.add(new Text("Productos de la categoria " + cat.getNombreCategoria()));
+	    // Add both the scrollable layout and 
+	    // the static element to the layout
+	    barraDerecha.add(staticElement, scrollableLayout);
+	    barraDerecha.getStyle().set("border","1px solid blue");
+	    
+	    filtrar_por_categoria = new Button("Filtrar por categoria");
+	    filtrar_por_precio = new Button("Filtrar por precio");
+	    filtrar_por_marca = new Button("Filtrar por marca");
+	    
+	    
+	    
+	    barraIzquierda.setHeight("100%");
+	    // Set overflow on the y-axis to "auto".
+	    // It can be also "scroll", but then you 
+	    // have a scroll bar even when one isn't needed.
+	    barraIzquierda.getStyle().set("overflow-y", "auto");
+	    // Another element to show that it stays in the same place
+	   
+	    // Add both the scrollable layout and 
+	    // the static element to the layout
+	    barraIzquierda.getStyle().set("border","1px solid blue");
+	    barraIzquierda.add(filtrar_por_precio, filtrar_por_marca);
+
+	    
+		
+
+	}
 	public void Filtrar_por_precio() {
 		throw new UnsupportedOperationException();
 	}

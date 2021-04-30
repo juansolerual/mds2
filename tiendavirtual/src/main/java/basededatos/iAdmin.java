@@ -20,7 +20,7 @@ public interface iAdmin {
 
 	public Mensaje abrirMensaje(int aIdMensaje);
 
-	public Administrador[] cargarAdministradores();
+	public List<Administrador> cargarAdministradores();
 
 	public boolean eliminarAdministrador(int aIdAdministrador);
 
@@ -50,7 +50,7 @@ public interface iAdmin {
 
 	public int guardarCategoria(Categoria aCategoria);
 
-	public Transportista[] cargarTransportistas();
+	public List<Transportista> cargarTransportistas();
 
 	public boolean eliminarTransportista(int aIdTransportista);
 
@@ -60,9 +60,21 @@ public interface iAdmin {
 
 	public Encargado_compras cargarEncargadoCompras(int aIdEncargado);
 
-	public Encargado_compras[] cargarEncargadosCompras();
+	public List<Encargado_compras> cargarEncargadosCompras();
 
 	public boolean crearTransportista(Transportista aTransportista);
 
 	public boolean crearEncargadoCompras(Encargado_compras aEncargadoCompras);
+
+	public int editarProducto(Producto producto);
+
+	public int guardarFoto(Foto foto1);
+
+	public int editarFoto(Foto fotobis);
+
+	public boolean eliminarFoto(Foto foto1);
+
+	public List<Foto> cargarFotos(int id);
+
+	public List<Cliente> cargarClientes();
 }

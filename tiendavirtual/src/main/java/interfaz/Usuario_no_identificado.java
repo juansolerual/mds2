@@ -44,12 +44,15 @@ public class Usuario_no_identificado extends VistaUsuarionoidentificado{
 		_visualizar_Pantalla_Usuario_no_registrado = new Visualizar_Pantalla_Usuario_no_registrado(vlayout);
 		
 		vlayout = this.getVerticalLayout().as(VerticalLayout.class);
+		
+		
 		vlayout.add(_cabecera_usuario_no_registrado);
 		vlayout.add(_visualizar_Pantalla_Usuario_no_registrado);
 
 		VaadinSession session = VaadinSession.getCurrent();
 
     	session.setAttribute("verticalLayoutUsuarioNoIdentificado", vlayout);
+    	session.setAttribute("Visualizar_Pantalla_Usuario_no_registrado", _visualizar_Pantalla_Usuario_no_registrado);
 
 		_cabecera_usuario_no_registrado.getIniciarSesionButton().addClickListener(new ComponentEventListener() {
 			@Override

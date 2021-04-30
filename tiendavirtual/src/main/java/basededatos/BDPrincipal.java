@@ -26,6 +26,7 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 	public BD_Administrador _bD_Administrador = new BD_Administrador();
 	public BD_EncargadoCompras _bD_EncargadoCompras = new BD_EncargadoCompras();
 	public BD_Mensaje _bD_Mensaje = new BD_Mensaje();
+	public BD_Foto _bD_Foto = new BD_Foto();
 
 
 	public Usuario_no_identificado get_Usuario_no_identificado() {
@@ -115,8 +116,15 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 	}
 	
 
-	public Producto cargarProducto(int aIdProducto) {
-		throw new UnsupportedOperationException();
+	public Producto cargarProducto(int idProducto) {
+		Producto producto = null;
+		try {
+			producto = _bD_Producto.cargarProducto(idProducto);
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return producto;	
 	}
 
 	public List<Producto> cargarProductos() {
@@ -210,7 +218,7 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 		throw new UnsupportedOperationException();
 	}
 
-	public Administrador[] cargarAdministradores() {
+	public List<Administrador> cargarAdministradores() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -292,7 +300,7 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 		return Id_categoria;
 	}
 
-	public Transportista[] cargarTransportistas() {
+	public List<Transportista> cargarTransportistas() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -312,7 +320,7 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 		throw new UnsupportedOperationException();
 	}
 
-	public Encargado_compras[] cargarEncargadosCompras() {
+	public List<Encargado_compras> cargarEncargadosCompras() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -333,6 +341,80 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 			e.printStackTrace();
 		}
 		return cls;	
+	}
+
+	@Override
+	public int editarProducto(Producto producto) {
+		// TODO Auto-generated method stub
+		int resultado = -1;
+		try {
+			resultado = _bD_Producto.editarProducto(producto);
+			
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultado;
+	}
+
+	@Override
+	public int guardarFoto(Foto foto1) {
+		System.out.println("BDPRINCIPAL guardarFoto");
+		int resultado = -1;
+		try {
+			resultado = _bD_Foto.guardarFoto(foto1);
+			
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultado;
+	}
+
+	@Override
+	public int editarFoto(Foto fotobis) {
+		System.out.println("BDPRINCIPAL editarFoto");
+		int resultado = -1;
+		try {
+			resultado = _bD_Foto.editarFoto(fotobis);
+			
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultado;
+	}
+
+	@Override
+	public boolean eliminarFoto(Foto foto) {
+		System.out.println("BDPRINCIPAL eliminarFoto");
+		boolean resultado = false;
+		try {
+			resultado = _bD_Foto.eliminarFoto(foto);
+			
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultado;
+	}
+
+	@Override
+	public List<Foto> cargarFotos(int idProducto) {
+		List<Foto> fotos = null;
+		try {
+			fotos = _bD_Foto.cargarFotos(idProducto);
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return fotos;	
+	}
+
+	@Override
+	public List<Cliente> cargarClientes() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

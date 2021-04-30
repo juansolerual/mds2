@@ -16,6 +16,7 @@ public class Producto_usuario extends VistaProductolista{
 	private event _anadir_al_carrito;
 	public Productos_Usuario _productos_Usuario;
 	public Button anadirCarrito;
+	public Button verDescripcion;
 	public Button editarProducto;
 	public Text precio;
 	public Text nombreProducto;
@@ -79,16 +80,7 @@ public class Producto_usuario extends VistaProductolista{
 	      .set("background", "url(https://picsum.photos/200)")
 	      .set("cursor", "pointer");
 	    
-	    avatar.addClickListener(new ComponentEventListener<ClickEvent<Div>>() {
-			
-			@Override
-			public void onComponentEvent(ClickEvent<Div> event) {
-				// TODO Auto-generated method stub
-				System.out.println("click product");
-				
-				
-			}
-		});
+	   
 	    
 	    
 	    //Image img = new Image();
@@ -116,7 +108,7 @@ public class Producto_usuario extends VistaProductolista{
 		    vl.add(anadirCarrito);
 	    }
 	    
-	    Button verDescripcion = new Button("Ver descripción");
+	    verDescripcion = new Button("Ver descripción");
 	    vl.add(verDescripcion);
 	    //HorizontalLayout hl = new HorizontalLayout(avatar, vl);
 	    this.getVaadinHorizontalLayout().add(vlav,vl);

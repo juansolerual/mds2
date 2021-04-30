@@ -10,8 +10,10 @@ import vistas.VistaOferta;
 
 public class Oferta extends VistaOferta{
 	public Ofertas _ofertas;
+	public Div avatar;
+	public  Div name;
 
-	public Oferta() {
+	public Oferta(basededatos.Oferta oferta) {
 		super();
 		System.out.println("Oferta creada");
 		Div avatar = new Div();
@@ -20,17 +22,14 @@ public class Oferta extends VistaOferta{
 	    avatar.getStyle()
 	      .set("background-color", "gray")
 	      .set("border-radius", "12px")
-	      .set("margin", "16px");
+	      .set("margin", "16px")
+	     // .set("background", "url("+oferta.getImagen()+")")
+	      .set("cursor", "pointer");
+	    
 	    Div name = new Div();
-	    name.add(new Text("Nombre oferta"));
+	    name.add(new Text(oferta.getNombreOferta()));
 	    name.getStyle().set("color", "blue");
-	    Text title = new Text("Ninja coder");
-	    //VerticalLayout vl = new VerticalLayout(avatar, name);
-	    //Button anadirCarrito = new Button("Añadir Carrito");
-	    //vl.add(anadirCarrito);
-	    //Button verDescripcion = new Button("Ver descripción");
-	    //vl.add(verDescripcion);
-	    //HorizontalLayout hl = new HorizontalLayout(vl);
+	 
 	    this.getVerticalLayout().add(avatar,name);
 
 	    this.getVerticalLayout().setSpacing(false);

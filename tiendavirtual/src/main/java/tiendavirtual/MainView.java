@@ -18,6 +18,9 @@ import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.server.VaadinSession;
 
 import basededatos.Categoria;
+import basededatos.Cliente;
+import basededatos.Usuario;
+import basededatos.Administrador;
 import basededatos.BDPrincipal;
 import basededatos.iAdmin;
 import interfaz.Admin;
@@ -27,6 +30,8 @@ import interfaz.Producto_usuario;
 import interfaz.Productos_Usuario;
 import interfaz.Usuario_no_identificado;
 import interfaz.Usuario_registrado;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -66,7 +71,8 @@ public class MainView extends VerticalLayout {
 	VaadinSession session;
 	
 	Iniciar_sesion _iniciar_sesion = new Iniciar_sesion();
-	
+    iAdmin adm = new BDPrincipal();
+
 	
 	
     public MainView (@Autowired GreetService service) {
@@ -80,6 +86,7 @@ public class MainView extends VerticalLayout {
     	session.setAttribute("username", "No_user");
         session.setAttribute("MainView", this);
         session.setAttribute("usuarioNoIdentificado", usuarioNoIdentificado);
+        
 
         login();
         
@@ -91,22 +98,58 @@ public class MainView extends VerticalLayout {
         	
         	//cbn.layout.remove(cbn.lg);
         	//cbn.layout.add(cbn.ccbn);
+    		basededatos.Transportista transportista = null;
+    		Administrador administrador = null;
+    		Cliente cliente = null;
+        	basededatos.Encargado_compras encargadoCompras = null;
         	
-        	
-    		    
+    		List<Administrador> administradores = adm.cargarAdministradores();
+    		List<Cliente> clientes = adm.cargarClientes();
+    		List<basededatos.Encargado_compras> encargadosCompras = adm.cargarEncargadosCompras();
+    		List<basededatos.Transportista> transportistas = adm.cargarTransportistas();
+    		
+    		for (basededatos.Transportista trans : transportistas) {
+				if (trans.getEmail().equals(e.getUsername())) {
+					transportista = trans;
+				}
+			}
+    		
+    		for (basededatos.Encargado_compras encargado : encargadosCompras) {
+				if (encargado.getEmail().equals(e.getUsername())) {
+					encargadoCompras = encargado;
+				}
+			}
+    		
+    		for (basededatos.Cliente client : clientes) {
+				if (client.getEmail().equals(e.getUsername())) {
+					cliente = client;
+				}
+			}
+    		
+    		for (basededatos.Administrador adminis : administradores) {
+				if (adminis.getEmail().equals(e.getUsername())) {
+					if (adminis.getPassword().equals(e.getPassword())) {
+						administrador = adminis;
+						session.setAttribute("username", "admin");
+						session.setAttribute("admin", administrador);
 
+		    	    	Admin admin = new Admin();
+		    	    	remove(usuarioNoIdentificado);
+		    	    	add(admin);
+		    	    	
+		    	    	System.out.println("admin");
+					}
+					
+				}
+			}
+    		
+    		
     	    if (e.getUsername().equals("admin")) {
     	    	
     	    	//Administrador ad = new Administrador();
     	    	//remove(cbn);
     	    	//add(ad);
-    	    	session.setAttribute("username", "admin");
-
-    	    	Admin admin = new Admin();
-    	    	remove(usuarioNoIdentificado);
-    	    	add(admin);
-    	    	
-    	    	System.out.println("admin");
+    	    
     	    		
     	    	
     	    	/*ad.ccbn.getSalir().setVisible(true);
@@ -126,6 +169,9 @@ public class MainView extends VerticalLayout {
     	    	
     	    }
     	    else if (e.getUsername().equals("usuario")) {
+    	    	
+    	    	
+    	    	
     	    	
     	    	usuarioRegistrado = new Usuario_registrado();
     	    	

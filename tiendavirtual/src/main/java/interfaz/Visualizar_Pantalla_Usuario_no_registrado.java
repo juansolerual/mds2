@@ -11,12 +11,10 @@ public class Visualizar_Pantalla_Usuario_no_registrado extends Visualizar_Pantal
 
 	public Visualizar_Pantalla_Usuario_no_registrado(VerticalLayout vlayout) {
 		super();
-		_productos_Usuario = new Productos_Usuario(horizontalLayout, verticalLayout, vlayout, this);
+		_productos_Usuario = new Productos_Usuario("Visualizar_Pantalla_Usuario_no_registrado");
 		horizontalLayout.addComponentAsFirst(_productos_Usuario);
 		
-		VaadinSession session = VaadinSession.getCurrent();
-
-    	session.setAttribute("Visualizar_Pantalla_Usuario_no_registrado", this);
+		
 
         
 

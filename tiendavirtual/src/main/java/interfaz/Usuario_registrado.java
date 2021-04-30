@@ -6,6 +6,7 @@ import com.vaadin.flow.component.KeyPressEvent;
 import com.vaadin.flow.component.KeyUpEvent;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.server.VaadinSession;
 
 import vistas.VistaUsuarioregistrado;
 
@@ -29,6 +30,11 @@ public class Usuario_registrado extends VistaUsuarioregistrado{
 		vlayout = this.getVerticalLayout().as(VerticalLayout.class);
 		vlayout.add(_cabecera_usuario_registrado);
 		vlayout.add(_visualizar_Pantalla_Principal_Usuario_Registrado);
+		
+		VaadinSession session = VaadinSession.getCurrent();
+
+    	session.setAttribute("verticalLayoutUsuarioIdentificado", vlayout);
+    	session.setAttribute("Visualizar_Pantalla_Principal_Usuario_Registrado", _visualizar_Pantalla_Principal_Usuario_Registrado);
 		
 		_cabecera_usuario_registrado.getBusquedaText().addKeyUpListener(new ComponentEventListener<KeyUpEvent>() {
 			

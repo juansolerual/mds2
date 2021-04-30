@@ -8,7 +8,7 @@ public class Visualizar_Pantalla_Principal_Usuario_Registrado extends Visualizar
 
 	public Visualizar_Pantalla_Principal_Usuario_Registrado(VerticalLayout vlayout) {
 		super();
-		_productos_Usuario = new Productos_Usuario(horizontalLayout, verticalLayout, vlayout, this);
+		_productos_Usuario = new Productos_Usuario("Visualizar_Pantalla_Principal_Usuario_Registrado");
 		
 		
 		horizontalLayout.addComponentAsFirst(_productos_Usuario);

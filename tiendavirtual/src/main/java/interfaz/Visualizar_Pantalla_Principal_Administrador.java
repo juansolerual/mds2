@@ -17,7 +17,7 @@ public class Visualizar_Pantalla_Principal_Administrador extends Visualizar_Pant
 		super();
 		VaadinSession session = VaadinSession.getCurrent();
 
-		_productos_administrador = new Productos_Administrador(horizontalLayout, verticalLayout, vlayout, this);
+		_productos_administrador = new Productos_Administrador();
 
 		this.horizontalLayout.removeAll();
 		
