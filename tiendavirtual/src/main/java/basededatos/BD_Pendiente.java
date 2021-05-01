@@ -1,6 +1,7 @@
 package basededatos;
 
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import org.orm.PersistentException;
@@ -30,6 +31,9 @@ public class BD_Pendiente {
 		boolean resultado = false;
 		PersistentTransaction t = TiendavirtualPersistentManager.instance().getSession().beginTransaction();
 		try {
+			
+			
+			
 			Pendiente pend = PendienteDAO.getPendienteByORMID(aIdPedido);
 			System.out.println("Pendiente cargado " + pend.getHoraPedido());
 			Enviado env = EnviadoDAO.createEnviado();
@@ -38,6 +42,16 @@ public class BD_Pendiente {
 			env.setMarcado_por(pend.getMarcado_por());
 			env.setPagado(pend.getPagado());
 			env.setRealizado_por(pend.getRealizado_por());
+			//pend.tiene.clear();
+			Set set =  pend.tiene.getCollection();
+			for (Object object : set) {
+				Lineas_de_Pedido ldp = (Lineas_de_Pedido) object;
+				ldp.setPertenecen_a(env);
+				
+			}
+			
+			pend.setMarcado_por(null);
+			pend.setRealizado_por(null);
 			PendienteDAO.delete(pend);
 			
 			resultado = EnviadoDAO.save(env);
@@ -67,13 +81,13 @@ public class BD_Pendiente {
 		try {
 
 			
-//			Pedido pedido = PedidoDAO.createPedido();
-//			pedido.
-//			pedido.setFechaPedido(aPedidoPendiente.getFechaPedido());
-//			pedido.setHoraPedido(aPedidoPendiente.getHoraPedido());
-//			pedido.setPagado(aPedidoPendiente.getPagado());
-//			pedido.setRealizado_por(aPedidoPendiente.getRealizado_por());
-			
+//			Pendiente pendiente = PendienteDAO.createPendiente();
+//			//pendiente. =  aPedidoPendiente.tiene;
+//			pendiente.setFechaPedido(aPedidoPendiente.getFechaPedido());
+//			pendiente.setHoraPedido(aPedidoPendiente.getHoraPedido());
+//			pendiente.setPagado(aPedidoPendiente.getPagado());
+//			pendiente.setRealizado_por(aPedidoPendiente.getRealizado_por());
+//			
 			
 			resultado = PendienteDAO.save(aPedidoPendiente);
 			
