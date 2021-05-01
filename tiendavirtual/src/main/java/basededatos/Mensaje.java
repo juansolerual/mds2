@@ -88,7 +88,7 @@ public class Mensaje implements Serializable {
 	
 	@OneToMany(mappedBy="original", targetEntity=basededatos.Mensaje.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)	
 	private java.util.Set ORM_respuesta = new java.util.HashSet();
 	
 	private void setID(int value) {

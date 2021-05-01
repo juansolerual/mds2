@@ -4,6 +4,8 @@ import com.vaadin.flow.templatemodel.TemplateModel;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
+import com.vaadin.flow.dom.Element;
+import com.vaadin.flow.component.polymertemplate.Id;
 
 /**
  * A Designer generated component for the vista-encargadodecompras template.
@@ -15,7 +17,18 @@ import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 @JsModule("./src/vista-encargadodecompras.js")
 public class VistaEncargadodecompras extends PolymerTemplate<VistaEncargadodecompras.VistaEncargadodecomprasModel> {
 
-    /**
+    public Element getVerticalLayoutEncargado() {
+		return verticalLayoutEncargado;
+	}
+
+	public void setVerticalLayoutEncargado(Element verticalLayoutEncargado) {
+		this.verticalLayoutEncargado = verticalLayoutEncargado;
+	}
+
+	@Id("verticalLayoutEncargado")
+	private Element verticalLayoutEncargado;
+
+	/**
      * Creates a new VistaEncargadodecompras.
      */
     public VistaEncargadodecompras() {

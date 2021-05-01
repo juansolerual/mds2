@@ -8,7 +8,7 @@ public interface iUsuario_no_identificado {
 
 	public boolean nuevo_usuario();
 
-	public Lineas_de_Pedido[] cargarCarrito();
+	public List<Lineas_de_Pedido> cargarCarrito(int numeroPedido);
 
 	public boolean Eliminar_Producto_del_carrito(int aIdLineaDePedido);
 

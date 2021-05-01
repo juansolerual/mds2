@@ -25,6 +25,7 @@ public class OfertaCriteria extends AbstractORMCriteria {
 	public final BooleanExpression activada;
 	public final StringExpression nombreOferta;
 	public final BooleanExpression porcentajeOferta;
+	public final StringExpression urlImagen;
 	public final CollectionExpression contiene;
 	
 	public OfertaCriteria(Criteria criteria) {
@@ -35,6 +36,7 @@ public class OfertaCriteria extends AbstractORMCriteria {
 		activada = new BooleanExpression("activada", this);
 		nombreOferta = new StringExpression("nombreOferta", this);
 		porcentajeOferta = new BooleanExpression("porcentajeOferta", this);
+		urlImagen = new StringExpression("urlImagen", this);
 		contiene = new CollectionExpression("ORM_contiene", this);
 	}
 	

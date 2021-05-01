@@ -22,13 +22,13 @@ public class CreateTiendavirtualData {
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : crea, marca_como_enviado
 			basededatos.Encargado_comprasDAO.save(lbasededatosEncargado_compras);
 			basededatos.Pedido lbasededatosPedido = basededatos.PedidoDAO.createPedido();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : tiene, pagado, marcado_por
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : tiene, pagado, marcado_por, realizado_por
 			basededatos.PedidoDAO.save(lbasededatosPedido);
 			basededatos.Oferta lbasededatosOferta = basededatos.OfertaDAO.createOferta();
 			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : contiene, porcentajeOferta, activada, precioOferta
 			basededatos.OfertaDAO.save(lbasededatosOferta);
 			basededatos.Cliente lbasededatosCliente = basededatos.ClienteDAO.createCliente();
-			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : realiza
+			// TODO Initialize the properties of the persistent object here, the following properties must be initialized before saving : realiza_pedido, realiza
 			basededatos.ClienteDAO.save(lbasededatosCliente);
 			basededatos.Administrador lbasededatosAdministrador = basededatos.AdministradorDAO.createAdministrador();
 			// Initialize the properties of the persistent object here

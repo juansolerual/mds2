@@ -28,9 +28,8 @@ public class ClienteDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final StringExpression foto_perfil;
 	public final StringExpression password;
 	public final CollectionExpression gestiona;
-	public final IntegerExpression realiza_Id;
-	public final AssociationExpression realiza_;
 	public final CollectionExpression realiza;
+	public final CollectionExpression realiza_pedido;
 	
 	public ClienteDetachedCriteria() {
 		super(basededatos.Cliente.class, basededatos.ClienteCriteria.class);
@@ -43,9 +42,8 @@ public class ClienteDetachedCriteria extends AbstractORMDetachedCriteria {
 		foto_perfil = new StringExpression("foto_perfil", this.getDetachedCriteria());
 		password = new StringExpression("password", this.getDetachedCriteria());
 		gestiona = new CollectionExpression("ORM_gestiona", this.getDetachedCriteria());
-		realiza_Id = new IntegerExpression("realiza_.ID", this.getDetachedCriteria());
-		realiza_ = new AssociationExpression("realiza_", this.getDetachedCriteria());
 		realiza = new CollectionExpression("ORM_realiza", this.getDetachedCriteria());
+		realiza_pedido = new CollectionExpression("ORM_realiza_pedido", this.getDetachedCriteria());
 	}
 	
 	public ClienteDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -59,17 +57,16 @@ public class ClienteDetachedCriteria extends AbstractORMDetachedCriteria {
 		foto_perfil = new StringExpression("foto_perfil", this.getDetachedCriteria());
 		password = new StringExpression("password", this.getDetachedCriteria());
 		gestiona = new CollectionExpression("ORM_gestiona", this.getDetachedCriteria());
-		realiza_Id = new IntegerExpression("realiza_.ID", this.getDetachedCriteria());
-		realiza_ = new AssociationExpression("realiza_", this.getDetachedCriteria());
 		realiza = new CollectionExpression("ORM_realiza", this.getDetachedCriteria());
-	}
-	
-	public PedidoDetachedCriteria createRealiza_Criteria() {
-		return new PedidoDetachedCriteria(createCriteria("realiza_"));
+		realiza_pedido = new CollectionExpression("ORM_realiza_pedido", this.getDetachedCriteria());
 	}
 	
 	public ValoracionDetachedCriteria createRealizaCriteria() {
 		return new ValoracionDetachedCriteria(createCriteria("ORM_realiza"));
+	}
+	
+	public PedidoDetachedCriteria createRealiza_pedidoCriteria() {
+		return new PedidoDetachedCriteria(createCriteria("ORM_realiza_pedido"));
 	}
 	
 	public MensajeDetachedCriteria createGestionaCriteria() {

@@ -335,6 +335,10 @@ public class PedidoDAO {
 		}
 		
 		try {
+			if (pedido.getRealizado_por() != null) {
+				pedido.getRealizado_por().realiza_pedido.remove(pedido);
+			}
+			
 			if (pedido.getMarcado_por() != null) {
 				pedido.getMarcado_por().marca_como_enviado.remove(pedido);
 			}
@@ -343,10 +347,6 @@ public class PedidoDAO {
 			for(int i = 0; i < lTienes.length; i++) {
 				lTienes[i].setPertenecen_a(null);
 			}
-			if (pedido.getRealizado_por() != null) {
-				pedido.getRealizado_por().setRealiza_(null);
-			}
-			
 			return delete(pedido);
 		}
 		catch(Exception e) {
@@ -369,6 +369,10 @@ public class PedidoDAO {
 		}
 		
 		try {
+			if (pedido.getRealizado_por() != null) {
+				pedido.getRealizado_por().realiza_pedido.remove(pedido);
+			}
+			
 			if (pedido.getMarcado_por() != null) {
 				pedido.getMarcado_por().marca_como_enviado.remove(pedido);
 			}
@@ -377,10 +381,6 @@ public class PedidoDAO {
 			for(int i = 0; i < lTienes.length; i++) {
 				lTienes[i].setPertenecen_a(null);
 			}
-			if (pedido.getRealizado_por() != null) {
-				pedido.getRealizado_por().setRealiza_(null);
-			}
-			
 			try {
 				session.delete(pedido);
 				return true;

@@ -22,7 +22,15 @@ import com.vaadin.flow.component.html.Div;
 @JsModule("./src/vista-cabecerausuario.js")
 public class VistaCabecerausuario extends PolymerTemplate<VistaCabecerausuario.VistaCabecerausuarioModel> {
 
-    @Id("vaadinVerticalLayout")
+    public Button getCarritoButton() {
+		return carritoButton;
+	}
+
+	public void setCarritoButton(Button carritoButton) {
+		this.carritoButton = carritoButton;
+	}
+
+	@Id("vaadinVerticalLayout")
 	private Element vaadinVerticalLayout;
 	@Id("horizontalIzq")
 	private HorizontalLayout horizontalIzq;
@@ -143,11 +151,15 @@ public class VistaCabecerausuario extends PolymerTemplate<VistaCabecerausuario.V
 	private Div divLogo;
 	@Id("horizontalTitulo")
 	private HorizontalLayout horizontalTitulo;
+	@Id("carritoButton")
+	private Button carritoButton;
 	/**
      * Creates a new VistaCabecerausuario.
      */
     public VistaCabecerausuario() {
         // You can initialise any data required for the connected UI components here.
+	    labelTitulo.getStyle().set("font-size", "2em").set("font-weight", "bold").set("text-decoration", "underline").set("color", "blue");
+
     }
 
     /**

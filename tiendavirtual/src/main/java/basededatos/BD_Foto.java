@@ -30,6 +30,7 @@ public class BD_Foto {
 		} catch (Exception e) {
 			t.rollback();
 		}
+		TiendavirtualPersistentManager.instance().disposePersistentManager();
 
 		return idFoto;
 	}
@@ -54,7 +55,8 @@ public class BD_Foto {
 					t.rollback();
 				}
 				
-				
+				TiendavirtualPersistentManager.instance().disposePersistentManager();
+
 				return resultado;
 	}
 
@@ -69,7 +71,8 @@ public class BD_Foto {
 			t.rollback();
 		}
 		
-		
+		TiendavirtualPersistentManager.instance().disposePersistentManager();
+
 		return resultado;
 	}
 
@@ -83,6 +86,7 @@ public class BD_Foto {
 		} catch (Exception e) {
 			t.rollback();
 		}
+		TiendavirtualPersistentManager.instance().disposePersistentManager();
 
 		return fotos;
 	}

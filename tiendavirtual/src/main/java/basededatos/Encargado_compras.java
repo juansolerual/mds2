@@ -45,12 +45,12 @@ public class Encargado_compras extends basededatos.Usuario implements Serializab
 	
 	@OneToMany(mappedBy="marcado_por", targetEntity=basededatos.Pedido.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)	
 	private java.util.Set ORM_marca_como_enviado = new java.util.HashSet();
 	
 	@OneToMany(mappedBy="creadoPor", targetEntity=basededatos.Anuncio.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)	
 	private java.util.Set ORM_crea = new java.util.HashSet();
 	
 	private void setORM_Marca_como_enviado(java.util.Set value) {

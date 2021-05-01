@@ -60,9 +60,12 @@ public class Oferta implements Serializable {
 	@Column(name="PorcentajeOferta", nullable=false, length=1)	
 	private boolean porcentajeOferta;
 	
+	@Column(name="UrlImagen", nullable=true, length=255)	
+	private String urlImagen;
+	
 	@OneToMany(mappedBy="aplica_oferta", targetEntity=basededatos.Producto.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)	
 	private java.util.Set ORM_contiene = new java.util.HashSet();
 	
 	private void setID(int value) {
@@ -115,6 +118,14 @@ public class Oferta implements Serializable {
 	
 	public boolean getPorcentajeOferta() {
 		return porcentajeOferta;
+	}
+	
+	public void setUrlImagen(String value) {
+		this.urlImagen = value;
+	}
+	
+	public String getUrlImagen() {
+		return urlImagen;
 	}
 	
 	private void setORM_Contiene(java.util.Set value) {

@@ -24,7 +24,7 @@ public class BD_Producto {
 		} catch (Exception e) {
 			t.rollback();
 		}
-
+		TiendavirtualPersistentManager.instance().disposePersistentManager();
 		return productos;
 	}
 
@@ -39,7 +39,7 @@ public class BD_Producto {
 		} catch (Exception e) {
 			t.rollback();
 		}
-
+		TiendavirtualPersistentManager.instance().disposePersistentManager();
 		return producto;
 	}
 
@@ -72,6 +72,7 @@ public class BD_Producto {
 		} catch (Exception e) {
 			t.rollback();
 		}
+		TiendavirtualPersistentManager.instance().disposePersistentManager();
 
 		return id_producto;
 	}
@@ -93,6 +94,7 @@ public class BD_Producto {
 		} catch (Exception e) {
 			t.rollback();
 		}
+		TiendavirtualPersistentManager.instance().disposePersistentManager();
 
 		return productos;
 	}
@@ -116,7 +118,8 @@ public class BD_Producto {
 		} catch (Exception e) {
 			t.rollback();
 		}
-		
+		TiendavirtualPersistentManager.instance().disposePersistentManager();
+
 		
 		return resultado;
 	}

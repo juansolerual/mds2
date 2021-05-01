@@ -323,6 +323,10 @@ public class EnviadoDAO {
 	
 	public static boolean deleteAndDissociate(basededatos.Enviado enviado)throws PersistentException {
 		try {
+			if (enviado.getRealizado_por() != null) {
+				enviado.getRealizado_por().realiza_pedido.remove(enviado);
+			}
+			
 			if (enviado.getMarcado_por() != null) {
 				enviado.getMarcado_por().marca_como_enviado.remove(enviado);
 			}
@@ -331,10 +335,6 @@ public class EnviadoDAO {
 			for(int i = 0; i < lTienes.length; i++) {
 				lTienes[i].setPertenecen_a(null);
 			}
-			if (enviado.getRealizado_por() != null) {
-				enviado.getRealizado_por().setRealiza_(null);
-			}
-			
 			return delete(enviado);
 		}
 		catch(Exception e) {
@@ -345,6 +345,10 @@ public class EnviadoDAO {
 	
 	public static boolean deleteAndDissociate(basededatos.Enviado enviado, org.orm.PersistentSession session)throws PersistentException {
 		try {
+			if (enviado.getRealizado_por() != null) {
+				enviado.getRealizado_por().realiza_pedido.remove(enviado);
+			}
+			
 			if (enviado.getMarcado_por() != null) {
 				enviado.getMarcado_por().marca_como_enviado.remove(enviado);
 			}
@@ -353,10 +357,6 @@ public class EnviadoDAO {
 			for(int i = 0; i < lTienes.length; i++) {
 				lTienes[i].setPertenecen_a(null);
 			}
-			if (enviado.getRealizado_por() != null) {
-				enviado.getRealizado_por().setRealiza_(null);
-			}
-			
 			try {
 				session.delete(enviado);
 				return true;

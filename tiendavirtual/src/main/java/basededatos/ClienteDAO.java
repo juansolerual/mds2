@@ -323,13 +323,13 @@ public class ClienteDAO {
 	
 	public static boolean deleteAndDissociate(basededatos.Cliente cliente)throws PersistentException {
 		try {
-			if (cliente.getRealiza_() != null) {
-				cliente.getRealiza_().setRealizado_por(null);
-			}
-			
 			basededatos.Valoracion[] lRealizas = cliente.realiza.toArray();
 			for(int i = 0; i < lRealizas.length; i++) {
 				lRealizas[i].setValorado_por(null);
+			}
+			basededatos.Pedido[] lRealiza_pedidos = cliente.realiza_pedido.toArray();
+			for(int i = 0; i < lRealiza_pedidos.length; i++) {
+				lRealiza_pedidos[i].setRealizado_por(null);
 			}
 			basededatos.Mensaje[] lGestionas = cliente.gestiona.toArray();
 			for(int i = 0; i < lGestionas.length; i++) {
@@ -345,13 +345,13 @@ public class ClienteDAO {
 	
 	public static boolean deleteAndDissociate(basededatos.Cliente cliente, org.orm.PersistentSession session)throws PersistentException {
 		try {
-			if (cliente.getRealiza_() != null) {
-				cliente.getRealiza_().setRealizado_por(null);
-			}
-			
 			basededatos.Valoracion[] lRealizas = cliente.realiza.toArray();
 			for(int i = 0; i < lRealizas.length; i++) {
 				lRealizas[i].setValorado_por(null);
+			}
+			basededatos.Pedido[] lRealiza_pedidos = cliente.realiza_pedido.toArray();
+			for(int i = 0; i < lRealiza_pedidos.length; i++) {
+				lRealiza_pedidos[i].setRealizado_por(null);
 			}
 			basededatos.Mensaje[] lGestionas = cliente.gestiona.toArray();
 			for(int i = 0; i < lGestionas.length; i++) {

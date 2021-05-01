@@ -20,7 +20,7 @@ public interface ORMConstants extends org.orm.util.ORMBaseConstants {
 	
 	final int KEY_CLIENTE_REALIZA = -1571373683;
 	
-	final int KEY_CLIENTE_REALIZA_ = -1467943822;
+	final int KEY_CLIENTE_REALIZA_PEDIDO = 207449655;
 	
 	final int KEY_ENCARGADO_COMPRAS_CREA = -1355249500;
 	

@@ -165,6 +165,7 @@
         <scope>provided</scope> 
         <!-- No required in JBoss but for test -->
     </dependency>
+    
     </dependencies>
 
     <build>

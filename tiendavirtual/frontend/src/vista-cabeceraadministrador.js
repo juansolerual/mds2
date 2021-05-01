@@ -84,8 +84,8 @@ class VistaCabeceraadministrador extends PolymerElement {
   <vaadin-text-field placeholder="Placeholder" style="width: 70%; margin: var(--lumo-space-m);" id="barraBusqueda">
    <iron-icon icon="lumo:search" slot="prefix"></iron-icon>
   </vaadin-text-field>
-  <vaadin-button style="margin: var(--lumo-space-m); align-self: center;" id="miCuentaButton">
-   Mi cuenta administrador
+  <vaadin-button style="margin: var(--lumo-space-m); align-self: center; width: 300px;" id="miCuentaButton">
+    Mi cuenta administrador 
   </vaadin-button>
  </vaadin-horizontal-layout>
  <vaadin-horizontal-layout theme="spacing" id="vaadinHorizontalLayout2" style="flex-grow: 1; align-self: center; justify-content: flex-end;">
@@ -93,7 +93,7 @@ class VistaCabeceraadministrador extends PolymerElement {
     Button 
   </vaadin-button>
   <vaadin-button id="cerrarSesion">
-   Cerrar sesión 
+    Cerrar sesión 
   </vaadin-button>
  </vaadin-horizontal-layout>
 </vaadin-vertical-layout>

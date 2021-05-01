@@ -323,6 +323,10 @@ public class PendienteDAO {
 	
 	public static boolean deleteAndDissociate(basededatos.Pendiente pendiente)throws PersistentException {
 		try {
+			if (pendiente.getRealizado_por() != null) {
+				pendiente.getRealizado_por().realiza_pedido.remove(pendiente);
+			}
+			
 			if (pendiente.getMarcado_por() != null) {
 				pendiente.getMarcado_por().marca_como_enviado.remove(pendiente);
 			}
@@ -331,10 +335,6 @@ public class PendienteDAO {
 			for(int i = 0; i < lTienes.length; i++) {
 				lTienes[i].setPertenecen_a(null);
 			}
-			if (pendiente.getRealizado_por() != null) {
-				pendiente.getRealizado_por().setRealiza_(null);
-			}
-			
 			return delete(pendiente);
 		}
 		catch(Exception e) {
@@ -345,6 +345,10 @@ public class PendienteDAO {
 	
 	public static boolean deleteAndDissociate(basededatos.Pendiente pendiente, org.orm.PersistentSession session)throws PersistentException {
 		try {
+			if (pendiente.getRealizado_por() != null) {
+				pendiente.getRealizado_por().realiza_pedido.remove(pendiente);
+			}
+			
 			if (pendiente.getMarcado_por() != null) {
 				pendiente.getMarcado_por().marca_como_enviado.remove(pendiente);
 			}
@@ -353,10 +357,6 @@ public class PendienteDAO {
 			for(int i = 0; i < lTienes.length; i++) {
 				lTienes[i].setPertenecen_a(null);
 			}
-			if (pendiente.getRealizado_por() != null) {
-				pendiente.getRealizado_por().setRealiza_(null);
-			}
-			
 			try {
 				session.delete(pendiente);
 				return true;

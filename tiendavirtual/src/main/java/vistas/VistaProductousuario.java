@@ -521,6 +521,7 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 					nuevoProducto.setPrecio(Double.parseDouble(precio.getValue()));
 					nuevoProducto.setAplica_oferta(oferta.getValue());
 					nuevoProducto.setPertenece_a(categoria.getValue());
+					nuevoProducto.setLimiteFotos(0);
 					int resultado = -1;
 					if (isEditarProducto) {
 						
@@ -533,6 +534,8 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 							productoEditado.setPrecio(Double.parseDouble(precio.getValue()));
 							productoEditado.setAplica_oferta(oferta.getValue());
 							productoEditado.setPertenece_a(categoria.getValue());
+							productoEditado.setLimiteFotos(0);
+
 							// ProductoDAO.save();
 
 							if (image1Editada) {

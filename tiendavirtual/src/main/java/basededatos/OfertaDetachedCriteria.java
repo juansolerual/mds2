@@ -25,6 +25,7 @@ public class OfertaDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final BooleanExpression activada;
 	public final StringExpression nombreOferta;
 	public final BooleanExpression porcentajeOferta;
+	public final StringExpression urlImagen;
 	public final CollectionExpression contiene;
 	
 	public OfertaDetachedCriteria() {
@@ -35,6 +36,7 @@ public class OfertaDetachedCriteria extends AbstractORMDetachedCriteria {
 		activada = new BooleanExpression("activada", this.getDetachedCriteria());
 		nombreOferta = new StringExpression("nombreOferta", this.getDetachedCriteria());
 		porcentajeOferta = new BooleanExpression("porcentajeOferta", this.getDetachedCriteria());
+		urlImagen = new StringExpression("urlImagen", this.getDetachedCriteria());
 		contiene = new CollectionExpression("ORM_contiene", this.getDetachedCriteria());
 	}
 	
@@ -46,6 +48,7 @@ public class OfertaDetachedCriteria extends AbstractORMDetachedCriteria {
 		activada = new BooleanExpression("activada", this.getDetachedCriteria());
 		nombreOferta = new StringExpression("nombreOferta", this.getDetachedCriteria());
 		porcentajeOferta = new BooleanExpression("porcentajeOferta", this.getDetachedCriteria());
+		urlImagen = new StringExpression("urlImagen", this.getDetachedCriteria());
 		contiene = new CollectionExpression("ORM_contiene", this.getDetachedCriteria());
 	}
 	

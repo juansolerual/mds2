@@ -28,6 +28,9 @@ public class Cliente extends basededatos.Usuario implements Serializable {
 		if (key == ORMConstants.KEY_CLIENTE_REALIZA) {
 			return ORM_realiza;
 		}
+		else if (key == ORMConstants.KEY_CLIENTE_REALIZA_PEDIDO) {
+			return ORM_realiza_pedido;
+		}
 		
 		return null;
 	}
@@ -40,33 +43,15 @@ public class Cliente extends basededatos.Usuario implements Serializable {
 		
 	};
 	
-	@OneToOne(targetEntity=basededatos.Pedido.class, fetch=FetchType.LAZY)	
-	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns(value={ @JoinColumn(name="PedidoID", referencedColumnName="ID") }, foreignKey=@ForeignKey(name="FKCliente404964"))	
-	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
-	private basededatos.Pedido realiza_;
-	
 	@OneToMany(mappedBy="valorado_por", targetEntity=basededatos.Valoracion.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)	
 	private java.util.Set ORM_realiza = new java.util.HashSet();
 	
-	public void setRealiza_(basededatos.Pedido value) {
-		if (this.realiza_ != value) {
-			basededatos.Pedido lrealiza_ = this.realiza_;
-			this.realiza_ = value;
-			if (value != null) {
-				realiza_.setRealizado_por(this);
-			}
-			if (lrealiza_ != null && lrealiza_.getRealizado_por() == this) {
-				lrealiza_.setRealizado_por(null);
-			}
-		}
-	}
-	
-	public basededatos.Pedido getRealiza_() {
-		return realiza_;
-	}
+	@OneToMany(mappedBy="realizado_por", targetEntity=basededatos.Pedido.class)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)	
+	private java.util.Set ORM_realiza_pedido = new java.util.HashSet();
 	
 	private void setORM_Realiza(java.util.Set value) {
 		this.ORM_realiza = value;
@@ -78,6 +63,17 @@ public class Cliente extends basededatos.Usuario implements Serializable {
 	
 	@Transient	
 	public final basededatos.ValoracionSetCollection realiza = new basededatos.ValoracionSetCollection(this, _ormAdapter, ORMConstants.KEY_CLIENTE_REALIZA, ORMConstants.KEY_VALORACION_VALORADO_POR, ORMConstants.KEY_MUL_ONE_TO_MANY);
+	
+	private void setORM_Realiza_pedido(java.util.Set value) {
+		this.ORM_realiza_pedido = value;
+	}
+	
+	private java.util.Set getORM_Realiza_pedido() {
+		return ORM_realiza_pedido;
+	}
+	
+	@Transient	
+	public final basededatos.PedidoSetCollection realiza_pedido = new basededatos.PedidoSetCollection(this, _ormAdapter, ORMConstants.KEY_CLIENTE_REALIZA_PEDIDO, ORMConstants.KEY_PEDIDO_REALIZADO_POR, ORMConstants.KEY_MUL_ONE_TO_MANY);
 	
 	public String toString() {
 		return super.toString();

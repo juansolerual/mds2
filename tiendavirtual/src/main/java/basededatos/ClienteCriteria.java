@@ -28,9 +28,8 @@ public class ClienteCriteria extends AbstractORMCriteria {
 	public final StringExpression foto_perfil;
 	public final StringExpression password;
 	public final CollectionExpression gestiona;
-	public final IntegerExpression realiza_Id;
-	public final AssociationExpression realiza_;
 	public final CollectionExpression realiza;
+	public final CollectionExpression realiza_pedido;
 	
 	public ClienteCriteria(Criteria criteria) {
 		super(criteria);
@@ -43,9 +42,8 @@ public class ClienteCriteria extends AbstractORMCriteria {
 		foto_perfil = new StringExpression("foto_perfil", this);
 		password = new StringExpression("password", this);
 		gestiona = new CollectionExpression("ORM_gestiona", this);
-		realiza_Id = new IntegerExpression("realiza_.ID", this);
-		realiza_ = new AssociationExpression("realiza_", this);
 		realiza = new CollectionExpression("ORM_realiza", this);
+		realiza_pedido = new CollectionExpression("ORM_realiza_pedido", this);
 	}
 	
 	public ClienteCriteria(PersistentSession session) {
@@ -56,12 +54,12 @@ public class ClienteCriteria extends AbstractORMCriteria {
 		this(TiendavirtualPersistentManager.instance().getSession());
 	}
 	
-	public PedidoCriteria createRealiza_Criteria() {
-		return new PedidoCriteria(createCriteria("realiza_"));
-	}
-	
 	public ValoracionCriteria createRealizaCriteria() {
 		return new ValoracionCriteria(createCriteria("ORM_realiza"));
+	}
+	
+	public PedidoCriteria createRealiza_pedidoCriteria() {
+		return new PedidoCriteria(createCriteria("ORM_realiza_pedido"));
 	}
 	
 	public MensajeCriteria createGestionaCriteria() {

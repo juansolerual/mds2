@@ -35,4 +35,6 @@ public interface iUsuario_registrado {
 	public Mensaje abrirMensaje(int aIdMensaje);
 
 	public List<Producto> cargarProductos(String string);
+	
+	public boolean realizarPedido(Pendiente aPedido);
 }

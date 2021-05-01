@@ -59,6 +59,12 @@ public class Pedido implements Serializable {
 	@org.hibernate.annotations.GenericGenerator(name="BASEDEDATOS_PEDIDO_ID_GENERATOR", strategy="native")	
 	private int ID;
 	
+	@ManyToOne(targetEntity=basededatos.Cliente.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns(value={ @JoinColumn(name="ClienteUsuarioID", referencedColumnName="UsuarioID", nullable=false) }, foreignKey=@ForeignKey(name="FKPedido408456"))	
+	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
+	private basededatos.Cliente realizado_por;
+	
 	@ManyToOne(targetEntity=basededatos.Encargado_compras.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns(value={ @JoinColumn(name="Encargado_comprasUsuarioID", referencedColumnName="UsuarioID", nullable=false) }, foreignKey=@ForeignKey(name="FKPedido875184"))	
@@ -77,13 +83,8 @@ public class Pedido implements Serializable {
 	
 	@OneToMany(mappedBy="pertenecen_a", targetEntity=basededatos.Lineas_de_Pedido.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)	
 	private java.util.Set ORM_tiene = new java.util.HashSet();
-	
-	@OneToOne(mappedBy="realiza_", targetEntity=basededatos.Cliente.class, fetch=FetchType.LAZY)	
-	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
-	private basededatos.Cliente realizado_por;
 	
 	private void setID(int value) {
 		this.ID = value;
@@ -133,19 +134,26 @@ public class Pedido implements Serializable {
 	public final basededatos.Lineas_de_PedidoSetCollection tiene = new basededatos.Lineas_de_PedidoSetCollection(this, _ormAdapter, ORMConstants.KEY_PEDIDO_TIENE, ORMConstants.KEY_LINEAS_DE_PEDIDO_PERTENECEN_A, ORMConstants.KEY_MUL_ONE_TO_MANY);
 	
 	public void setRealizado_por(basededatos.Cliente value) {
-		if (this.realizado_por != value) {
-			basededatos.Cliente lrealizado_por = this.realizado_por;
-			this.realizado_por = value;
-			if (value != null) {
-				realizado_por.setRealiza_(this);
-			}
-			if (lrealizado_por != null && lrealizado_por.getRealiza_() == this) {
-				lrealizado_por.setRealiza_(null);
-			}
+		if (realizado_por != null) {
+			realizado_por.realiza_pedido.remove(this);
+		}
+		if (value != null) {
+			value.realiza_pedido.add(this);
 		}
 	}
 	
 	public basededatos.Cliente getRealizado_por() {
+		return realizado_por;
+	}
+	
+	/**
+	 * This method is for internal use only.
+	 */
+	public void setORM_Realizado_por(basededatos.Cliente value) {
+		this.realizado_por = value;
+	}
+	
+	private basededatos.Cliente getORM_Realizado_por() {
 		return realizado_por;
 	}
 	

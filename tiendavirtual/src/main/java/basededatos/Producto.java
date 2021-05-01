@@ -94,12 +94,12 @@ public class Producto implements Serializable {
 	
 	@OneToMany(mappedBy="pertenece_a", targetEntity=basededatos.Foto.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)	
 	private java.util.Set ORM_tieneFoto = new java.util.HashSet();
 	
 	@OneToMany(mappedBy="producto_valorado", targetEntity=basededatos.Valoracion.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)	
 	private java.util.Set ORM_recibe_valoracion = new java.util.HashSet();
 	
 	@OneToOne(mappedBy="de_un", targetEntity=basededatos.Lineas_de_Pedido.class, fetch=FetchType.LAZY)	

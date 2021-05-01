@@ -42,7 +42,7 @@ public class Transportista extends basededatos.Usuario implements Serializable {
 	
 	@OneToMany(mappedBy="gestionado_por", targetEntity=basededatos.Entregado.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)	
 	private java.util.Set ORM_marca_como_entregado = new java.util.HashSet();
 	
 	private void setORM_Marca_como_entregado(java.util.Set value) {

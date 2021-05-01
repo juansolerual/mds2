@@ -103,6 +103,9 @@ class VistaCabecerausuario extends PolymerElement {
   <vaadin-button id="cerrarSesionButton">
     Cerrar Sesión 
   </vaadin-button>
+  <vaadin-button id="carritoButton">
+   Mi carrito
+  </vaadin-button>
  </vaadin-horizontal-layout>
 </vaadin-vertical-layout>
 `;

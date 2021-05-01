@@ -327,6 +327,10 @@ public class EntregadoDAO {
 				entregado.getGestionado_por().marca_como_entregado.remove(entregado);
 			}
 			
+			if (entregado.getRealizado_por() != null) {
+				entregado.getRealizado_por().realiza_pedido.remove(entregado);
+			}
+			
 			if (entregado.getMarcado_por() != null) {
 				entregado.getMarcado_por().marca_como_enviado.remove(entregado);
 			}
@@ -335,10 +339,6 @@ public class EntregadoDAO {
 			for(int i = 0; i < lTienes.length; i++) {
 				lTienes[i].setPertenecen_a(null);
 			}
-			if (entregado.getRealizado_por() != null) {
-				entregado.getRealizado_por().setRealiza_(null);
-			}
-			
 			return delete(entregado);
 		}
 		catch(Exception e) {
@@ -353,6 +353,10 @@ public class EntregadoDAO {
 				entregado.getGestionado_por().marca_como_entregado.remove(entregado);
 			}
 			
+			if (entregado.getRealizado_por() != null) {
+				entregado.getRealizado_por().realiza_pedido.remove(entregado);
+			}
+			
 			if (entregado.getMarcado_por() != null) {
 				entregado.getMarcado_por().marca_como_enviado.remove(entregado);
 			}
@@ -361,10 +365,6 @@ public class EntregadoDAO {
 			for(int i = 0; i < lTienes.length; i++) {
 				lTienes[i].setPertenecen_a(null);
 			}
-			if (entregado.getRealizado_por() != null) {
-				entregado.getRealizado_por().setRealiza_(null);
-			}
-			
 			try {
 				session.delete(entregado);
 				return true;

@@ -165,6 +165,18 @@
       <Index>false</Index>
       <UserTypes/>
     </Column>
+    <Column name="ClienteUsuarioID">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>true</ForeignKey>
+      <ReferencedColumn>basededatos.Cliente.UsuarioID</ReferencedColumn>
+      <Type>9</Type>
+      <Length>10</Length>
+      <Nullable>false</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
     <Column name="Encargado_comprasUsuarioID">
       <PrimaryKey>false</PrimaryKey>
       <ForeignKey>true</ForeignKey>
@@ -278,6 +290,17 @@
       <Index>false</Index>
       <UserTypes/>
     </Column>
+    <Column name="UrlImagen">
+      <PrimaryKey>false</PrimaryKey>
+      <ForeignKey>false</ForeignKey>
+      <Type>27</Type>
+      <Length>255</Length>
+      <Nullable>true</Nullable>
+      <IDGenerator>native</IDGenerator>
+      <Unique>false</Unique>
+      <Index>false</Index>
+      <UserTypes/>
+    </Column>
   </Entity>
   <Entity name="Cliente" Unlogged="false" PKClustered="0">
     <Column name="UsuarioID">
@@ -287,18 +310,6 @@
       <Type>9</Type>
       <Length>10</Length>
       <Nullable>false</Nullable>
-      <IDGenerator>native</IDGenerator>
-      <Unique>false</Unique>
-      <Index>false</Index>
-      <UserTypes/>
-    </Column>
-    <Column name="PedidoID">
-      <PrimaryKey>false</PrimaryKey>
-      <ForeignKey>true</ForeignKey>
-      <ReferencedColumn>basededatos.Pedido.ID</ReferencedColumn>
-      <Type>9</Type>
-      <Length>10</Length>
-      <Nullable>true</Nullable>
       <IDGenerator>native</IDGenerator>
       <Unique>false</Unique>
       <Index>false</Index>
@@ -861,16 +872,6 @@
       <Column>ID</Column>
     </RefColumns>
   </ForeignKey>
-  <ForeignKey name="FKCliente404964">
-    <ReferenceTable>Cliente</ReferenceTable>
-    <ReferencedTable>Pedido</ReferencedTable>
-    <Columns>
-      <Column>PedidoID</Column>
-    </Columns>
-    <RefColumns>
-      <Column>ID</Column>
-    </RefColumns>
-  </ForeignKey>
   <ForeignKey name="FKProducto904736">
     <ReferenceTable>Producto</ReferenceTable>
     <ReferencedTable>Categoria</ReferencedTable>
@@ -976,6 +977,16 @@
     <ReferencedTable>Encargado_compras</ReferencedTable>
     <Columns>
       <Column>Encargado_comprasUsuarioID</Column>
+    </Columns>
+    <RefColumns>
+      <Column>UsuarioID</Column>
+    </RefColumns>
+  </ForeignKey>
+  <ForeignKey name="FKPedido408456">
+    <ReferenceTable>Pedido</ReferenceTable>
+    <ReferencedTable>Cliente</ReferencedTable>
+    <Columns>
+      <Column>ClienteUsuarioID</Column>
     </Columns>
     <RefColumns>
       <Column>UsuarioID</Column>

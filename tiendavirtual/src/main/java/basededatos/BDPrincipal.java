@@ -65,8 +65,15 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 		return false;
 	}
 
-	public Lineas_de_Pedido[] cargarCarrito() {
-		throw new UnsupportedOperationException();
+	public List<Lineas_de_Pedido> cargarCarrito(int numeroPedido) {
+		List<Lineas_de_Pedido> cls = null;
+		try {
+			cls = _bD_LineaDePedido.cargarCarrito();
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cls;	
 	}
 
 	public boolean Eliminar_Producto_del_carrito(int aIdLineaDePedido) {
@@ -166,12 +173,40 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 		throw new UnsupportedOperationException();
 	}
 
-	public Pedido[] cargarPedidos() {
-		throw new UnsupportedOperationException();
+	public List<Pedido> cargarPedidos() {
+		List<basededatos.Pedido> pedidos = null;
+		List<basededatos.Entregado> entregados = null;
+		List<basededatos.Pendiente> pendientes = null;
+		List<basededatos.Enviado> enviados = null;
+
+		try {
+			
+			pendientes = _bD_Pendiente.cargarPedidosPendientes();
+			entregados = _bD_Entregado.cargarPedidosEntregados();
+			enviados =_bD_Enviado.cargarPedidosEnviados();
+			
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return pedidos;	
 	}
 
 	public boolean Marcar_como_enviado(int aIdPedido) {
-		throw new UnsupportedOperationException();
+		System.out.println("BDPRINCIPAL marcar como enviado");
+
+		boolean resultado = false;
+		
+
+		try {
+			
+			resultado = _bD_Pendiente.Marcar_como_enviado(aIdPedido);
+			
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultado;	
 	}
 
 	public Pendiente Ver_detalles_pedido_pendiente(int aIdPedidoPendiente) {
@@ -186,16 +221,35 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 		throw new UnsupportedOperationException();
 	}
 
-	public Pendiente[] cargarPedidosPendientes() {
-		throw new UnsupportedOperationException();
+	public List<Pendiente> cargarPedidosPendientes() {
+		
+		List<basededatos.Pendiente> pendientes = null;
+		
+
+		try {
+			
+			pendientes = _bD_Pendiente.cargarPedidosPendientes();
+			
+			
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return pendientes;	
 	}
 
 	public Pendiente cargarPedidoPendiente(int aIdPedidoPendiente) {
 		throw new UnsupportedOperationException();
 	}
 
-	public Entregado[] cargarPedidosEntregados() {
-		throw new UnsupportedOperationException();
+	public List<Entregado> cargarPedidosEntregados() {
+		List<basededatos.Entregado> entregados = null;
+		try {
+			entregados = _bD_Entregado.cargarPedidosEntregados();
+		} catch (PersistentException e) {
+			e.printStackTrace();
+		}
+		return entregados;	
 	}
 
 	public Entregado cargarPedidoEntregado(int aIdPedidoEntregado) {
@@ -219,7 +273,14 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 	}
 
 	public List<Administrador> cargarAdministradores() {
-		throw new UnsupportedOperationException();
+		List<Administrador> cls = null;
+		try {
+			cls = _bD_Administrador.cargarAdministradores();
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cls;	
 	}
 
 	public boolean eliminarAdministrador(int aIdAdministrador) {
@@ -227,7 +288,14 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 	}
 
 	public Administrador cargarAdministrador(int aIdAdministrador) {
-		throw new UnsupportedOperationException();
+		Administrador administrador = null;
+		try {
+			administrador = _bD_Administrador.cargarAdministrador(aIdAdministrador);
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return administrador;	
 	}
 
 	public boolean crearAdministrador(Administrador aAdministrador) {
@@ -301,7 +369,14 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 	}
 
 	public List<Transportista> cargarTransportistas() {
-		throw new UnsupportedOperationException();
+		List<Transportista> cls = null;
+		try {
+			cls = _bD_Transportista.cargarTransportistas();
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cls;	
 	}
 
 	public boolean eliminarTransportista(int aIdTransportista) {
@@ -317,11 +392,25 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 	}
 
 	public Encargado_compras cargarEncargadoCompras(int aIdEncargado) {
-		throw new UnsupportedOperationException();
+		Encargado_compras encargado_compras = null;
+		try {
+			encargado_compras = _bD_EncargadoCompras.cargarEncargadoCompras(aIdEncargado);
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return encargado_compras;	
 	}
 
 	public List<Encargado_compras> cargarEncargadosCompras() {
-		throw new UnsupportedOperationException();
+		List<Encargado_compras> cls = null;
+		try {
+			cls = _bD_EncargadoCompras.cargarEncargadoCompras();
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cls;	
 	}
 
 	public boolean crearTransportista(Transportista aTransportista) {
@@ -413,8 +502,57 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 
 	@Override
 	public List<Cliente> cargarClientes() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Cliente> cls = null;
+		try {
+			cls = _bD_Cliente.cargarClientes();
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cls;	
+	}
+
+	@Override
+	public boolean realizarPedido(Pendiente aPedido) {
+		System.out.println("BDPRINCIPAL realizarPedido");
+		boolean resultado = false;
+		try {
+			resultado = _bD_Pendiente.guardarPedidoPendiente(aPedido);
+			
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultado;
+	}
+
+	@Override
+	public Cliente cargarCliente(int idUsuario) {
+		Cliente cliente = null;
+		try {
+			cliente = _bD_Cliente.cargarCliente(idUsuario);
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cliente;	
+	}
+
+	@Override
+	public List<Enviado> cargarPedidosEnviados() {
+		
+		List<basededatos.Enviado> enviados = null;
+
+		try {
+			
+			
+			enviados =_bD_Enviado.cargarPedidosEnviados();
+			
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return enviados;	
 	}
 
 }

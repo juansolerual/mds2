@@ -15,6 +15,8 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.PWA;
+import com.vaadin.flow.server.VaadinRequest;
+import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.VaadinSession;
 
 import basededatos.Categoria;
@@ -25,6 +27,7 @@ import basededatos.BDPrincipal;
 import basededatos.iAdmin;
 import interfaz.Admin;
 import interfaz.Cabecera_Usuario;
+import interfaz.Encargado_de_compras;
 import interfaz.Iniciar_sesion;
 import interfaz.Producto_usuario;
 import interfaz.Productos_Usuario;
@@ -32,6 +35,8 @@ import interfaz.Usuario_no_identificado;
 import interfaz.Usuario_registrado;
 
 import java.util.List;
+
+import javax.servlet.http.Cookie;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -68,24 +73,98 @@ public class MainView extends VerticalLayout {
 	
 	Usuario_no_identificado usuarioNoIdentificado = new Usuario_no_identificado();
 	Usuario_registrado usuarioRegistrado;
+	Encargado_de_compras encargado_de_compras;
 	VaadinSession session;
 	
 	Iniciar_sesion _iniciar_sesion = new Iniciar_sesion();
     iAdmin adm = new BDPrincipal();
 
-	
+	cookiesHelper cookiesH = new cookiesHelper();
 	
     public MainView (@Autowired GreetService service) {
 
        
-    		
     	
-    	add(usuarioNoIdentificado);
+		
+		
+//		Cookie[] readCookie = VaadinRequest.getCurrent().getCookies();
+//		String usuario = null;
+//		int idUsuario = 0;
+//		for (Cookie cookie : readCookie) {
+//			System.out.println("name" + cookie.getName());
+//			System.out.println("value" + cookie.getValue());
+//			if (cookie.getName().equals("tipoUsuario")) {
+//				usuario = cookie.getValue();
+//			}
+//			if (cookie.getName().equals("cliente")){
+//				idUsuario =  Integer.parseInt(cookie.getValue());
+//			}
+//			
+//		}
+    	
+    	
+    	
     	
     	session = VaadinSession.getCurrent();
-    	session.setAttribute("username", "No_user");
-        session.setAttribute("MainView", this);
+    	session.setAttribute("MainView", this);
         session.setAttribute("usuarioNoIdentificado", usuarioNoIdentificado);
+        
+        //String usuario = (String)session.getAttribute("tipoUsuario");
+//        if (usuario != null) {
+//        	if (usuario.equals("cliente")) {
+//        		if (idUsuario != 0) {
+//            		Cliente cliente = adm.cargarCliente(idUsuario);
+//    				session.setAttribute("cliente", cliente);
+//            	}
+//            	usuarioRegistrado = new Usuario_registrado();
+//    	    	remove(usuarioNoIdentificado);
+//    	    	add(usuarioRegistrado);
+//            }else if (usuario.equals("admin")) {
+//            	if (idUsuario != 0) {
+//            		Administrador administrador = adm.cargarAdministrador(idUsuario);
+//    				session.setAttribute("admin", administrador);
+//            	}
+//            	Admin admin = new Admin();
+//    	    	remove(usuarioNoIdentificado);
+//    	    	add(admin);
+//            }else {
+//                add(usuarioNoIdentificado);
+//
+//            }
+//        }else {
+//            add(usuarioNoIdentificado);
+//
+//        }
+        
+        if (cookiesHelper.isCliente()) {
+        	System.out.println("is cliente");
+        	usuarioRegistrado = new Usuario_registrado();
+	        session.setAttribute("usuarioRegistrado", usuarioRegistrado);
+	    	remove(usuarioNoIdentificado);
+	    	add(usuarioRegistrado);
+        }else if (cookiesHelper.isAdministrador()) {
+        	System.out.println("is admin");
+
+        	Admin admin = new Admin();
+	        session.setAttribute("adminInterfaz", admin);
+	    	remove(usuarioNoIdentificado);
+	    	add(admin);
+        }else if (cookiesHelper.isEncargadoCompras()) {
+        	System.out.println("is encargado");
+
+        	encargado_de_compras = new Encargado_de_compras();
+	        session.setAttribute("encargado_de_compras", encargado_de_compras);
+	    	remove(usuarioNoIdentificado);
+	    	add(encargado_de_compras);
+        }else if (cookiesHelper.isNoRegistrado()){
+            add(usuarioNoIdentificado);
+        }
+        
+        
+       
+        
+        
+        
         
 
         login();
@@ -116,13 +195,63 @@ public class MainView extends VerticalLayout {
     		
     		for (basededatos.Encargado_compras encargado : encargadosCompras) {
 				if (encargado.getEmail().equals(e.getUsername())) {
-					encargadoCompras = encargado;
+					if (encargado.getPassword().equals(e.getPassword())) {
+						encargadoCompras = encargado;
+						session.setAttribute("tipoUsuario", "encargado");
+						session.setAttribute("encargado", encargado);
+						
+						Cookie cookiecliente = new Cookie("cliente", String.valueOf(encargado.getID()));
+
+						Cookie cookieTipoUsuario= new Cookie("tipoUsuario", "encargado");
+
+						cookiecliente.setMaxAge(60 * 60 * 24 * 7 * 52); // define after how many *seconds* the cookie should expire
+						cookiecliente.setPath("/"); // single slash means the cookie is set for your whole application.
+						cookieTipoUsuario.setMaxAge(60 * 60 * 24 * 7 * 52); // define after how many *seconds* the cookie should expire
+						cookieTipoUsuario.setPath("/"); // single slash means the cookie is set for your whole application.
+						VaadinService.getCurrentResponse().addCookie(cookiecliente);
+						VaadinService.getCurrentResponse().addCookie(cookieTipoUsuario);
+
+
+						encargado_de_compras = new Encargado_de_compras();
+				        session.setAttribute("encargado_de_compras", encargado_de_compras);
+
+		    	    	remove(usuarioNoIdentificado);
+		    	    	add(encargado_de_compras);
+		    	    	
+		    	    	System.out.println("encargado");
+					}
+					
 				}
 			}
     		
     		for (basededatos.Cliente client : clientes) {
 				if (client.getEmail().equals(e.getUsername())) {
-					cliente = client;
+					if (client.getPassword().equals(e.getPassword())) {
+						cliente = client;						
+						session.setAttribute("tipoUsuario", "cliente");
+						session.setAttribute("cliente", cliente);
+						
+						Cookie cookiecliente = new Cookie("cliente", String.valueOf(cliente.getID()));
+
+						Cookie cookieTipoUsuario= new Cookie("tipoUsuario", "cliente");
+
+						cookiecliente.setMaxAge(60 * 60 * 24 * 7 * 52); // define after how many *seconds* the cookie should expire
+						cookiecliente.setPath("/"); // single slash means the cookie is set for your whole application.
+						cookieTipoUsuario.setMaxAge(60 * 60 * 24 * 7 * 52); // define after how many *seconds* the cookie should expire
+						cookieTipoUsuario.setPath("/"); // single slash means the cookie is set for your whole application.
+						VaadinService.getCurrentResponse().addCookie(cookiecliente);
+						VaadinService.getCurrentResponse().addCookie(cookieTipoUsuario);
+
+
+		    	    	usuarioRegistrado = new Usuario_registrado();
+				        session.setAttribute("usuarioRegistrado", usuarioRegistrado);
+
+		    	    	remove(usuarioNoIdentificado);
+		    	    	add(usuarioRegistrado);
+		    	    	
+		    	    	System.out.println("cliente");
+					}
+					
 				}
 			}
     		
@@ -130,10 +259,24 @@ public class MainView extends VerticalLayout {
 				if (adminis.getEmail().equals(e.getUsername())) {
 					if (adminis.getPassword().equals(e.getPassword())) {
 						administrador = adminis;
-						session.setAttribute("username", "admin");
+						session.setAttribute("tipoUsuario", "admin");
 						session.setAttribute("admin", administrador);
+						
+						Cookie cookiecliente = new Cookie("cliente", String.valueOf(administrador.getID()));
+
+						Cookie cookieTipoUsuario= new Cookie("tipoUsuario", "admin");
+
+						cookiecliente.setMaxAge(60 * 60 * 24 * 7 * 52); // define after how many *seconds* the cookie should expire
+						cookiecliente.setPath("/"); // single slash means the cookie is set for your whole application.
+						cookieTipoUsuario.setMaxAge(60 * 60 * 24 * 7 * 52); // define after how many *seconds* the cookie should expire
+						cookieTipoUsuario.setPath("/"); // single slash means the cookie is set for your whole application.
+						VaadinService.getCurrentResponse().addCookie(cookiecliente);
+						VaadinService.getCurrentResponse().addCookie(cookieTipoUsuario);
+
 
 		    	    	Admin admin = new Admin();
+				        session.setAttribute("adminInterfaz", admin);
+
 		    	    	remove(usuarioNoIdentificado);
 		    	    	add(admin);
 		    	    	
@@ -173,14 +316,14 @@ public class MainView extends VerticalLayout {
     	    	
     	    	
     	    	
-    	    	usuarioRegistrado = new Usuario_registrado();
-    	    	
-    	    	session.setAttribute("username", "usuario");
-
-    	        session.setAttribute("usuarioRegistrado", usuarioRegistrado);
-
-    	    	remove(usuarioNoIdentificado);
-    	    	add(usuarioRegistrado);
+//    	    	usuarioRegistrado = new Usuario_registrado();
+//    	    	
+//    	    	session.setAttribute("username", "usuario");
+//
+//    	        session.setAttribute("usuarioRegistrado", usuarioRegistrado);
+//
+//    	    	remove(usuarioNoIdentificado);
+//    	    	add(usuarioRegistrado);
     	    	//vlayout.remove(_iniciar_sesion);
     	    	//vlayout.add(_visualizar_Pantalla_Usuario_no_registrado);
     	    	/*CibernautaRegistrado cr = new CibernautaRegistrado();

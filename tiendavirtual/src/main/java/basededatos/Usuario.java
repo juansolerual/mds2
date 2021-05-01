@@ -68,7 +68,7 @@ public class Usuario implements Serializable {
 	
 	@OneToMany(mappedBy="pertenece_a", targetEntity=basededatos.Mensaje.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)	
 	private java.util.Set ORM_gestiona = new java.util.HashSet();
 	
 	private void setID(int value) {

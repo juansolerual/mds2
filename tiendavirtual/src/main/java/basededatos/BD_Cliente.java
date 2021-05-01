@@ -3,6 +3,7 @@ package basededatos;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Vector;
 
 import org.orm.PersistentException;
@@ -15,14 +16,18 @@ public class BD_Cliente {
 	public Vector<Cliente> _contiene_clientes = new Vector<Cliente>();
 
 	public boolean nuevo_usuario(Usuario aUsuario) throws PersistentException {
+		boolean resultado = false;
+		
 		PersistentTransaction t = TiendavirtualPersistentManager.instance().getSession().beginTransaction();
 		try {
-			UsuarioDAO.save(aUsuario);
+			resultado = UsuarioDAO.save(aUsuario);
 			t.commit();
 		} catch (Exception e) {
 			t.rollback();
 		}
-		return false;
+		TiendavirtualPersistentManager.instance().disposePersistentManager();
+
+		return resultado;
 	}
 
 	public boolean compruebarUsuario(Usuario aUsuario) {
@@ -44,4 +49,35 @@ public class BD_Cliente {
 	public boolean cambiarContrasena(String aContrasenaNueva) {
 		throw new UnsupportedOperationException();
 	}
+
+	public List<Cliente> cargarClientes() throws PersistentException {
+		List<Cliente> clientes = null;
+
+		PersistentTransaction t = TiendavirtualPersistentManager.instance().getSession().beginTransaction();
+		try {
+			clientes = ClienteDAO.queryCliente(null, null);
+			t.commit();
+		} catch (Exception e) {
+			t.rollback();
+		}
+		TiendavirtualPersistentManager.instance().disposePersistentManager();
+
+		return clientes;
+	}
+
+	public Cliente cargarCliente(int idUsuario) throws PersistentException {
+		Cliente cliente = null;
+
+		PersistentTransaction t = TiendavirtualPersistentManager.instance().getSession().beginTransaction();
+		try {
+			cliente = ClienteDAO.getClienteByORMID(idUsuario);
+			
+			t.commit();
+		} catch (Exception e) {
+			t.rollback();
+		}
+		TiendavirtualPersistentManager.instance().disposePersistentManager();
+		return cliente;
+	}
+	
 }

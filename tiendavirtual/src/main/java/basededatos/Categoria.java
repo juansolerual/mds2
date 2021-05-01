@@ -55,7 +55,7 @@ public class Categoria implements Serializable {
 	
 	@OneToMany(mappedBy="pertenece_a", targetEntity=basededatos.Producto.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)	
 	private java.util.Set ORM_contiene = new java.util.HashSet();
 	
 	private void setID(int value) {

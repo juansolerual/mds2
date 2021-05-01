@@ -77,4 +77,6 @@ public interface iAdmin {
 	public List<Foto> cargarFotos(int id);
 
 	public List<Cliente> cargarClientes();
+
+	public Cliente cargarCliente(int idUsuario);
 }

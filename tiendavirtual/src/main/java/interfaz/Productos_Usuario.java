@@ -18,9 +18,11 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.server.VaadinSession;
 
 import basededatos.BDPrincipal;
+import basededatos.Cliente;
 import basededatos.Foto;
 import basededatos.FotoDAO;
 import basededatos.Lineas_de_Pedido;
@@ -30,11 +32,14 @@ import basededatos.ProductoDAO;
 import basededatos.iAdmin;
 import basededatos.iUsuario_registrado;
 import interfaz.Producto_usuario;
+import tiendavirtual.cookiesHelper;
 import vistas.VistaProductosusuario;
 import vistas.VistaProductousuario;
 
 public class Productos_Usuario extends VistaProductosusuario{
 	public Visualizar_Pantalla_Principal_Usuario_Registrado _visualizar_Pantalla_Principal_Usuario_Registrado;
+	public TextField carritoText = new TextField();
+	public int carritoInt = 0;
 	//public Vector<Producto_usuario> _list_Producto_usuario = new Vector<Producto_usuario>();
 
 	public Productos_Usuario(List<Producto_usuario> list) {
@@ -136,17 +141,33 @@ public class Productos_Usuario extends VistaProductosusuario{
 			@Override
 			public void onComponentEvent(ClickEvent<Button> event) {
 				// TODO Auto-generated method stub
-				List<Lineas_de_Pedido> carrito = new ArrayList<Lineas_de_Pedido>();
-				Pedido pedido = new Pedido();
-				pedido.setFechaPedido(new java.util.Date());
-				pedido.setHoraPedido(new Time(new java.util.Date().getTime()));
 				
-				//pedido.setRealizado_por(value);
+				VaadinSession session = VaadinSession.getCurrent();
+				
+				List<Lineas_de_Pedido> carrito = (List<Lineas_de_Pedido>) session.getAttribute(String.valueOf(cookiesHelper.idUsuario));
+				
+
+				if (carrito == null) {
+					carrito = new ArrayList<Lineas_de_Pedido>();
+				}
+
+				//String tipoUsuario = (String) session.getAttribute("tipoUsuario");
+				//Cliente cliente = null;
+				//if (tipoUsuario.equals("cliente")) {
+				//	cliente = (Cliente) session.getAttribute("cliente");
+				//}
+				
+				//pedido.setRealizado_por(cliente);
+				
 				Lineas_de_Pedido linea = new Lineas_de_Pedido();
 				linea.setDe_un(producto);
 				linea.setCantidad(1);
-				linea.setPertenecen_a(pedido);
+				carrito.add(linea);
+				//linea.setPertenecen_a(pedido);
 				
+				session.setAttribute(String.valueOf(cookiesHelper.idUsuario), carrito);
+				carritoInt++;
+				carritoText.setValue(carritoInt+"");
 				
 			}
 	      });

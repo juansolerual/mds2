@@ -46,6 +46,7 @@ import basededatos.BDPrincipal;
 import basededatos.iAdmin;
 import interfaz.Categoria;
 import tiendavirtual.Uploader;
+import tiendavirtual.cookiesHelper;
 import vistas.VistaCategorias;
 import vistas.VistaProductousuario;
 
@@ -79,18 +80,19 @@ public class Categorias extends VistaCategorias {
 					String user2 = (String) session.getAttribute("username");
 					System.out.println("click categoria");
 					System.out.println("Usuario " + user2);
+					System.out.println("Cookies helper " + cookiesHelper.usuario);
 					Vista_busqueda_de_productos_categorias  _vista_busqueda_productos_categorias = new Vista_busqueda_de_productos_categorias(categoria);
 
 			    	session.setAttribute("_vista_busqueda_productos_categorias", _vista_busqueda_productos_categorias);
 			    	
-			    	if (user2.equals("usuario")) {
+			    	if (cookiesHelper.isCliente()) {
 				    	VerticalLayout verticalLayoutUsuarioIdentificado = (VerticalLayout) session.getAttribute("verticalLayoutUsuarioIdentificado");
 			    		Visualizar_Pantalla_Principal_Usuario_Registrado visualizar_Pantalla_Principal_Usuario_Registrado = (Visualizar_Pantalla_Principal_Usuario_Registrado) session.getAttribute("Visualizar_Pantalla_Principal_Usuario_Registrado");
 			    		verticalLayoutUsuarioIdentificado.remove(visualizar_Pantalla_Principal_Usuario_Registrado);
 			    		verticalLayoutUsuarioIdentificado.add(_vista_busqueda_productos_categorias);
 			    	}
 			    	
-			    	if (user2.equals("No_user")) {
+			    	if (cookiesHelper.isNoRegistrado()) {
 				    	VerticalLayout verticalLayoutUsuarioNoIdentificado = (VerticalLayout) session.getAttribute("verticalLayoutUsuarioNoIdentificado");
 			    		Visualizar_Pantalla_Usuario_no_registrado visualizar_Pantalla_Usuario_no_registrado = (Visualizar_Pantalla_Usuario_no_registrado) session.getAttribute("Visualizar_Pantalla_Usuario_no_registrado");
 				    	verticalLayoutUsuarioNoIdentificado.remove(visualizar_Pantalla_Usuario_no_registrado);
@@ -98,7 +100,7 @@ public class Categorias extends VistaCategorias {
 
 			    	}
 			    	
-			    	if (user2.equals("admin")) {
+			    	if (cookiesHelper.isAdministrador()) {
 			    		VerticalLayout verticalLayoutAdmin = (VerticalLayout) session.getAttribute("verticalLayoutAdmin");
 				    	Visualizar_Pantalla_Principal_Administrador visualizar_Pantalla_Principal_Administrador = (Visualizar_Pantalla_Principal_Administrador) session.getAttribute("visualizar_Pantalla_Principal_Administrador");
 				    	verticalLayoutAdmin.remove(visualizar_Pantalla_Principal_Administrador);

@@ -1,12 +1,14 @@
 package basededatos;
 
+import java.util.List;
+
 public interface iApp_transportes {
 
-	public Pendiente[] cargarPedidosPendientes();
+	public List<Pendiente> cargarPedidosPendientes();
 
 	public Pendiente cargarPedidoPendiente(int aIdPedidoPendiente);
 
-	public Entregado[] cargarPedidosEntregados();
+	public List<Entregado> cargarPedidosEntregados();
 
 	public Entregado cargarPedidoEntregado(int aIdPedidoEntregado);
 
