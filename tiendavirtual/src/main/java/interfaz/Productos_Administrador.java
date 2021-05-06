@@ -115,6 +115,26 @@ public class Productos_Administrador extends VistaProductosadministrador{
 		      //String temp = result + "€";
 		      pu.getPrecio().setText(Double.valueOf(producto.getPrecio()).toString());
 		      pu.getNombreProducto().setText(producto.getNombreProducto());
+		      java.util.Date date = producto.getAplica_oferta().getFechaCaducidadOferta();
+			  java.util.Date datenow = new java.util.Date();
+			  int resultado = datenow.compareTo(date);
+			  System.out.println("Resultado date compare" + resultado);
+			  System.out.println("P^recio oferta  " + String.valueOf(producto.getAplica_oferta().getPrecioOferta()));
+		      if (producto.getAplica_oferta().getActivada() && resultado == -1) {
+					if (producto.getAplica_oferta().getPorcentajeOferta()) {
+						pu.getPrecio().getStyle().set("text-decoration", "line-through"); 
+						pu.precioRebajado.setText("Precio rebajado: " + String.valueOf(producto.getPrecio()
+								- (producto.getPrecio() * (producto.getAplica_oferta().getPrecioOferta() / 100))) + "€");
+					} else {
+						pu.getPrecio().getStyle().set("text-decoration", "line-through"); 
+						pu.precioRebajado.setTitle("titulo");
+
+						pu.precioRebajado.setText("Precio rebajado: " + String.valueOf(producto.getAplica_oferta().getPrecioOferta())+"€");
+					}
+				} else {
+					pu.precioRebajado.setVisible(false);
+			}
+		      
 		      List<Foto> fotos = user.cargarFotos(producto.getID());
 		      if (fotos != null) {
 		    	  for (Foto foto : fotos) {
@@ -132,7 +152,7 @@ public class Productos_Administrador extends VistaProductosadministrador{
 				public void onComponentEvent(ClickEvent<Button> event) {
 					VistaProductousuario vistaProductoUsuario = new VistaProductousuario(producto, true);
 					
-					System.out.println("Click administrador en producto con precio.. " + pu.getPrecio());
+					System.out.println("Click administrador en producto con precio.. " + pu.getPrecio().getText());
 					VaadinSession session = VaadinSession.getCurrent();
 
 			    	VerticalLayout verticalLayoutAdmin = (VerticalLayout) session.getAttribute("verticalLayoutAdmin");

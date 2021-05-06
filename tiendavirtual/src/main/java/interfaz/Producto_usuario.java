@@ -6,6 +6,7 @@ import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
@@ -18,7 +19,8 @@ public class Producto_usuario extends VistaProductolista{
 	public Button anadirCarrito;
 	public Button verDescripcion;
 	public Button editarProducto;
-	public Text precio;
+	public Label precio;
+	public Label precioRebajado;
 	public Text nombreProducto;
 	public Div avatar;
 
@@ -49,11 +51,11 @@ public class Producto_usuario extends VistaProductolista{
 		
 	}
 
-	public Text getPrecio() {
+	public Label getPrecio() {
 		return precio;
 	}
 
-	public void setPrecio(Text precio) {
+	public void setPrecio(Label precio) {
 		this.precio = precio;
 	}
 
@@ -76,9 +78,12 @@ public class Producto_usuario extends VistaProductolista{
 	    avatar.getStyle()
 	      .set("background-color", "gray")
 	      .set("border-radius", "12px")
-	      .set("margin", "16px")
+	      .set("margin-left", "10px")
+	      .set("margin-top", "10px")
+	      .set("margin-bottom", "10px")
 	      .set("background", "url(https://picsum.photos/200)")
 	      .set("cursor", "pointer");
+
 	    
 	   
 	    
@@ -97,24 +102,40 @@ public class Producto_usuario extends VistaProductolista{
 	    nombreProducto = new Text("Nombre");
 	    name.add(nombreProducto);
 	    name.getStyle().set("color", "blue");
-	    precio = new Text("0,00 euros");
-	    VerticalLayout vlav = new VerticalLayout(avatar);
-	    VerticalLayout vl = new VerticalLayout(name, precio);
+	    Div precioDiv = new Div();
+	    precio = new Label("Precio: 0,00 euros");
+	    //precio.getStyle().set("float", "left").set("width", "50%");
+	    precioRebajado = new Label(" 0,00 euros");
+	    precioDiv.add(precio);
+	    precioDiv.add(precioRebajado);
+	    precioRebajado.getStyle().set("color", "blue").set("font-weight", "bold");
+	    //.set("text-align", "left").set("width","50%")
+	    //.set("float", "right");
+	    
+	    VerticalLayout vl = new VerticalLayout(name, precio, precioRebajado);
+	    vl.getStyle().set("margin-right", "10px")
+	      .set("margin-top", "10px")
+	      .set("margin-bottom", "10px");
+	    
 	    if (admin) {
 	    	editarProducto = new Button("Editar producto");
+	    	editarProducto.getStyle().set("margin-top", "52px");
 		    vl.add(editarProducto);
 	    }else {
 	    	anadirCarrito = new Button("Añadir Carrito");
+	    	anadirCarrito.getStyle().set("margin-top", "52px");
 		    vl.add(anadirCarrito);
 	    }
 	    
 	    verDescripcion = new Button("Ver descripción");
-	    vl.add(verDescripcion);
+	    VerticalLayout vlav = new VerticalLayout(avatar,verDescripcion);
+
+	    //vl.add();
 	    //HorizontalLayout hl = new HorizontalLayout(avatar, vl);
 	    this.getVaadinHorizontalLayout().add(vlav,vl);
 
 	    this.getVaadinHorizontalLayout().setSpacing(false);
-	    this.getVaadinHorizontalLayout().getStyle().set("border","1px solid blue");
+	    this.getVaadinHorizontalLayout().getStyle().set("border", "2px solid gray").set("border-radius", "25px");
 	}
 
 	

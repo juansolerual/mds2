@@ -118,8 +118,28 @@ public class Productos_Usuario extends VistaProductosusuario{
 	      //double random = new Random().nextDouble();
 	      //double result = start + (random * (end - start));
 	      //String temp = result + "€";
-	      pu.getPrecio().setText(Double.valueOf(producto.getPrecio()).toString());
+	      pu.getPrecio().setText("Precio: " +Double.valueOf(producto.getPrecio()).toString() + "€");
 	      pu.getNombreProducto().setText(producto.getNombreProducto());
+	  	  java.util.Date date = producto.getAplica_oferta().getFechaCaducidadOferta();
+		  java.util.Date datenow = new java.util.Date();
+		  int resultado = datenow.compareTo(date);
+		  System.out.println("Resultado date compare" + resultado);
+		  System.out.println("P^recio oferta  " + String.valueOf(producto.getAplica_oferta().getPrecioOferta()));
+	      if (producto.getAplica_oferta().getActivada() && resultado == -1) {
+				if (producto.getAplica_oferta().getPorcentajeOferta()) {
+					pu.getPrecio().getStyle().set("text-decoration", "line-through"); 
+					pu.precioRebajado.setText(" " + String.valueOf(producto.getPrecio()
+							- (producto.getPrecio() * (producto.getAplica_oferta().getPrecioOferta() / 100))) + "€");
+				} else {
+					pu.getPrecio().getStyle().set("text-decoration", "line-through"); 
+					pu.precioRebajado.setTitle("titulo");
+
+					pu.precioRebajado.setText(" " + String.valueOf(producto.getAplica_oferta().getPrecioOferta())+"€");
+				}
+			} else {
+				pu.precioRebajado.setText("-");
+				pu.precioRebajado.getStyle().set("color", "#0000ff00");
+			}
 	      
 	      iAdmin adm = new BDPrincipal();
 
@@ -144,7 +164,13 @@ public class Productos_Usuario extends VistaProductosusuario{
 				
 				VaadinSession session = VaadinSession.getCurrent();
 				
-				List<Lineas_de_Pedido> carrito = (List<Lineas_de_Pedido>) session.getAttribute(String.valueOf(cookiesHelper.idUsuario));
+				List<Lineas_de_Pedido> carrito = new ArrayList<Lineas_de_Pedido>();
+				if (cookiesHelper.isNoRegistrado()) {
+					carrito = (List<Lineas_de_Pedido>) session.getAttribute("carrito_invitado");
+
+				}else {
+					carrito = (List<Lineas_de_Pedido>) session.getAttribute(String.valueOf(cookiesHelper.idUsuario));
+				}
 				
 
 				if (carrito == null) {
@@ -158,14 +184,35 @@ public class Productos_Usuario extends VistaProductosusuario{
 				//}
 				
 				//pedido.setRealizado_por(cliente);
+				for (Lineas_de_Pedido ldp : carrito) {
+					if (ldp.getDe_un().getID() == producto.getID()) {
+						ldp.setCantidad(ldp.getCantidad()+1);
+						if (cookiesHelper.isNoRegistrado()) {
+							session.setAttribute("carrito_invitado", carrito);
+
+						}else {
+							session.setAttribute(String.valueOf(cookiesHelper.idUsuario), carrito);
+
+						}						
+						return;
+					}
+				}
 				
 				Lineas_de_Pedido linea = new Lineas_de_Pedido();
 				linea.setDe_un(producto);
 				linea.setCantidad(1);
 				carrito.add(linea);
 				//linea.setPertenecen_a(pedido);
-				
-				session.setAttribute(String.valueOf(cookiesHelper.idUsuario), carrito);
+				if (cookiesHelper.isNoRegistrado()) {
+					System.out.println("carrito is not registrado");
+					session.setAttribute("carrito_invitado", carrito);
+
+				}else {
+					System.out.println("carrito is registrado");
+
+					session.setAttribute(String.valueOf(cookiesHelper.idUsuario), carrito);
+
+				}
 				carritoInt++;
 				carritoText.setValue(carritoInt+"");
 				
@@ -258,7 +305,7 @@ public class Productos_Usuario extends VistaProductosusuario{
 		scrollableLayout.getStyle().set("overflow-x", "auto").set("margin-left", "20px").set("margin-right", "20px");
 	    // Another element to show that it stays in the same place
 		Label staticElement = new Label("Productos destacados");
-		staticElement.getStyle().set("color", "blue").set("font-weight", "bold").set("margin", "20px");
+		staticElement.getStyle().set("color", "#1676f3").set("font-weight", "bold").set("margin", "20px");
 		
 		HorizontalLayout primeraLinea = new HorizontalLayout();
 		primeraLinea.setPadding(true);
@@ -267,7 +314,7 @@ public class Productos_Usuario extends VistaProductosusuario{
 	    // Add both the scrollable layout and 
 	    // the static element to the layout
 	    this.getHorizontalProductos().add(primeraLinea, scrollableLayout);
-		this.getHorizontalProductos().getStyle().set("border", "2px solid blue").set("border-radius", "25px");
+		this.getHorizontalProductos().getStyle().set("border", "2px solid #1676f3").set("border-radius", "25px");
 
 	};
 

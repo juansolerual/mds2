@@ -9,7 +9,7 @@ class VistaProductosusuario extends PolymerElement {
                 :host {
                     display: block;
                     height: 100%;
-        			width: 49%;
+        			width: 48%;
         			margin-right: 1%;
                 }
             </style>

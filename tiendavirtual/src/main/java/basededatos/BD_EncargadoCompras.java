@@ -27,8 +27,20 @@ public class BD_EncargadoCompras {
 		return clientes;
 	}
 
-	public boolean eliminarEncargadoCompras(int aIdEncargado) {
-		throw new UnsupportedOperationException();
+	public boolean eliminarEncargadoCompras(int aIdEncargado) throws PersistentException {
+		boolean resultado = false;
+
+		PersistentTransaction t = TiendavirtualPersistentManager.instance().getSession().beginTransaction();
+		try {
+			Encargado_compras encargado_compras = Encargado_comprasDAO.getEncargado_comprasByORMID(aIdEncargado);
+			resultado = Encargado_comprasDAO.delete(encargado_compras);
+			t.commit();
+		} catch (Exception e) {
+			t.rollback();
+		}
+		TiendavirtualPersistentManager.instance().disposePersistentManager();
+
+		return resultado;
 	}
 
 	public Encargado_compras cargarEncargadoCompras(int aIdEncargado) throws PersistentException {
@@ -47,7 +59,20 @@ public class BD_EncargadoCompras {
 		return encargado_compras;
 	}
 
-	public boolean crearEncargadoCompras(Encargado_compras aEncargadoCompras) {
-		throw new UnsupportedOperationException();
-	}
+	public boolean crearEncargadoCompras(Encargado_compras aEncargadoCompras) throws PersistentException {
+		boolean resultado = false;
+		
+		PersistentTransaction t = TiendavirtualPersistentManager.instance().getSession().beginTransaction();
+		try {
+			Encargado_compras nuevoEncargado = (Encargado_compras) TiendavirtualPersistentManager.instance().getSession().merge(aEncargadoCompras);
+
+			resultado = Encargado_comprasDAO.save(nuevoEncargado);
+			t.commit();
+		} catch (Exception e) {
+			t.rollback();
+		}
+		
+		TiendavirtualPersistentManager.instance().disposePersistentManager();
+
+		return resultado;	}
 }

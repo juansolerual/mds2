@@ -31,8 +31,7 @@ public class ProductoDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final IntegerExpression limiteFotos;
 	public final CollectionExpression tieneFoto;
 	public final CollectionExpression recibe_valoracion;
-	public final IntegerExpression asignado_aId;
-	public final AssociationExpression asignado_a;
+	public final CollectionExpression asignado_a;
 	
 	public ProductoDetachedCriteria() {
 		super(basededatos.Producto.class, basededatos.ProductoCriteria.class);
@@ -48,8 +47,7 @@ public class ProductoDetachedCriteria extends AbstractORMDetachedCriteria {
 		limiteFotos = new IntegerExpression("limiteFotos", this.getDetachedCriteria());
 		tieneFoto = new CollectionExpression("ORM_tieneFoto", this.getDetachedCriteria());
 		recibe_valoracion = new CollectionExpression("ORM_recibe_valoracion", this.getDetachedCriteria());
-		asignado_aId = new IntegerExpression("asignado_a.ID", this.getDetachedCriteria());
-		asignado_a = new AssociationExpression("asignado_a", this.getDetachedCriteria());
+		asignado_a = new CollectionExpression("ORM_asignado_a", this.getDetachedCriteria());
 	}
 	
 	public ProductoDetachedCriteria(DetachedCriteria aDetachedCriteria) {
@@ -66,8 +64,7 @@ public class ProductoDetachedCriteria extends AbstractORMDetachedCriteria {
 		limiteFotos = new IntegerExpression("limiteFotos", this.getDetachedCriteria());
 		tieneFoto = new CollectionExpression("ORM_tieneFoto", this.getDetachedCriteria());
 		recibe_valoracion = new CollectionExpression("ORM_recibe_valoracion", this.getDetachedCriteria());
-		asignado_aId = new IntegerExpression("asignado_a.ID", this.getDetachedCriteria());
-		asignado_a = new AssociationExpression("asignado_a", this.getDetachedCriteria());
+		asignado_a = new CollectionExpression("ORM_asignado_a", this.getDetachedCriteria());
 	}
 	
 	public OfertaDetachedCriteria createAplica_ofertaCriteria() {
@@ -87,7 +84,7 @@ public class ProductoDetachedCriteria extends AbstractORMDetachedCriteria {
 	}
 	
 	public Lineas_de_PedidoDetachedCriteria createAsignado_aCriteria() {
-		return new Lineas_de_PedidoDetachedCriteria(createCriteria("asignado_a"));
+		return new Lineas_de_PedidoDetachedCriteria(createCriteria("ORM_asignado_a"));
 	}
 	
 	public Producto uniqueProducto(PersistentSession session) {

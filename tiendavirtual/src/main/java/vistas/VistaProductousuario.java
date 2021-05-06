@@ -15,6 +15,7 @@ import interfaz.Visualizar_Pantalla_Principal_Administrador;
 import interfaz.Visualizar_Pantalla_Principal_Usuario_Registrado;
 import interfaz.Visualizar_Pantalla_Usuario_no_registrado;
 import tiendavirtual.Uploader;
+import tiendavirtual.cookiesHelper;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -89,6 +90,8 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 	private boolean image4Editada = false;
 	private boolean image5Editada = false;
 
+	public String fotoOferta = null;
+	public Image imageOfertaNueva = new Image();
 	private Foto foto1;
 	private Foto foto2;
 	private Foto foto3;
@@ -148,6 +151,7 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 	 */
 	public VistaProductousuario(Producto producto, boolean admin) {
 		// You can initialise any data required for the connected UI components here.
+		
 		if (producto != null) {
 			isEditarProducto = true;
 		}
@@ -178,7 +182,8 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 				
 				String usuario = (String)session.getAttribute("username");
 				
-				if (usuario.equals("No_user")) {
+				
+				if (cookiesHelper.isNoRegistrado()) {
 					VerticalLayout verticalLayoutUsuarioNoIdentificado = (VerticalLayout) session.getAttribute("verticalLayoutUsuarioNoIdentificado");
 		    		Visualizar_Pantalla_Usuario_no_registrado visualizar_Pantalla_Usuario_no_registrado = (Visualizar_Pantalla_Usuario_no_registrado) session.getAttribute("Visualizar_Pantalla_Usuario_no_registrado");
 		    		VistaProductousuario vistaProductoUsuario = (VistaProductousuario) session.getAttribute("vistaProductoUsuario");
@@ -187,7 +192,7 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 		    		verticalLayoutUsuarioNoIdentificado.add(visualizar_Pantalla_Usuario_no_registrado);
 				}
 				
-				if (usuario.equals("usuario")) {
+				if (cookiesHelper.isCliente()) {
 			    	VerticalLayout verticalLayoutUsuarioIdentificado = (VerticalLayout) session.getAttribute("verticalLayoutUsuarioIdentificado");
 			    	Visualizar_Pantalla_Principal_Usuario_Registrado visualizar_Pantalla_Principal_Usuario_Registrado = (Visualizar_Pantalla_Principal_Usuario_Registrado) session.getAttribute("Visualizar_Pantalla_Principal_Usuario_Registrado");
 		    		VistaProductousuario vistaProductoUsuario = (VistaProductousuario) session.getAttribute("vistaProductoUsuario");
@@ -195,7 +200,7 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 		    		verticalLayoutUsuarioIdentificado.remove(vistaProductoUsuario);
 		    		verticalLayoutUsuarioIdentificado.add(visualizar_Pantalla_Principal_Usuario_Registrado);
 				}
-				if (usuario.equals("admin")) {
+				if (cookiesHelper.isAdministrador()) {
 					VerticalLayout verticalLayoutAdmin = (VerticalLayout) session.getAttribute("verticalLayoutAdmin");
 			    	Visualizar_Pantalla_Principal_Administrador visualizar_Pantalla_Principal_Administrador = (Visualizar_Pantalla_Principal_Administrador) session.getAttribute("visualizar_Pantalla_Principal_Administrador");
 		    		VistaProductousuario vistaProductoUsuario = (VistaProductousuario) session.getAttribute("vistaProductoUsuario");
@@ -731,12 +736,40 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 			buttonCrearCategoria.addClickListener(event -> dialog.open());
 
 			// DIALOGO OFERTA
+			
+			imageOfertaNueva.setWidth("150px");
+			imageOfertaNueva.setHeight("150px");
+			MemoryBuffer bufferOferta = new MemoryBuffer();
+			Upload uploadOferta = new Upload(bufferOferta);
+			uploadOferta.setAcceptedFileTypes("image/jpeg", "image/png", "image/gif");
+
+			
+			
+			uploadOferta.addSucceededListener(event -> {
+				Component component = createComponent(event.getMIMEType(), event.getFileName(), bufferOferta.getInputStream());
+				File targetFile = new File("src/main/resources/targetFile.tmp");
+
+				try {
+					FileUtils.copyInputStreamToFile(bufferOferta.getInputStream(), targetFile);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				fotoOferta = Uploader.upload(targetFile);
+				System.out.println(fotoOferta);
+				System.out.println("index of title  " + fotoOferta.indexOf("title"));
+				System.out.println("https://i.imgur.com/" + fotoOferta.subSequence(15, 22) + ".jpg");
+				fotoOferta = "https://i.imgur.com/" + fotoOferta.subSequence(15, 22) + ".jpg";
+				imageOfertaNueva.setSrc(fotoOferta);
+				//output.removeAll();
+				//showOutput(event.getFileName(), component, output);
+			});
 
 			Dialog dialogOferta = new Dialog();
 			HorizontalLayout dialogOfertaHorizontal = new HorizontalLayout();
 			dialog.setCloseOnOutsideClick(true);
 			Label tituloOfertaDialog = new Label("Nueva oferta");
-			dialogOfertaHorizontal.add(tituloDialog);
+			dialogOfertaHorizontal.add(tituloOfertaDialog);
 			dialogOferta.setWidth("800px");
 			dialogOferta.setHeight("600px");
 			dialogOferta.setMinHeight("600px");
@@ -790,14 +823,18 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 					aOferta.setActivada(activada.getValue());
 					aOferta.setFechaCaducidadOferta(java.sql.Date.valueOf(fechaCaducidad.getValue()));
 					aOferta.setPorcentajeOferta(porcentajeOferta.getValue());
+					aOferta.setUrlImagen(fotoOferta);
 					int result = adm.guardarOferta(aOferta);
 					if (result != -1) {
 						Notification notification = Notification.show("La oferta ha sido creada correctamente", 3000,
 								Position.MIDDLE);
 						nombreOferta.setValue("");
 						precioOferta.setValue("");
+						fotoOferta = "";
+						imageOfertaNueva = new Image();
 						fechaCaducidad.clear();
 						porcentajeOferta.setValue(false);
+						activada.setValue(false);
 						dialogOferta.close();
 						ofertas.add(aOferta);
 						oferta.setItems(ofertas);
@@ -809,7 +846,7 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 				}
 
 			});
-			VerticalLayout dialogOfertaVertical = new VerticalLayout(nombreOferta, precioOferta, porcentajeOferta,
+			VerticalLayout dialogOfertaVertical = new VerticalLayout(nombreOferta, uploadOferta, imageOfertaNueva, precioOferta, porcentajeOferta,
 					fechaCaducidad, activada);
 			HorizontalLayout dialogOfertaButtons = new HorizontalLayout(guardarOferta, cancelOfertaButton);
 			dialogOfertaHorizontal.getStyle().set("margin", "20px").set("width", "100%");
@@ -820,6 +857,8 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 
 			buttonCrearCategoria.addClickListener(event -> dialog.open());
 			buttonCrearOferta.addClickListener(event -> dialogOferta.open());
+			
+			System.out.println("final clase Vista Prudcto " );
 		}
 
 	}

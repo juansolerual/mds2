@@ -65,7 +65,7 @@ public class Encargado_de_compras extends VistaEncargadodecompras{
 				VaadinService.getCurrentResponse().addCookie(cookiecliente);
 				VaadinService.getCurrentResponse().addCookie(cookieTipoUsuario);
 				Encargado_de_compras encargado_de_compras = (Encargado_de_compras) session.getAttribute("encargado_de_compras");
-				Usuario_no_identificado usuario_no_identificado = (Usuario_no_identificado) session.getAttribute("usuarioNoIdentificado");
+				Usuario_no_identificado usuario_no_identificado = new Usuario_no_identificado();
 
 		    	VerticalLayout mainView = (VerticalLayout) session.getAttribute("MainView");
 		    	mainView.remove(encargado_de_compras);

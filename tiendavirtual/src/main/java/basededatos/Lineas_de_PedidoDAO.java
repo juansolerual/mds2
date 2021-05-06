@@ -324,7 +324,7 @@ public class Lineas_de_PedidoDAO {
 	public static boolean deleteAndDissociate(basededatos.Lineas_de_Pedido lineas_de_Pedido)throws PersistentException {
 		try {
 			if (lineas_de_Pedido.getDe_un() != null) {
-				lineas_de_Pedido.getDe_un().setAsignado_a(null);
+				lineas_de_Pedido.getDe_un().asignado_a.remove(lineas_de_Pedido);
 			}
 			
 			if (lineas_de_Pedido.getPertenecen_a() != null) {
@@ -342,7 +342,7 @@ public class Lineas_de_PedidoDAO {
 	public static boolean deleteAndDissociate(basededatos.Lineas_de_Pedido lineas_de_Pedido, org.orm.PersistentSession session)throws PersistentException {
 		try {
 			if (lineas_de_Pedido.getDe_un() != null) {
-				lineas_de_Pedido.getDe_un().setAsignado_a(null);
+				lineas_de_Pedido.getDe_un().asignado_a.remove(lineas_de_Pedido);
 			}
 			
 			if (lineas_de_Pedido.getPertenecen_a() != null) {

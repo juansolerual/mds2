@@ -44,11 +44,12 @@ public class BD_Pendiente {
 			env.setRealizado_por(pend.getRealizado_por());
 			//pend.tiene.clear();
 			Set set =  pend.tiene.getCollection();
-			for (Object object : set) {
-				Lineas_de_Pedido ldp = (Lineas_de_Pedido) object;
+			
+			List<Lineas_de_Pedido> carrito = Lineas_de_PedidoDAO.queryLineas_de_Pedido("Lineas_de_Pedido.pertenecen_a='" + pend.getID()+"'", null);
+			for (Lineas_de_Pedido ldp : carrito) {
 				ldp.setPertenecen_a(env);
-				
 			}
+			
 			
 			pend.setMarcado_por(null);
 			pend.setRealizado_por(null);
@@ -59,6 +60,7 @@ public class BD_Pendiente {
 
 		} catch (Exception e) {
 			// TODO: handle exception
+			System.out.println(e.toString());
 			t.rollback();
 
 		}
@@ -95,8 +97,24 @@ public class BD_Pendiente {
 		} catch (Exception e) {
 			t.rollback();
 		}
+		
 		TiendavirtualPersistentManager.instance().disposePersistentManager();
 
 		return resultado;
+	}
+
+	public List<Pendiente> cargarPedidosPendientes(int id) throws PersistentException {
+		List<Pendiente> pendientes = null;
+
+		PersistentTransaction t = TiendavirtualPersistentManager.instance().getSession().beginTransaction();
+		try {
+			pendientes = PendienteDAO.queryPendiente("Pendiente.realizado_por='" + id +"'", null);
+
+			t.commit();
+		} catch (Exception e) {
+			t.rollback();
+		}
+		TiendavirtualPersistentManager.instance().disposePersistentManager();
+		return pendientes;
 	}
 }

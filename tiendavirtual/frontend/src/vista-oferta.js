@@ -9,9 +9,10 @@ class VistaOferta extends PolymerElement {
                 :host {
                     display: block;
                     height: 100%;
+        			width: 100%;
                 }
             </style>
-<vaadin-vertical-layout style="width: 100%; height: 100%; margin: var(--lumo-space-m); flex-direction: row; align-items: flex-start; justify-content: center; flex-wrap: wrap; align-content: flex-start;" id="verticalLayout" class="content"></vaadin-vertical-layout>
+<vaadin-vertical-layout style="width: 100%; height: 100%; margin: var(--lumo-space-m); align-items: center; justify-content: center; align-content: flex-start;" id="verticalLayout" class="content"></vaadin-vertical-layout>
 `;
     }
 

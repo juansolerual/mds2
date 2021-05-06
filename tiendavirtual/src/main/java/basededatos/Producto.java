@@ -29,6 +29,9 @@ public class Producto implements Serializable {
 		else if (key == ORMConstants.KEY_PRODUCTO_RECIBE_VALORACION) {
 			return ORM_recibe_valoracion;
 		}
+		else if (key == ORMConstants.KEY_PRODUCTO_ASIGNADO_A) {
+			return ORM_asignado_a;
+		}
 		
 		return null;
 	}
@@ -40,10 +43,6 @@ public class Producto implements Serializable {
 		
 		else if (key == ORMConstants.KEY_PRODUCTO_PERTENECE_A) {
 			this.pertenece_a = (basededatos.Categoria) owner;
-		}
-		
-		else if (key == ORMConstants.KEY_PRODUCTO_ASIGNADO_A) {
-			this.asignado_a = (basededatos.Lineas_de_Pedido) owner;
 		}
 	}
 	
@@ -102,10 +101,10 @@ public class Producto implements Serializable {
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)	
 	private java.util.Set ORM_recibe_valoracion = new java.util.HashSet();
 	
-	@OneToOne(mappedBy="de_un", targetEntity=basededatos.Lineas_de_Pedido.class, fetch=FetchType.LAZY)	
+	@OneToMany(mappedBy="de_un", targetEntity=basededatos.Lineas_de_Pedido.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
-	private basededatos.Lineas_de_Pedido asignado_a;
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)	
+	private java.util.Set ORM_asignado_a = new java.util.HashSet();
 	
 	private void setID(int value) {
 		this.ID = value;
@@ -229,22 +228,16 @@ public class Producto implements Serializable {
 		return pertenece_a;
 	}
 	
-	public void setAsignado_a(basededatos.Lineas_de_Pedido value) {
-		if (this.asignado_a != value) {
-			basededatos.Lineas_de_Pedido lasignado_a = this.asignado_a;
-			this.asignado_a = value;
-			if (value != null) {
-				asignado_a.setDe_un(this);
-			}
-			if (lasignado_a != null && lasignado_a.getDe_un() == this) {
-				lasignado_a.setDe_un(null);
-			}
-		}
+	private void setORM_Asignado_a(java.util.Set value) {
+		this.ORM_asignado_a = value;
 	}
 	
-	public basededatos.Lineas_de_Pedido getAsignado_a() {
-		return asignado_a;
+	private java.util.Set getORM_Asignado_a() {
+		return ORM_asignado_a;
 	}
+	
+	@Transient	
+	public final basededatos.Lineas_de_PedidoSetCollection asignado_a = new basededatos.Lineas_de_PedidoSetCollection(this, _ormAdapter, ORMConstants.KEY_PRODUCTO_ASIGNADO_A, ORMConstants.KEY_LINEAS_DE_PEDIDO_DE_UN, ORMConstants.KEY_MUL_ONE_TO_MANY);
 	
 	public String toString() {
 		return String.valueOf(getID());

@@ -28,6 +28,8 @@ public class ClienteDetachedCriteria extends AbstractORMDetachedCriteria {
 	public final StringExpression foto_perfil;
 	public final StringExpression password;
 	public final CollectionExpression gestiona;
+	public final StringExpression formaDePago;
+	public final StringExpression datosPago;
 	public final CollectionExpression realiza;
 	public final CollectionExpression realiza_pedido;
 	
@@ -42,6 +44,8 @@ public class ClienteDetachedCriteria extends AbstractORMDetachedCriteria {
 		foto_perfil = new StringExpression("foto_perfil", this.getDetachedCriteria());
 		password = new StringExpression("password", this.getDetachedCriteria());
 		gestiona = new CollectionExpression("ORM_gestiona", this.getDetachedCriteria());
+		formaDePago = new StringExpression("formaDePago", this.getDetachedCriteria());
+		datosPago = new StringExpression("datosPago", this.getDetachedCriteria());
 		realiza = new CollectionExpression("ORM_realiza", this.getDetachedCriteria());
 		realiza_pedido = new CollectionExpression("ORM_realiza_pedido", this.getDetachedCriteria());
 	}
@@ -57,6 +61,8 @@ public class ClienteDetachedCriteria extends AbstractORMDetachedCriteria {
 		foto_perfil = new StringExpression("foto_perfil", this.getDetachedCriteria());
 		password = new StringExpression("password", this.getDetachedCriteria());
 		gestiona = new CollectionExpression("ORM_gestiona", this.getDetachedCriteria());
+		formaDePago = new StringExpression("formaDePago", this.getDetachedCriteria());
+		datosPago = new StringExpression("datosPago", this.getDetachedCriteria());
 		realiza = new CollectionExpression("ORM_realiza", this.getDetachedCriteria());
 		realiza_pedido = new CollectionExpression("ORM_realiza_pedido", this.getDetachedCriteria());
 	}

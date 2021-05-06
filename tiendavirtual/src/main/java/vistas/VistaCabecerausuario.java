@@ -158,7 +158,7 @@ public class VistaCabecerausuario extends PolymerTemplate<VistaCabecerausuario.V
      */
     public VistaCabecerausuario() {
         // You can initialise any data required for the connected UI components here.
-	    labelTitulo.getStyle().set("font-size", "2em").set("font-weight", "bold").set("text-decoration", "underline").set("color", "blue");
+	    labelTitulo.getStyle().set("font-size", "2em").set("font-weight", "bold").set("text-decoration", "underline").set("color", "#1676f3");
 
     }
 

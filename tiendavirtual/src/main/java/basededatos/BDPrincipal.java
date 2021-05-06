@@ -5,6 +5,7 @@ import interfaz.Usuario_registrado;
 import interfaz.Encargado_de_compras;
 import interfaz.App_transportes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.orm.PersistentException;
@@ -53,16 +54,15 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean nuevo_usuario() {
-		Usuario usuario = UsuarioDAO.createUsuario();
-		usuario.setNombre("prueba");
+	public boolean nuevo_usuario(Cliente cliente) {
+		boolean resultado = false;
 		try {
-			return _bD_Cliente.nuevo_usuario(usuario);
+			return _bD_Cliente.nuevo_usuario(cliente);
 		} catch (PersistentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return false;
+		return resultado;
 	}
 
 	public List<Lineas_de_Pedido> cargarCarrito(int numeroPedido) {
@@ -173,7 +173,8 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 		throw new UnsupportedOperationException();
 	}
 
-	public List<Pedido> cargarPedidos() {
+	public List<List> cargarPedidos(int id) {
+		List<List> listas = new ArrayList<List>();
 		List<basededatos.Pedido> pedidos = null;
 		List<basededatos.Entregado> entregados = null;
 		List<basededatos.Pendiente> pendientes = null;
@@ -181,15 +182,17 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 
 		try {
 			
-			pendientes = _bD_Pendiente.cargarPedidosPendientes();
-			entregados = _bD_Entregado.cargarPedidosEntregados();
-			enviados =_bD_Enviado.cargarPedidosEnviados();
-			
+			pendientes = _bD_Pendiente.cargarPedidosPendientes(id);
+			entregados = _bD_Entregado.cargarPedidosEntregados(id);
+			enviados =_bD_Enviado.cargarPedidosEnviados(id);
+			listas.add(enviados);
+			listas.add(pendientes);
+			listas.add(entregados);
 		} catch (PersistentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return pedidos;	
+		return listas;	
 	}
 
 	public boolean Marcar_como_enviado(int aIdPedido) {
@@ -256,8 +259,21 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean marcarComoEntregado(int aIdPedidoPendiente) {
-		throw new UnsupportedOperationException();
+	public boolean marcarComoEntregado(int idPedidoEnviado) {
+		System.out.println("BDPRINCIPAL marcar como entregado");
+
+		boolean resultado = false;
+		
+
+		try {
+			
+			resultado = _bD_Enviado.Marcar_como_entregado(idPedidoEnviado);
+			
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultado;	
 	}
 
 	public boolean desmarcarComoEntregado(int aIdPedido) {
@@ -284,8 +300,16 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 	}
 
 	public boolean eliminarAdministrador(int aIdAdministrador) {
-		throw new UnsupportedOperationException();
-	}
+		System.out.println("BDPRINCIPAL eliminarAdministrador");
+		boolean resultado = false;
+		try {
+			resultado = _bD_Administrador.eliminarAdministrador(aIdAdministrador);
+			
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultado;	}
 
 	public Administrador cargarAdministrador(int aIdAdministrador) {
 		Administrador administrador = null;
@@ -299,7 +323,14 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 	}
 
 	public boolean crearAdministrador(Administrador aAdministrador) {
-		throw new UnsupportedOperationException();
+		boolean resultado = false;
+		try {
+			return _bD_Administrador.crearAdministrador(aAdministrador);
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultado;
 	}
 
 	public boolean eliminarOferta(int aIdOferta) {
@@ -380,15 +411,39 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 	}
 
 	public boolean eliminarTransportista(int aIdTransportista) {
-		throw new UnsupportedOperationException();
-	}
+		System.out.println("BDPRINCIPAL eliminarTransportista");
+		boolean resultado = false;
+		try {
+			resultado = _bD_Transportista.eliminarTransportista(aIdTransportista);
+			
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultado;	}
 
 	public boolean eliminarEncargadoCompras(int aIdEncargado) {
-		throw new UnsupportedOperationException();
+		System.out.println("BDPRINCIPAL eliminarEncargadoCompras");
+		boolean resultado = false;
+		try {
+			resultado = _bD_EncargadoCompras.eliminarEncargadoCompras(aIdEncargado);
+			
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultado;
 	}
 
 	public Transportista cargarTransportista(int aIdTransportista) {
-		throw new UnsupportedOperationException();
+		Transportista transportista = null;
+		try {
+			transportista = _bD_Transportista.cargarTransportista(aIdTransportista);
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return transportista;	
 	}
 
 	public Encargado_compras cargarEncargadoCompras(int aIdEncargado) {
@@ -414,11 +469,25 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 	}
 
 	public boolean crearTransportista(Transportista aTransportista) {
-		throw new UnsupportedOperationException();
+		boolean resultado = false;
+		try {
+			return _bD_Transportista.crearTransportista(aTransportista);
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultado;
 	}
 
 	public boolean crearEncargadoCompras(Encargado_compras aEncargadoCompras) {
-		throw new UnsupportedOperationException();
+		boolean resultado = false;
+		try {
+			return _bD_EncargadoCompras.crearEncargadoCompras(aEncargadoCompras);
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultado;
 	}
 	
 	public List<Producto> cargarProductos(String string){
@@ -554,5 +623,23 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 		}
 		return enviados;	
 	}
+
+	@Override
+	public boolean eliminarCliente(int id) {
+		System.out.println("BDPRINCIPAL eliminarAdministrador");
+		boolean resultado = false;
+		try {
+			resultado = _bD_Administrador.eliminarCliente(id);
+			
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultado;	
+	}
+
+	
+
+	
 
 }

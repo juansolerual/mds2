@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -66,6 +67,9 @@ public class Categorias extends VistaCategorias {
 		HorizontalLayout scrollableLayout = new HorizontalLayout();
 		iAdmin adm = new BDPrincipal();
 		List<basededatos.Categoria> categorias = adm.cargarCategorias();
+		if (categorias == null) {
+			categorias = new ArrayList<basededatos.Categoria>();
+		}
 		for (basededatos.Categoria categoria : categorias) {
 			Categoria cat = new Categoria(categoria);
 			cat.avatar.addClickListener(new ComponentEventListener<ClickEvent<Div>>() {
@@ -110,6 +114,46 @@ public class Categorias extends VistaCategorias {
 				}
 			});
 			
+				cat.verCategoria.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
+				
+				
+
+
+				@Override
+				public void onComponentEvent(ClickEvent<Button> event) {
+					// TODO Auto-generated method stub
+					VaadinSession session = VaadinSession.getCurrent();
+					
+					Vista_busqueda_de_productos_categorias  _vista_busqueda_productos_categorias = new Vista_busqueda_de_productos_categorias(categoria);
+
+			    	session.setAttribute("_vista_busqueda_productos_categorias", _vista_busqueda_productos_categorias);
+			    	
+			    	if (cookiesHelper.isCliente()) {
+				    	VerticalLayout verticalLayoutUsuarioIdentificado = (VerticalLayout) session.getAttribute("verticalLayoutUsuarioIdentificado");
+			    		Visualizar_Pantalla_Principal_Usuario_Registrado visualizar_Pantalla_Principal_Usuario_Registrado = (Visualizar_Pantalla_Principal_Usuario_Registrado) session.getAttribute("Visualizar_Pantalla_Principal_Usuario_Registrado");
+			    		verticalLayoutUsuarioIdentificado.remove(visualizar_Pantalla_Principal_Usuario_Registrado);
+			    		verticalLayoutUsuarioIdentificado.add(_vista_busqueda_productos_categorias);
+			    	}
+			    	
+			    	if (cookiesHelper.isNoRegistrado()) {
+				    	VerticalLayout verticalLayoutUsuarioNoIdentificado = (VerticalLayout) session.getAttribute("verticalLayoutUsuarioNoIdentificado");
+			    		Visualizar_Pantalla_Usuario_no_registrado visualizar_Pantalla_Usuario_no_registrado = (Visualizar_Pantalla_Usuario_no_registrado) session.getAttribute("Visualizar_Pantalla_Usuario_no_registrado");
+				    	verticalLayoutUsuarioNoIdentificado.remove(visualizar_Pantalla_Usuario_no_registrado);
+						verticalLayoutUsuarioNoIdentificado.add(_vista_busqueda_productos_categorias);
+
+			    	}
+			    	
+			    	if (cookiesHelper.isAdministrador()) {
+			    		VerticalLayout verticalLayoutAdmin = (VerticalLayout) session.getAttribute("verticalLayoutAdmin");
+				    	Visualizar_Pantalla_Principal_Administrador visualizar_Pantalla_Principal_Administrador = (Visualizar_Pantalla_Principal_Administrador) session.getAttribute("visualizar_Pantalla_Principal_Administrador");
+				    	verticalLayoutAdmin.remove(visualizar_Pantalla_Principal_Administrador);
+				    	verticalLayoutAdmin.add(_vista_busqueda_productos_categorias);
+			    	}
+			    	
+				}
+			});
+			
+			
 			scrollableLayout.add(cat);
 		}
 		// Give the layout a defined height that fits the parent layout
@@ -118,10 +162,10 @@ public class Categorias extends VistaCategorias {
 		// Set overflow on the y-axis to "auto".
 		// It can be also "scroll", but then you
 		// have a scroll bar even when one isn't needed.
-		scrollableLayout.getStyle().set("overflow-x", "auto").set("margin-left", "20px").set("margin-right", "20px");
+		scrollableLayout.getStyle().set("overflow-x", "scroll").set("margin-left", "19%").set("margin-right", "20px").set("margin-bottom", "20px");
 		// Another element to show that it stays in the same place
 		Label staticElement = new Label("Categoria destacados");
-		staticElement.getStyle().set("color", "blue").set("font-weight", "bold").set("margin", "20px");
+		staticElement.getStyle().set("color", "#1676f3").set("font-weight", "bold").set("margin", "20px");
 		
 		Dialog dialog = new Dialog();
 		HorizontalLayout dialogHorizontal = new HorizontalLayout();
@@ -250,9 +294,9 @@ public class Categorias extends VistaCategorias {
 		 */
 
 		nuevoCategoria.setVisible(false);
-		if (user != null) {
-			nuevoCategoria.setVisible(user.equals("admin"));
-		}
+		nuevoCategoria.setVisible(cookiesHelper.isAdministrador());
+		
+		
 		HorizontalLayout primeraLinea = new HorizontalLayout();
 		primeraLinea.setPadding(true);
 		primeraLinea.add(staticElement, nuevoCategoria);
@@ -261,7 +305,7 @@ public class Categorias extends VistaCategorias {
 		// Add both the scrollable layout and
 		// the static element to the layout
 		this.getHorizontalLayout().add(primeraLinea, scrollableLayout);
-		this.getHorizontalLayout().getStyle().set("border", "2px solid blue").set("border-radius", "25px");
+		this.getHorizontalLayout().getStyle().set("border", "2px solid #1676f3").set("border-radius", "25px").set("margin-left", "2%");
 
 	}
 	

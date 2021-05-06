@@ -46,8 +46,8 @@ public class Lineas_de_Pedido implements Serializable {
 	@org.hibernate.annotations.GenericGenerator(name="BASEDEDATOS_LINEAS_DE_PEDIDO_ID_GENERATOR", strategy="native")	
 	private int ID;
 	
-	@OneToOne(optional=false, targetEntity=basededatos.Producto.class, fetch=FetchType.LAZY)	
-	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@ManyToOne(targetEntity=basededatos.Producto.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns(value={ @JoinColumn(name="ProductoID", referencedColumnName="ID", nullable=false) }, foreignKey=@ForeignKey(name="FKLineas_de_617012"))	
 	@org.hibernate.annotations.LazyToOne(value=org.hibernate.annotations.LazyToOneOption.NO_PROXY)	
 	private basededatos.Producto de_un;
@@ -82,19 +82,26 @@ public class Lineas_de_Pedido implements Serializable {
 	}
 	
 	public void setDe_un(basededatos.Producto value) {
-		if (this.de_un != value) {
-			basededatos.Producto lde_un = this.de_un;
-			this.de_un = value;
-			if (value != null) {
-				de_un.setAsignado_a(this);
-			}
-			if (lde_un != null && lde_un.getAsignado_a() == this) {
-				lde_un.setAsignado_a(null);
-			}
+		if (de_un != null) {
+			de_un.asignado_a.remove(this);
+		}
+		if (value != null) {
+			value.asignado_a.add(this);
 		}
 	}
 	
 	public basededatos.Producto getDe_un() {
+		return de_un;
+	}
+	
+	/**
+	 * This method is for internal use only.
+	 */
+	public void setORM_De_un(basededatos.Producto value) {
+		this.de_un = value;
+	}
+	
+	private basededatos.Producto getORM_De_un() {
 		return de_un;
 	}
 	

@@ -14,12 +14,13 @@ public class Categoria extends VistaCategoria{
 	public Categorias _categorias;
 	public Div avatar;
 	public Div name;
+	public Button verCategoria;
 	public Categoria(basededatos.Categoria cat) {
 		
 		System.out.println("Categoria creada");
 		avatar = new Div();
-	    avatar.setWidth("98px");
-	    avatar.setHeight("98px");
+	    avatar.setWidth("100px");
+	    avatar.setHeight("100px");
 	    avatar.getStyle()
 	      .set("background-color", "gray")
 	      .set("border-radius", "12px")
@@ -32,9 +33,13 @@ public class Categoria extends VistaCategoria{
 	    name.add(new Text(cat.getNombreCategoria()));
 	    name.getStyle().set("color", "blue");
 	    
-	    this.getVerticalLayout().add(avatar,name);
+	    verCategoria = new Button("Ver categoría");
+	    
+	    
+	    this.getVerticalLayout().add(avatar,name, verCategoria);
 
 	    this.getVerticalLayout().setSpacing(false);
-	    this.getVerticalLayout().getStyle().set("border","1px solid blue");
+	    this.getVerticalLayout().setWidth("95%");
+	    this.getVerticalLayout().getStyle().set("margin", "10px").set("border", "2px solid gray").set("border-radius", "25px");;
 	}
 }

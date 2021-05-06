@@ -37,4 +37,19 @@ public class BD_Entregado {
 	public boolean eliminarPedidoEntregado(int aIdPedidoEntregado) {
 		throw new UnsupportedOperationException();
 	}
+
+	public List<Entregado> cargarPedidosEntregados(int id) throws PersistentException {
+		List<Entregado> entregados = null;
+
+		PersistentTransaction t = TiendavirtualPersistentManager.instance().getSession().beginTransaction();
+		try {
+			entregados = EntregadoDAO.queryEntregado("Entregado.realizado_por='" + id +"'", null);
+
+			t.commit();
+		} catch (Exception e) {
+			t.rollback();
+		}
+		TiendavirtualPersistentManager.instance().disposePersistentManager();
+		return entregados;
+	}
 }

@@ -23,7 +23,7 @@ public class Oferta extends VistaOferta{
 	      .set("background-color", "gray")
 	      .set("border-radius", "12px")
 	      .set("margin", "16px")
-	     // .set("background", "url("+oferta.getImagen()+")")
+	      .set("background", "url("+oferta.getUrlImagen()+")")
 	      .set("cursor", "pointer");
 	    
 	    Div name = new Div();
@@ -33,7 +33,8 @@ public class Oferta extends VistaOferta{
 	    this.getVerticalLayout().add(avatar,name);
 
 	    this.getVerticalLayout().setSpacing(false);
-	    this.getVerticalLayout().getStyle().set("border","1px solid blue");
+	    this.getVerticalLayout().setWidth("95%");
+	    this.getVerticalLayout().getStyle().set("margin", "10px").set("border", "2px solid gray").set("border-radius", "25px");;
 	}
 	
 }

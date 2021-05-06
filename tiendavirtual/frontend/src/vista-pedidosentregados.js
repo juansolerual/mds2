@@ -1,24 +1,19 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
+import '@vaadin/vaadin-ordered-layout/src/vaadin-vertical-layout.js';
 
-/**
- * `vista-pedidosentregados`
- *
- * VistaPedidosentregados element.
- *
- * @customElement
- * @polymer
- */
 class VistaPedidosentregados extends PolymerElement {
 
     static get template() {
         return html`
-            <style include="shared-styles">
+<style include="shared-styles">
                 :host {
                     display: block;
                     height: 100%;
+        			width: 100%
                 }
             </style>
-        `;
+<vaadin-vertical-layout style="width: 100%; height: 100%;" id="verticalPedidosEntregados"></vaadin-vertical-layout>
+`;
     }
 
     static get is() {

@@ -46,7 +46,7 @@ public class BD_Oferta {
 			ofer.setFechaCaducidadOferta(aOferta.getFechaCaducidadOferta());
 			ofer.setPorcentajeOferta(aOferta.getPorcentajeOferta());
 			ofer.setPrecioOferta(aOferta.getPrecioOferta());
-			
+			ofer.setUrlImagen(aOferta.getUrlImagen());
 			
 			
 			OfertaDAO.save(ofer);

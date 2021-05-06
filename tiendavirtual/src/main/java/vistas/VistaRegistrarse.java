@@ -13,6 +13,7 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.component.combobox.ComboBox;
 
 /**
  * A Designer generated component for the vista-registrarse template.
@@ -24,7 +25,23 @@ import com.vaadin.flow.component.select.Select;
 @JsModule("./src/vista-registrarse.js")
 public class VistaRegistrarse extends PolymerTemplate<VistaRegistrarse.VistaRegistrarseModel> {
 
-    @Id("nombre")
+    public ComboBox<String> getTipoUsuario() {
+		return tipoUsuario;
+	}
+
+	public void setTipoUsuario(ComboBox<String> tipoUsuario) {
+		this.tipoUsuario = tipoUsuario;
+	}
+
+	public TextField getDni() {
+		return dni;
+	}
+
+	public void setDni(TextField dni) {
+		this.dni = dni;
+	}
+
+	@Id("nombre")
 	private TextField nombre;
 	@Id("password")
 	private PasswordField password;
@@ -34,8 +51,6 @@ public class VistaRegistrarse extends PolymerTemplate<VistaRegistrarse.VistaRegi
 	private Button registrarseButton;
 	@Id("vaadinVerticalLayout")
 	private Element vaadinVerticalLayout;
-	@Id("vaadinHorizontalLayout")
-	private HorizontalLayout vaadinHorizontalLayout;
 	public TextField getNombre() {
 		return nombre;
 	}
@@ -76,12 +91,14 @@ public class VistaRegistrarse extends PolymerTemplate<VistaRegistrarse.VistaRegi
 		this.vaadinVerticalLayout = vaadinVerticalLayout;
 	}
 
-	public HorizontalLayout getVaadinHorizontalLayout() {
-		return vaadinHorizontalLayout;
+	
+
+	public Element getVaadinHorizontalLayoutFoto() {
+		return vaadinHorizontalLayoutFoto;
 	}
 
-	public void setVaadinHorizontalLayout(HorizontalLayout vaadinHorizontalLayout) {
-		this.vaadinHorizontalLayout = vaadinHorizontalLayout;
+	public void setVaadinHorizontalLayoutFoto(Element vaadinHorizontalLayoutFoto) {
+		this.vaadinHorizontalLayoutFoto = vaadinHorizontalLayoutFoto;
 	}
 
 	public Image getImg() {
@@ -92,12 +109,22 @@ public class VistaRegistrarse extends PolymerTemplate<VistaRegistrarse.VistaRegi
 		this.img = img;
 	}
 
-	public Select getFormaDePago() {
+	
+
+	public ComboBox<String> getFormaDePago() {
 		return formaDePago;
 	}
 
-	public void setFormaDePago(Select formaDePago) {
+	public void setFormaDePago(ComboBox<String> formaDePago) {
 		this.formaDePago = formaDePago;
+	}
+
+	public TextField getNumeroTarjeta() {
+		return numeroTarjeta;
+	}
+
+	public void setNumeroTarjeta(TextField numeroTarjeta) {
+		this.numeroTarjeta = numeroTarjeta;
 	}
 
 	public TextField getEmail() {
@@ -124,13 +151,7 @@ public class VistaRegistrarse extends PolymerTemplate<VistaRegistrarse.VistaRegi
 		this.labelRegistroUsuario = labelRegistroUsuario;
 	}
 
-	public Button getSeleccionarFotoButton() {
-		return seleccionarFotoButton;
-	}
-
-	public void setSeleccionarFotoButton(Button seleccionarFotoButton) {
-		this.seleccionarFotoButton = seleccionarFotoButton;
-	}
+	
 
 	public TextField getDireccion() {
 		return direccion;
@@ -150,20 +171,26 @@ public class VistaRegistrarse extends PolymerTemplate<VistaRegistrarse.VistaRegi
 
 	@Id("img")
 	private Image img;
-	@Id("formaDePago")
-	private Select formaDePago;
 	@Id("email")
 	private TextField email;
 	@Id("labelFotoPerfil")
 	private Label labelFotoPerfil;
 	@Id("labelRegistroUsuario")
 	private Label labelRegistroUsuario;
-	@Id("seleccionarFotoButton")
-	private Button seleccionarFotoButton;
 	@Id("direccion")
 	private TextField direccion;
 	@Id("apellidos")
 	private TextField apellidos;
+	@Id("dni")
+	private TextField dni;
+	@Id("numeroTarjeta")
+	private TextField numeroTarjeta;
+	@Id("formaDePago")
+	private ComboBox<String> formaDePago;
+	@Id("vaadinHorizontalLayoutFoto")
+	private Element vaadinHorizontalLayoutFoto;
+	@Id("tipoUsuario")
+	private ComboBox<String> tipoUsuario;
 	/**
      * Creates a new VistaRegistrarse.
      */

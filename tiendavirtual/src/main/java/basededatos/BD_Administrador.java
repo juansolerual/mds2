@@ -27,8 +27,20 @@ public class BD_Administrador {
 		return administradores;
 	}
 
-	public boolean eliminarAdministrador(int aIdAdministrador) {
-		throw new UnsupportedOperationException();
+	public boolean eliminarAdministrador(int aIdAdministrador) throws PersistentException {
+		boolean resultado = false;
+
+		PersistentTransaction t = TiendavirtualPersistentManager.instance().getSession().beginTransaction();
+		try {
+			Administrador administrador  = AdministradorDAO.getAdministradorByORMID(aIdAdministrador);
+			resultado = AdministradorDAO.delete(administrador);
+			t.commit();
+		} catch (Exception e) {
+			t.rollback();
+		}
+		TiendavirtualPersistentManager.instance().disposePersistentManager();
+
+		return resultado;
 	}
 
 	public Administrador cargarAdministrador(int aIdAdministrador) throws PersistentException {
@@ -46,7 +58,43 @@ public class BD_Administrador {
 		return administrador;
 	}
 
-	public boolean crearAdministrador(Administrador aAdministrador) {
-		throw new UnsupportedOperationException();
+	public boolean crearAdministrador(Administrador aAdministrador) throws PersistentException {
+		boolean resultado = false;
+		
+		PersistentTransaction t = TiendavirtualPersistentManager.instance().getSession().beginTransaction();
+		try {
+			//Administrador administrador = AdministradorDAO.getAdministradorByORMID(aAdministrador.getID());
+//			if (administrador != null) {
+//				resultado = AdministradorDAO.refresh(aAdministrador);
+//			}else {
+//			}
+			Administrador nuevoAdministrador = (Administrador) TiendavirtualPersistentManager.instance().getSession().merge(aAdministrador);
+
+			resultado = AdministradorDAO.save(nuevoAdministrador);
+
+			t.commit();
+		} catch (Exception e) {
+			t.rollback();
+		}
+		
+		TiendavirtualPersistentManager.instance().disposePersistentManager();
+
+		return resultado;
+	}
+
+	public boolean eliminarCliente(int id) throws PersistentException {
+		boolean resultado = false;
+
+		PersistentTransaction t = TiendavirtualPersistentManager.instance().getSession().beginTransaction();
+		try {
+			Cliente cliente  = ClienteDAO.getClienteByORMID(id);
+			resultado = ClienteDAO.delete(cliente);
+			t.commit();
+		} catch (Exception e) {
+			t.rollback();
+		}
+		TiendavirtualPersistentManager.instance().disposePersistentManager();
+
+		return resultado;
 	}
 }

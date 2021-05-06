@@ -6,6 +6,7 @@ import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.dom.Element;
 import com.vaadin.flow.component.polymertemplate.Id;
+import com.vaadin.flow.component.textfield.TextField;
 
 /**
  * A Designer generated component for the vista-busqueda template.
@@ -21,7 +22,6 @@ public class VistaBusqueda extends PolymerTemplate<VistaBusqueda.VistaBusquedaMo
 	private Element barraIzquierda;
 	@Id("barraDerecha")
 	private Element barraDerecha;
-
 	/**
      * Creates a new VistaBusqueda.
      */

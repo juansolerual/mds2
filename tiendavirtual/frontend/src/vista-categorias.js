@@ -9,7 +9,8 @@ class VistaCategorias extends PolymerElement {
                 :host {
                     display: block;
                     height: 100%;
-        			width: 49%;
+        			width: 48.5%;
+        			margin-left: 2%;
 
                 }
             </style>

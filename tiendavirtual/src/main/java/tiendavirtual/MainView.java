@@ -26,6 +26,7 @@ import basededatos.Administrador;
 import basededatos.BDPrincipal;
 import basededatos.iAdmin;
 import interfaz.Admin;
+import interfaz.App_transportes;
 import interfaz.Cabecera_Usuario;
 import interfaz.Encargado_de_compras;
 import interfaz.Iniciar_sesion;
@@ -71,15 +72,16 @@ public class MainView extends VerticalLayout {
 	
 	//Cabecera_Usuario cabeceraUsuario = new Cabecera_Usuario();
 	
-	Usuario_no_identificado usuarioNoIdentificado = new Usuario_no_identificado();
+	Usuario_no_identificado usuarioNoIdentificado;
 	Usuario_registrado usuarioRegistrado;
 	Encargado_de_compras encargado_de_compras;
+	App_transportes app_transportes;
 	VaadinSession session;
 	
 	Iniciar_sesion _iniciar_sesion = new Iniciar_sesion();
     iAdmin adm = new BDPrincipal();
 
-	cookiesHelper cookiesH = new cookiesHelper();
+	cookiesHelper cookiesH;
 	
     public MainView (@Autowired GreetService service) {
 
@@ -102,7 +104,7 @@ public class MainView extends VerticalLayout {
 //			
 //		}
     	
-    	
+    	cookiesH = new cookiesHelper();
     	
     	
     	session = VaadinSession.getCurrent();
@@ -140,24 +142,35 @@ public class MainView extends VerticalLayout {
         	System.out.println("is cliente");
         	usuarioRegistrado = new Usuario_registrado();
 	        session.setAttribute("usuarioRegistrado", usuarioRegistrado);
-	    	remove(usuarioNoIdentificado);
+	    	removeAll();
 	    	add(usuarioRegistrado);
         }else if (cookiesHelper.isAdministrador()) {
         	System.out.println("is admin");
-
         	Admin admin = new Admin();
 	        session.setAttribute("adminInterfaz", admin);
-	    	remove(usuarioNoIdentificado);
+	    	removeAll();
 	    	add(admin);
         }else if (cookiesHelper.isEncargadoCompras()) {
         	System.out.println("is encargado");
 
         	encargado_de_compras = new Encargado_de_compras();
 	        session.setAttribute("encargado_de_compras", encargado_de_compras);
-	    	remove(usuarioNoIdentificado);
+	    	removeAll();
 	    	add(encargado_de_compras);
+        }else if (cookiesHelper.istransportista()) {
+        	System.out.println("is transportista");
+
+        	app_transportes = new App_transportes();
+	        session.setAttribute("app_transportes", app_transportes);
+	    	removeAll();
+	    	add(app_transportes);
         }else if (cookiesHelper.isNoRegistrado()){
+        	System.out.println("is NoRegistrado");
+
+        	usuarioNoIdentificado = new Usuario_no_identificado();
+	        session.setAttribute("usuarioNoIdentificado", usuarioNoIdentificado);
             add(usuarioNoIdentificado);
+            //login();
         }
         
         
@@ -167,7 +180,7 @@ public class MainView extends VerticalLayout {
         
         
 
-        login();
+       
         
     }
     
@@ -187,9 +200,34 @@ public class MainView extends VerticalLayout {
     		List<basededatos.Encargado_compras> encargadosCompras = adm.cargarEncargadosCompras();
     		List<basededatos.Transportista> transportistas = adm.cargarTransportistas();
     		
+    		
     		for (basededatos.Transportista trans : transportistas) {
 				if (trans.getEmail().equals(e.getUsername())) {
-					transportista = trans;
+					if (trans.getPassword().equals(e.getPassword())) {
+						transportista = trans;
+						session.setAttribute("tipoUsuario", "encargado");
+						session.setAttribute("transportista", trans);
+						
+						Cookie cookiecliente = new Cookie("cliente", String.valueOf(trans.getID()));
+
+						Cookie cookieTipoUsuario= new Cookie("tipoUsuario", "transportista");
+
+						cookiecliente.setMaxAge(60 * 60 * 24 * 7 * 52); // define after how many *seconds* the cookie should expire
+						cookiecliente.setPath("/"); // single slash means the cookie is set for your whole application.
+						cookieTipoUsuario.setMaxAge(60 * 60 * 24 * 7 * 52); // define after how many *seconds* the cookie should expire
+						cookieTipoUsuario.setPath("/"); // single slash means the cookie is set for your whole application.
+						VaadinService.getCurrentResponse().addCookie(cookiecliente);
+						VaadinService.getCurrentResponse().addCookie(cookieTipoUsuario);
+
+
+						app_transportes = new App_transportes();
+				        session.setAttribute("app_transportes", app_transportes);
+
+				    	removeAll();
+		    	    	add(app_transportes);
+		    	    	
+		    	    	System.out.println("app transportes");
+					}
 				}
 			}
     		
@@ -215,7 +253,7 @@ public class MainView extends VerticalLayout {
 						encargado_de_compras = new Encargado_de_compras();
 				        session.setAttribute("encargado_de_compras", encargado_de_compras);
 
-		    	    	remove(usuarioNoIdentificado);
+				    	removeAll();
 		    	    	add(encargado_de_compras);
 		    	    	
 		    	    	System.out.println("encargado");
@@ -246,7 +284,7 @@ public class MainView extends VerticalLayout {
 		    	    	usuarioRegistrado = new Usuario_registrado();
 				        session.setAttribute("usuarioRegistrado", usuarioRegistrado);
 
-		    	    	remove(usuarioNoIdentificado);
+				    	removeAll();
 		    	    	add(usuarioRegistrado);
 		    	    	
 		    	    	System.out.println("cliente");
@@ -277,7 +315,7 @@ public class MainView extends VerticalLayout {
 		    	    	Admin admin = new Admin();
 				        session.setAttribute("adminInterfaz", admin);
 
-		    	    	remove(usuarioNoIdentificado);
+				    	removeAll();
 		    	    	add(admin);
 		    	    	
 		    	    	System.out.println("admin");
@@ -285,6 +323,9 @@ public class MainView extends VerticalLayout {
 					
 				}
 			}
+    		
+	    	cookiesH = new cookiesHelper();
+
     		
     		
     	    if (e.getUsername().equals("admin")) {

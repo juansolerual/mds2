@@ -25,6 +25,7 @@ public class Admin extends VistaAdmin{
 	public Visualizar_Pantalla_Principal_Administrador _visualizar_Pantalla_Principal_Administrador;
 	public Cabecera_administrador _cabecera_administrador;
 	public VerticalLayout vlayout;
+	public Vista_cuenta_usuario _vista_cuenta_usuario;
 
 	
 	public Admin() {
@@ -37,6 +38,8 @@ public class Admin extends VistaAdmin{
 		VaadinSession session = VaadinSession.getCurrent();
 
     	session.setAttribute("verticalLayoutAdmin", vlayout);
+    	session.setAttribute("Cabecera_administrador", _cabecera_administrador);
+
 
     	session.setAttribute("visualizar_Pantalla_Principal_Administrador", _visualizar_Pantalla_Principal_Administrador);
     	
@@ -61,7 +64,7 @@ public class Admin extends VistaAdmin{
 				VaadinService.getCurrentResponse().addCookie(cookiecliente);
 				VaadinService.getCurrentResponse().addCookie(cookieTipoUsuario);
 				Admin admin = (Admin) session.getAttribute("adminInterfaz");
-				Usuario_no_identificado usuario_no_identificado = (Usuario_no_identificado) session.getAttribute("usuarioNoIdentificado");
+				Usuario_no_identificado usuario_no_identificado = new Usuario_no_identificado();
 
 		    	VerticalLayout mainView = (VerticalLayout) session.getAttribute("MainView");
 		    	mainView.remove(admin);
@@ -71,6 +74,34 @@ public class Admin extends VistaAdmin{
 
 			}
 		});
+    	
+    	_cabecera_administrador.getVaadinButton().setText("Gestor empleados");
+    	_cabecera_administrador.getVaadinButton().addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
 
+			@Override
+			public void onComponentEvent(ClickEvent<Button> event) {
+				// TODO Auto-generated method stub
+				_vista_gestion_empleados = new Vista_gestion_empleados();
+		    	session.setAttribute("Vista_gestion_empleados", _vista_gestion_empleados);
+
+				vlayout.removeAll();
+				vlayout.add(_cabecera_administrador);
+				vlayout.add(_vista_gestion_empleados);
+
+			}	
+		});
+    	
+    	_cabecera_administrador.getMiCuentaButton().addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
+
+
+			@Override
+			public void onComponentEvent(ClickEvent<Button> event) {
+				System.out.println("click ver cuenta");
+				vlayout.removeAll();
+				_vista_cuenta_usuario = new Vista_cuenta_usuario(cookiesHelper.administrador);
+				vlayout.add(_cabecera_administrador);
+				vlayout.add(_vista_cuenta_usuario);
+			}	
+		});
 	}
 }

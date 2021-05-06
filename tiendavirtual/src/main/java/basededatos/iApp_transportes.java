@@ -15,4 +15,8 @@ public interface iApp_transportes {
 	public boolean marcarComoEntregado(int aIdPedidoPendiente);
 
 	public boolean desmarcarComoEntregado(int aIdPedido);
+
+	public List<Lineas_de_Pedido> cargarCarrito(int id);
+
+	public List<Enviado> cargarPedidosEnviados();
 }

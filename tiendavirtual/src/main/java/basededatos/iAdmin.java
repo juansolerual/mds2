@@ -79,4 +79,6 @@ public interface iAdmin {
 	public List<Cliente> cargarClientes();
 
 	public Cliente cargarCliente(int idUsuario);
+
+	public boolean eliminarCliente(int id);
 }

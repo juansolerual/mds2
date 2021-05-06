@@ -43,6 +43,12 @@ public class Cliente extends basededatos.Usuario implements Serializable {
 		
 	};
 	
+	@Column(name="FormaDePago", nullable=true, length=255)	
+	private String formaDePago;
+	
+	@Column(name="DatosPago", nullable=true, length=255)	
+	private String datosPago;
+	
 	@OneToMany(mappedBy="valorado_por", targetEntity=basededatos.Valoracion.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)	
@@ -52,6 +58,22 @@ public class Cliente extends basededatos.Usuario implements Serializable {
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)	
 	private java.util.Set ORM_realiza_pedido = new java.util.HashSet();
+	
+	public void setFormaDePago(String value) {
+		this.formaDePago = value;
+	}
+	
+	public String getFormaDePago() {
+		return formaDePago;
+	}
+	
+	public void setDatosPago(String value) {
+		this.datosPago = value;
+	}
+	
+	public String getDatosPago() {
+		return datosPago;
+	}
 	
 	private void setORM_Realiza(java.util.Set value) {
 		this.ORM_realiza = value;

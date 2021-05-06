@@ -46,6 +46,8 @@ public class Elementos_comunes_carrito extends VistaElementoscomunescarrito{
 	public Label totalPagar;
 	public Label estadoPedido;
 	public List<Lineas_de_Pedido> carrito;
+	public Button realizarPago;
+	public Button terminarPedido;
 	
 	public Elementos_comunes_carrito() {
 		super();
@@ -57,8 +59,13 @@ public class Elementos_comunes_carrito extends VistaElementoscomunescarrito{
 		pedido.setFechaPedido(new java.util.Date());
 		pedido.setHoraPedido(new Time(new java.util.Date().getTime()));
 		pedido.setRealizado_por(cliente);
-		pedido.setMarcado_por(admin.cargarEncargadoCompras(2));
-		carrito = (List<Lineas_de_Pedido>) session.getAttribute(String.valueOf(cookiesHelper.idUsuario));
+		pedido.setMarcado_por(admin.cargarEncargadoCompras(3));
+		if (cookiesHelper.isNoRegistrado()) {
+			carrito = (List<Lineas_de_Pedido>) session.getAttribute("carrito_invitado");
+
+		}else {
+			carrito = (List<Lineas_de_Pedido>) session.getAttribute(String.valueOf(cookiesHelper.idUsuario));
+		}
 		
 //		Pedido pedido = (Pedido)session.getAttribute("pedidoCarrito");
 //		pedido.
@@ -162,20 +169,31 @@ public class Elementos_comunes_carrito extends VistaElementoscomunescarrito{
 	    Label calle = new Label();
 	    Label telefono = new Label();
 	    
-	    nombreApellidos.setText(cliente.getNombre() + " " + cliente.getApellidos());
-	    calle.setText(cliente.getDireccion());
-	    telefono.setText("676546546");
+	    if (cookiesHelper.isNoRegistrado()) {
+	    	nombreApellidos.setText("USUARIO NO REGISTRADO");
+		    calle.setText("- - - - - - -");
+		    telefono.setText("- - - - - - - ");
+		    
+		    direccionEnvio.add(tituloDireccionEnvio, nombreApellidos, calle, telefono);
+		    metodoPago = new VerticalLayout();
+		    metodoPago.getStyle().set("border","1px solid blue").set("margin", "20px").set("width", "100%");
+	    }else {
+	    	nombreApellidos.setText(cliente.getNombre() + " " + cliente.getApellidos());
+		    calle.setText(cliente.getDireccion());
+		    telefono.setText("676546546");
+		    
+		    direccionEnvio.add(tituloDireccionEnvio, nombreApellidos, calle, telefono);
+		    metodoPago = new VerticalLayout();
+		    metodoPago.getStyle().set("border","1px solid blue").set("margin", "20px").set("width", "100%");
+	    }
 	    
-	    direccionEnvio.add(tituloDireccionEnvio, nombreApellidos, calle, telefono);
-	    metodoPago = new VerticalLayout();
-	    metodoPago.getStyle().set("border","1px solid blue").set("margin", "20px").set("width", "100%");
 
 	    totalDinero = new VerticalLayout();
 	    totalDinero.getStyle().set("border","1px solid blue").set("margin", "20px").set("width", "100%");
 
 	    botones = new VerticalLayout();
 	    
-	    Button realizarPago = new Button("Realizar pago");
+	    realizarPago = new Button("Realizar pago");
 	    realizarPago.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
 
 			@Override
@@ -186,7 +204,7 @@ public class Elementos_comunes_carrito extends VistaElementoscomunescarrito{
 				pedido.setPagado(true);
 			}
 		});
-	    Button terminarPedido = new Button("Realizar pedido");
+	    terminarPedido = new Button("Realizar pedido");
 	    terminarPedido.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
 
 			@Override

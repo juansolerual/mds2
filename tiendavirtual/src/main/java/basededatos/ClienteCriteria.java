@@ -28,6 +28,8 @@ public class ClienteCriteria extends AbstractORMCriteria {
 	public final StringExpression foto_perfil;
 	public final StringExpression password;
 	public final CollectionExpression gestiona;
+	public final StringExpression formaDePago;
+	public final StringExpression datosPago;
 	public final CollectionExpression realiza;
 	public final CollectionExpression realiza_pedido;
 	
@@ -42,6 +44,8 @@ public class ClienteCriteria extends AbstractORMCriteria {
 		foto_perfil = new StringExpression("foto_perfil", this);
 		password = new StringExpression("password", this);
 		gestiona = new CollectionExpression("ORM_gestiona", this);
+		formaDePago = new StringExpression("formaDePago", this);
+		datosPago = new StringExpression("datosPago", this);
 		realiza = new CollectionExpression("ORM_realiza", this);
 		realiza_pedido = new CollectionExpression("ORM_realiza_pedido", this);
 	}

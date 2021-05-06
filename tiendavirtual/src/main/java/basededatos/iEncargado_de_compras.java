@@ -4,7 +4,6 @@ import java.util.List;
 
 public interface iEncargado_de_compras {
 
-	public List<Pedido> cargarPedidos();
 
 	public boolean Marcar_como_enviado(int aIdPedido);
 

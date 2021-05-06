@@ -6,6 +6,8 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyDownEvent;
 import com.vaadin.flow.component.KeyUpEvent;
+import com.vaadin.flow.component.HasValue.ValueChangeEvent;
+import com.vaadin.flow.component.HasValue.ValueChangeListener;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -16,6 +18,7 @@ import basededatos.CategoriaDAO;
 import basededatos.BDPrincipal;
 import basededatos.iAdmin;
 import basededatos.iUsuario_no_identificado;
+import vistas.VistaProductousuario;
 import vistas.VistaUsuarionoidentificado;
 
 //import basededatos.iUsuario_no_identificado;
@@ -35,7 +38,6 @@ public class Usuario_no_identificado extends VistaUsuarionoidentificado{
 	public Usuario_no_identificado() {
 		
 
-		_iniciar_sesion = new Iniciar_sesion();
 		_registrarse = new Registrarse();
 
 		_cabecera_usuario_no_registrado = new Cabecera_Usuario_No_Registrado();
@@ -50,8 +52,11 @@ public class Usuario_no_identificado extends VistaUsuarionoidentificado{
 		vlayout.add(_visualizar_Pantalla_Usuario_no_registrado);
 
 		VaadinSession session = VaadinSession.getCurrent();
+		
+		
 
     	session.setAttribute("verticalLayoutUsuarioNoIdentificado", vlayout);
+    	session.setAttribute("_cabecera_usuario_no_registrado", _cabecera_usuario_no_registrado);
     	session.setAttribute("Visualizar_Pantalla_Usuario_no_registrado", _visualizar_Pantalla_Usuario_no_registrado);
 
 		_cabecera_usuario_no_registrado.getIniciarSesionButton().addClickListener(new ComponentEventListener() {
@@ -64,6 +69,7 @@ public class Usuario_no_identificado extends VistaUsuarionoidentificado{
 				System.out.println("click login");
 				vlayout.remove(_visualizar_Pantalla_Usuario_no_registrado);
 				vlayout.remove(_registrarse);
+				_iniciar_sesion = new Iniciar_sesion();
 
 				vlayout.add(_iniciar_sesion);
 				
@@ -78,10 +84,12 @@ public class Usuario_no_identificado extends VistaUsuarionoidentificado{
 				//layout.remove(lpnr);
 				//layout.add(lg);
 				System.out.println("click registrarse");
-				vlayout.remove(_visualizar_Pantalla_Usuario_no_registrado);
-				vlayout.remove(_iniciar_sesion);
-
+				vlayout.removeAll();
+				//vlayout.remove(_iniciar_sesion);
+				vlayout.add(_cabecera_usuario_no_registrado);
 				vlayout.add(_registrarse);
+		    	session.setAttribute("Registrarse", _registrarse);
+
 				
 			}
 		});
@@ -119,10 +127,17 @@ public class Usuario_no_identificado extends VistaUsuarionoidentificado{
 			@Override
 			public void onComponentEvent(ClickEvent<Div> event) {
 				// TODO Auto-generated method stub
-				vlayout.removeAll();
-				vlayout.add(_cabecera_usuario_no_registrado);
-				_visualizar_Pantalla_Usuario_no_registrado = new Visualizar_Pantalla_Usuario_no_registrado(vlayout);
-				vlayout.add(_visualizar_Pantalla_Usuario_no_registrado);
+//				vlayout.removeAll();
+//				vlayout.add(_cabecera_usuario_no_registrado);
+//				_visualizar_Pantalla_Usuario_no_registrado = new Visualizar_Pantalla_Usuario_no_registrado(vlayout);
+//				vlayout.add(_visualizar_Pantalla_Usuario_no_registrado);
+				VerticalLayout verticalLayoutUsuarioNoIdentificado = (VerticalLayout) session.getAttribute("verticalLayoutUsuarioNoIdentificado");
+	    		Visualizar_Pantalla_Usuario_no_registrado visualizar_Pantalla_Usuario_no_registrado = (Visualizar_Pantalla_Usuario_no_registrado) session.getAttribute("Visualizar_Pantalla_Usuario_no_registrado");
+	    		VistaProductousuario vistaProductoUsuario = (VistaProductousuario) session.getAttribute("vistaProductoUsuario");
+	    		
+	    		verticalLayoutUsuarioNoIdentificado.removeAll();
+	    		verticalLayoutUsuarioNoIdentificado.add(_cabecera_usuario_no_registrado);
+	    		verticalLayoutUsuarioNoIdentificado.add(visualizar_Pantalla_Usuario_no_registrado);
 
 			}
 			
@@ -133,14 +148,46 @@ public class Usuario_no_identificado extends VistaUsuarionoidentificado{
 			@Override
 			public void onComponentEvent(ClickEvent<HorizontalLayout> event) {
 				// TODO Auto-generated method stub
-				vlayout.removeAll();
-				vlayout.add(_cabecera_usuario_no_registrado);
-				_visualizar_Pantalla_Usuario_no_registrado = new Visualizar_Pantalla_Usuario_no_registrado(vlayout);
-				vlayout.add(_visualizar_Pantalla_Usuario_no_registrado);
+//				vlayout.removeAll();
+//				vlayout.add(_cabecera_usuario_no_registrado);
+//				_visualizar_Pantalla_Usuario_no_registrado = new Visualizar_Pantalla_Usuario_no_registrado(vlayout);
+//				vlayout.add(_visualizar_Pantalla_Usuario_no_registrado);
+				VerticalLayout verticalLayoutUsuarioNoIdentificado = (VerticalLayout) session.getAttribute("verticalLayoutUsuarioNoIdentificado");
+	    		Visualizar_Pantalla_Usuario_no_registrado visualizar_Pantalla_Usuario_no_registrado = (Visualizar_Pantalla_Usuario_no_registrado) session.getAttribute("Visualizar_Pantalla_Usuario_no_registrado");
+	    		VistaProductousuario vistaProductoUsuario = (VistaProductousuario) session.getAttribute("vistaProductoUsuario");
+	    		
+	    		verticalLayoutUsuarioNoIdentificado.remove(vistaProductoUsuario);
+	    		verticalLayoutUsuarioNoIdentificado.add(visualizar_Pantalla_Usuario_no_registrado);
 			}
 		});
 		
 		_cabecera_usuario_no_registrado.getDivLogo().addClickListener(listenerHome);
+		
+		_cabecera_usuario_no_registrado.getCarritoButton().addClickListener(new ComponentEventListener() {
+			
+			@Override
+			public void onComponentEvent(ComponentEvent event) {
+				// TODO Auto-generated method stub
+				System.out.println("click ver carrito");
+				vlayout.removeAll();
+				vlayout.add(_cabecera_usuario_no_registrado);
+				_vista_carrito_Usuario_no_registrado = new Vista_carrito_Usuario_no_registrado();
+				vlayout.add(_vista_carrito_Usuario_no_registrado);
+			}
+		});
+		
+		
+		_visualizar_Pantalla_Usuario_no_registrado._productos_Usuario.carritoText.addValueChangeListener(new ValueChangeListener() {
+			@Override
+			public void valueChanged(ValueChangeEvent event) {
+				// TODO Auto-generated method stub
+
+				System.out.println("El numero en el carrito ha cambiado " + _visualizar_Pantalla_Usuario_no_registrado._productos_Usuario.carritoInt);
+				_cabecera_usuario_no_registrado.getCarritoButton().setText("Carrito ("+_visualizar_Pantalla_Usuario_no_registrado._productos_Usuario.carritoInt+")");
+			}
+		});
+		
+		
 		
 		//_cabecera_usuario_no_registrado.getBusquedaText()
 		

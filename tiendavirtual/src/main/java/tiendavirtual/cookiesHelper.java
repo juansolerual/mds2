@@ -9,6 +9,7 @@ import basededatos.Administrador;
 import basededatos.BDPrincipal;
 import basededatos.Cliente;
 import basededatos.Encargado_compras;
+import basededatos.Transportista;
 import basededatos.iAdmin;
 import interfaz.Admin;
 import interfaz.Usuario_registrado;
@@ -17,6 +18,7 @@ public class cookiesHelper {
 	
 	public static Administrador administrador = null;
 	public static Encargado_compras encargado_compras = null;
+	public static Transportista transportista = null;
 	public static String usuario = null;
 	public static int idUsuario = -1;
 	public static Cliente cliente = null;
@@ -45,6 +47,12 @@ public class cookiesHelper {
 		}else return null;	
 	}
 	
+	public static Transportista getTransportista() {
+		if (transportista != null) {
+			return transportista;
+		}else return null;	
+	}
+	
 	public static boolean isEncargadoCompras() {
 		if (encargado_compras!= null) {
 			return true;
@@ -62,6 +70,12 @@ public class cookiesHelper {
 		}else return false;
 	}
 	
+	public static boolean istransportista() {
+		if (transportista!= null) {
+			return true;
+		}else return false;
+	}
+	
 	public static boolean isNoRegistrado() {
 		if (cliente == null && administrador == null) {
 			return true;
@@ -71,6 +85,10 @@ public class cookiesHelper {
 	public cookiesHelper() {
 		super();
 	    adm = new BDPrincipal();
+	    cliente = null;
+	    encargado_compras = null;
+	    administrador = null;
+	    transportista = null;
     	session = VaadinSession.getCurrent();
 
 
@@ -90,6 +108,7 @@ public class cookiesHelper {
 			
 		}
 		
+		
 		 if (usuario != null) {
 	        	if (usuario.equals("cliente")) {
 	        		if (idUsuario != 0) {
@@ -107,6 +126,12 @@ public class cookiesHelper {
 	            	if (idUsuario != 0) {
 	            		encargado_compras = adm.cargarEncargadoCompras(idUsuario);
 	    				session.setAttribute("encargado", encargado_compras);
+	            	}
+	            	
+	            }else if (usuario.equals("transportista")) {
+	            	if (idUsuario != 0) {
+	            		transportista = adm.cargarTransportista(idUsuario);
+	    				session.setAttribute("transportista", transportista);
 	            	}
 	            	
 	            }

@@ -15,12 +15,12 @@ public class BD_Cliente {
 	public BDPrincipal _bDPrincipal;
 	public Vector<Cliente> _contiene_clientes = new Vector<Cliente>();
 
-	public boolean nuevo_usuario(Usuario aUsuario) throws PersistentException {
+	public boolean nuevo_usuario(Cliente aUsuario) throws PersistentException {
 		boolean resultado = false;
 		
 		PersistentTransaction t = TiendavirtualPersistentManager.instance().getSession().beginTransaction();
 		try {
-			resultado = UsuarioDAO.save(aUsuario);
+			resultado = ClienteDAO.save(aUsuario);
 			t.commit();
 		} catch (Exception e) {
 			t.rollback();

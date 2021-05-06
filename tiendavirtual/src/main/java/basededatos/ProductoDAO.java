@@ -339,10 +339,10 @@ public class ProductoDAO {
 			for(int i = 0; i < lRecibe_valoracions.length; i++) {
 				lRecibe_valoracions[i].setProducto_valorado(null);
 			}
-			if (producto.getAsignado_a() != null) {
-				producto.getAsignado_a().setDe_un(null);
+			basededatos.Lineas_de_Pedido[] lAsignado_as = producto.asignado_a.toArray();
+			for(int i = 0; i < lAsignado_as.length; i++) {
+				lAsignado_as[i].setDe_un(null);
 			}
-			
 			return delete(producto);
 		}
 		catch(Exception e) {
@@ -369,10 +369,10 @@ public class ProductoDAO {
 			for(int i = 0; i < lRecibe_valoracions.length; i++) {
 				lRecibe_valoracions[i].setProducto_valorado(null);
 			}
-			if (producto.getAsignado_a() != null) {
-				producto.getAsignado_a().setDe_un(null);
+			basededatos.Lineas_de_Pedido[] lAsignado_as = producto.asignado_a.toArray();
+			for(int i = 0; i < lAsignado_as.length; i++) {
+				lAsignado_as[i].setDe_un(null);
 			}
-			
 			try {
 				session.delete(producto);
 				return true;

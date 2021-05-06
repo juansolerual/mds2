@@ -6,7 +6,7 @@ public interface iUsuario_no_identificado {
 
 	public boolean loginUsuario(Usuario aUsuario);
 
-	public boolean nuevo_usuario();
+	public boolean nuevo_usuario(Cliente cliente);
 
 	public List<Lineas_de_Pedido> cargarCarrito(int numeroPedido);
 

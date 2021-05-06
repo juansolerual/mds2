@@ -31,8 +31,7 @@ public class ProductoCriteria extends AbstractORMCriteria {
 	public final IntegerExpression limiteFotos;
 	public final CollectionExpression tieneFoto;
 	public final CollectionExpression recibe_valoracion;
-	public final IntegerExpression asignado_aId;
-	public final AssociationExpression asignado_a;
+	public final CollectionExpression asignado_a;
 	
 	public ProductoCriteria(Criteria criteria) {
 		super(criteria);
@@ -48,8 +47,7 @@ public class ProductoCriteria extends AbstractORMCriteria {
 		limiteFotos = new IntegerExpression("limiteFotos", this);
 		tieneFoto = new CollectionExpression("ORM_tieneFoto", this);
 		recibe_valoracion = new CollectionExpression("ORM_recibe_valoracion", this);
-		asignado_aId = new IntegerExpression("asignado_a.ID", this);
-		asignado_a = new AssociationExpression("asignado_a", this);
+		asignado_a = new CollectionExpression("ORM_asignado_a", this);
 	}
 	
 	public ProductoCriteria(PersistentSession session) {
@@ -77,7 +75,7 @@ public class ProductoCriteria extends AbstractORMCriteria {
 	}
 	
 	public Lineas_de_PedidoCriteria createAsignado_aCriteria() {
-		return new Lineas_de_PedidoCriteria(createCriteria("asignado_a"));
+		return new Lineas_de_PedidoCriteria(createCriteria("ORM_asignado_a"));
 	}
 	
 	public Producto uniqueProducto() {

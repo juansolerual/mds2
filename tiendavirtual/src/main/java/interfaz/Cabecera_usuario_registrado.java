@@ -13,5 +13,6 @@ public class Cabecera_usuario_registrado extends Cabecera_Usuario{
 		super();
 		this.getIniciarSesionButton().setVisible(false);
 		this.getRegistrarseButton().setVisible(false);
+		
 	}
 }

@@ -37,4 +37,9 @@ public interface iUsuario_registrado {
 	public List<Producto> cargarProductos(String string);
 	
 	public boolean realizarPedido(Pendiente aPedido);
+	
+	public List<List> cargarPedidos(int i);
+
+	public List<Lineas_de_Pedido> cargarCarrito(int id);
+
 }
