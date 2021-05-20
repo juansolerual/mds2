@@ -31,8 +31,20 @@ public class BD_Categoria {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean eliminarCategoria(int aId) {
-		throw new UnsupportedOperationException();
+	public boolean eliminarCategoria(int aId) throws PersistentException {
+		boolean resultado = false;
+
+		PersistentTransaction t = TiendavirtualPersistentManager.instance().getSession().beginTransaction();
+		try {
+			Categoria cat = CategoriaDAO.getCategoriaByORMID(aId);
+			resultado = CategoriaDAO.delete(cat);
+			t.commit();
+		} catch (Exception e) {
+			t.rollback();
+		}
+		TiendavirtualPersistentManager.instance().disposePersistentManager();
+
+		return resultado;
 	}
 
 	public int guardarCategoria(Categoria aCategoria) throws PersistentException {

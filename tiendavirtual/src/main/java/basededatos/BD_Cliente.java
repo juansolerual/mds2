@@ -38,12 +38,55 @@ public class BD_Cliente {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean guardarCambiosUsuario(Usuario aUsuario) {
-		throw new UnsupportedOperationException();
+	public boolean guardarCambiosUsuario(Cliente aUsuario) throws PersistentException {
+		boolean resultado = false;
+		
+		PersistentTransaction t = TiendavirtualPersistentManager.instance().getSession().beginTransaction();
+		try {
+			System.out.println("BDCLIENTE guardarCambiosCliente ");
+			//Transportista transportistaTemp = TransportistaDAO.getTransportistaByORMID(aTransportista.getID());
+			
+			Cliente nuevoCliente = ClienteDAO.createCliente();
+			
+			
+			nuevoCliente = (Cliente) TiendavirtualPersistentManager.instance().getSession().merge(aUsuario);
+
+			System.out.println("cliente nuevoo " + nuevoCliente.getNombre() );
+
+			resultado = ClienteDAO.save(nuevoCliente);
+			t.commit();
+		} catch (Exception e) {
+			t.rollback();
+		}
+		
+		TiendavirtualPersistentManager.instance().disposePersistentManager();
+		
+
+		return resultado;	
 	}
 
-	public boolean darBajaUsuario(int aIdUsuario) {
-		throw new UnsupportedOperationException();
+	public boolean darBajaUsuario(int aIdUsuario) throws PersistentException {
+		boolean resultado = false;
+		
+		PersistentTransaction t = TiendavirtualPersistentManager.instance().getSession().beginTransaction();
+		try {
+			//Transportista transportistaTemp = TransportistaDAO.getTransportistaByORMID(aTransportista.getID());
+			
+			Cliente nuevoCliente = ClienteDAO.createCliente();
+			
+			nuevoCliente = (Cliente) TiendavirtualPersistentManager.instance().getSession().merge(aIdUsuario);
+			nuevoCliente.setPassword("BAJA");
+			
+			resultado = ClienteDAO.save(nuevoCliente);
+			t.commit();
+		} catch (Exception e) {
+			t.rollback();
+		}
+		
+		TiendavirtualPersistentManager.instance().disposePersistentManager();
+		
+
+		return resultado;	
 	}
 
 	public boolean cambiarContrasena(String aContrasenaNueva) {

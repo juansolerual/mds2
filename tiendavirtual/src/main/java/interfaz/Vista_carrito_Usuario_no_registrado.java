@@ -5,8 +5,8 @@ public class Vista_carrito_Usuario_no_registrado extends Elementos_comunes_carri
 
 	public Vista_carrito_Usuario_no_registrado() {
 		super();
-		this.realizarPago.setEnabled(false);
-		this.terminarPedido.setEnabled(false);
+		this. _datos_compra.realizarPago.setEnabled(false);
+		this. _datos_compra.terminarPedido.setEnabled(false);
 	}
 	
 }

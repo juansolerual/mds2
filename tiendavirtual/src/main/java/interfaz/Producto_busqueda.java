@@ -1,5 +1,10 @@
 package interfaz;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
@@ -7,8 +12,11 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.server.VaadinSession;
 
+import basededatos.Lineas_de_Pedido;
 import basededatos.Producto;
+import tiendavirtual.cookiesHelper;
 import vistas.VistaProductolista;
 
 public class Producto_busqueda extends VistaProductolista{
@@ -78,6 +86,7 @@ public class Producto_busqueda extends VistaProductolista{
 	    }else {
 	    	anadirCarrito = new Button("Añadir Carrito");
 		    vl.add(anadirCarrito);
+		   
 	    }
 	    
 	    placeholderSelect = new Select<>();

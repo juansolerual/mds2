@@ -20,7 +20,7 @@ public interface iUsuario_registrado {
 
 	public Anuncio cargarAnuncio(int aIdAnuncio);
 
-	public boolean guardarCambiosUsuario(Usuario aUsuario);
+	public boolean guardarCambiosUsuario(Cliente aUsuario);
 
 	public boolean darBajaUsuario(int aIdUsuario);
 

@@ -40,6 +40,7 @@ public class Productos_Usuario extends VistaProductosusuario{
 	public Visualizar_Pantalla_Principal_Usuario_Registrado _visualizar_Pantalla_Principal_Usuario_Registrado;
 	public TextField carritoText = new TextField();
 	public int carritoInt = 0;
+	public String visualizarPantalla = "";
 	//public Vector<Producto_usuario> _list_Producto_usuario = new Vector<Producto_usuario>();
 
 	public Productos_Usuario(List<Producto_usuario> list) {
@@ -106,6 +107,10 @@ public class Productos_Usuario extends VistaProductosusuario{
 	
 
 	public Productos_Usuario(String visualizarPantalla) {
+		
+		if (visualizarPantalla != null) {
+			this.visualizarPantalla = visualizarPantalla;
+		}
 		//setSizeFull();
 	    // A layout that we want to scroll
 		HorizontalLayout scrollableLayout = new HorizontalLayout();
@@ -223,33 +228,9 @@ public class Productos_Usuario extends VistaProductosusuario{
 				@Override
 				public void onComponentEvent(ClickEvent<Div> event) {
 					System.out.println("Click en producto con precio.. " + pu.getPrecio());
-					VaadinSession session = VaadinSession.getCurrent();
-
-			    	VerticalLayout verticalLayoutUsuarioNoIdentificado = (VerticalLayout) session.getAttribute("verticalLayoutUsuarioNoIdentificado");
-			    	VerticalLayout verticalLayoutUsuarioIdentificado = (VerticalLayout) session.getAttribute("verticalLayoutUsuarioIdentificado");
-			    	VerticalLayout mainView = (VerticalLayout) session.getAttribute("MainView");
-			    	VerticalLayout ultimoEStado = mainView;
-			    	session.setAttribute("ultimoEstado", ultimoEStado);
-			    	
-			    	VistaProductousuario vistaProductoUsuario = new VistaProductousuario(producto, false);
-			    	session.setAttribute("vistaProductoUsuario", vistaProductoUsuario);
-			    	
-			    	if (visualizarPantalla.equals("Visualizar_Pantalla_Principal_Usuario_Registrado")) {
-			    		
-			    		Visualizar_Pantalla_Principal_Usuario_Registrado visualizar_Pantalla_Principal_Usuario_Registrado = (Visualizar_Pantalla_Principal_Usuario_Registrado) session.getAttribute("Visualizar_Pantalla_Principal_Usuario_Registrado");
-			    		verticalLayoutUsuarioIdentificado.remove(visualizar_Pantalla_Principal_Usuario_Registrado);
-			    		verticalLayoutUsuarioIdentificado.add(vistaProductoUsuario);
-
-			    		
-			    	}
-			    	
-			    	if (visualizarPantalla.equals("Visualizar_Pantalla_Usuario_no_registrado")) {
-			    		Visualizar_Pantalla_Usuario_no_registrado visualizar_Pantalla_Usuario_no_registrado = (Visualizar_Pantalla_Usuario_no_registrado) session.getAttribute("Visualizar_Pantalla_Usuario_no_registrado");
-				    	verticalLayoutUsuarioNoIdentificado.remove(visualizar_Pantalla_Usuario_no_registrado);
-						verticalLayoutUsuarioNoIdentificado.add(vistaProductoUsuario);
-
-			    	}
-			    	
+					
+					
+					verProducto(producto);
 			        
 			    	
 					
@@ -316,6 +297,38 @@ public class Productos_Usuario extends VistaProductosusuario{
 	    this.getHorizontalProductos().add(primeraLinea, scrollableLayout);
 		this.getHorizontalProductos().getStyle().set("border", "2px solid #1676f3").set("border-radius", "25px");
 
+	}
+
+	protected void verProducto(Producto producto) {
+		// TODO Auto-generated method stub
+
+		VaadinSession session = VaadinSession.getCurrent();
+
+    	VerticalLayout verticalLayoutUsuarioNoIdentificado = (VerticalLayout) session.getAttribute("verticalLayoutUsuarioNoIdentificado");
+    	VerticalLayout verticalLayoutUsuarioIdentificado = (VerticalLayout) session.getAttribute("verticalLayoutUsuarioIdentificado");
+    	VerticalLayout mainView = (VerticalLayout) session.getAttribute("MainView");
+    	VerticalLayout ultimoEStado = mainView;
+    	session.setAttribute("ultimoEstado", ultimoEStado);
+    	
+    	VistaProductousuario vistaProductoUsuario = new VistaProductousuario(producto, false);
+    	session.setAttribute("vistaProductoUsuario", vistaProductoUsuario);
+    	
+    	if (visualizarPantalla.equals("Visualizar_Pantalla_Principal_Usuario_Registrado")) {
+    		
+    		Visualizar_Pantalla_Principal_Usuario_Registrado visualizar_Pantalla_Principal_Usuario_Registrado = (Visualizar_Pantalla_Principal_Usuario_Registrado) session.getAttribute("Visualizar_Pantalla_Principal_Usuario_Registrado");
+    		verticalLayoutUsuarioIdentificado.remove(visualizar_Pantalla_Principal_Usuario_Registrado);
+    		verticalLayoutUsuarioIdentificado.add(vistaProductoUsuario);
+
+    		
+    	}
+    	
+    	if (visualizarPantalla.equals("Visualizar_Pantalla_Usuario_no_registrado")) {
+    		Visualizar_Pantalla_Usuario_no_registrado visualizar_Pantalla_Usuario_no_registrado = (Visualizar_Pantalla_Usuario_no_registrado) session.getAttribute("Visualizar_Pantalla_Usuario_no_registrado");
+	    	verticalLayoutUsuarioNoIdentificado.remove(visualizar_Pantalla_Usuario_no_registrado);
+			verticalLayoutUsuarioNoIdentificado.add(vistaProductoUsuario);
+
+    	}
+    	
 	};
 
 	}

@@ -25,6 +25,8 @@ import basededatos.Administrador;
 import basededatos.BDPrincipal;
 import basededatos.Cliente;
 import basededatos.iAdmin;
+import basededatos.iUsuario_registrado;
+import tiendavirtual.cookiesHelper;
 import vistas.VistaCuentausuario;
 
 public class Vista_cuenta_usuario extends VistaCuentausuario{
@@ -221,6 +223,45 @@ public class Vista_cuenta_usuario extends VistaCuentausuario{
 		});
 	    
 	    guardarCambios = new Button("Guardar cambios");
+	    guardarCambios.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
+			
+			@Override
+			public void onComponentEvent(ClickEvent<Button> event) {
+				
+				cliente.setApellidos(apellidos.getValue());
+				cliente.setNombre(nombre.getValue());
+				cliente.setEmail(correoElectronico.getValue());
+				cliente.setPassword(password.getValue());
+				
+				iUsuario_registrado adm = new BDPrincipal();
+				
+				if((adm.guardarCambiosUsuario(cliente))) {
+					Notification.show("El usuario ha actualizado con éxito.", 3000, Position.MIDDLE);
+					VerticalLayout vlayout = null;
+					if (cookiesHelper.isAdministrador()) {
+						vlayout = (VerticalLayout) session.getAttribute("verticalLayoutAdmin");
+						Cabecera_administrador _cabecera_administrador = (Cabecera_administrador) session.getAttribute("Cabecera_administrador");
+						Visualizar_Pantalla_Principal_Administrador _visualizar_Pantalla_Principal_Administrador = (Visualizar_Pantalla_Principal_Administrador) session.getAttribute("visualizar_Pantalla_Principal_Administrador");
+						
+						vlayout.removeAll();
+				    	vlayout.add(_cabecera_administrador);
+				    	vlayout.add(_visualizar_Pantalla_Principal_Administrador);
+					}else if (cookiesHelper.isCliente()) {
+						vlayout = (VerticalLayout) session.getAttribute("verticalLayoutUsuarioIdentificado");
+						Cabecera_Usuario _cabecera_Usuario = (Cabecera_Usuario) session.getAttribute("Cabecera_usuario_registrado");
+						Visualizar_Pantalla_Principal_Usuario_Registrado _visualizar_Pantalla_Principal_Usuario_Registrado = (Visualizar_Pantalla_Principal_Usuario_Registrado) session.getAttribute("Visualizar_Pantalla_Principal_Usuario_Registrado");
+						vlayout.removeAll();
+				    	vlayout.add(_cabecera_Usuario);
+				    	vlayout.add(_visualizar_Pantalla_Principal_Usuario_Registrado);
+					}
+			    	
+			    	
+
+				}else {
+					Notification.show("Ha habido un error al actualizar el usuario.", 3000, Position.MIDDLE);
+				}
+			}
+	    });
 	    bajaCuenta = new Button("Dar de baja la cuenta");
 	    bajaCuenta.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
 			
@@ -277,7 +318,7 @@ public class Vista_cuenta_usuario extends VistaCuentausuario{
 		avatar.setHeight("80px");
 		avatar.getStyle().set("border-radius", "150px").set("border", "10px solid #666");
 		labelTitulo = new Label("Datos personales");
-	    labelTitulo.getStyle().set("font-size", "2em").set("font-weight", "bold").set("text-decoration", "underline").set("color", "blue");
+	    labelTitulo.getStyle().set("font-size", "2em").set("font-weight", "bold").set("text-decoration", "underline").set("color", "#1676f3");
 
 	    nombre = new TextField("Nombre: ");
 	    apellidos = new TextField("Apellidos: ");

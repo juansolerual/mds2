@@ -28,7 +28,17 @@ public class Iniciar_sesion extends VistaIniciarsesion{
 	public Iniciar_sesion() {
 			super();
 			
-
+			_recuperar_contrasena = new Recuperar_contrasena();
+			_inicio_sesion_con_Facebook = new Inicio_sesion_con_Facebook();
+			_inicio_sesion_con_Google = new Inicio_sesion_con_Google();
+			getVaadinVerticalLayout().as(VerticalLayout.class).add(_inicio_sesion_con_Facebook.iniciarSessionFacebook);
+			getVaadinVerticalLayout().as(VerticalLayout.class).add(_inicio_sesion_con_Google.iniciarSessionGoogle);
+			
+			
+			getVaadinLoginForm().addForgotPasswordListener(e -> {
+				_recuperar_contrasena.recuperarContrasena.open();
+			});
+			
 
 			getVaadinLoginForm().addLoginListener(e -> {
 	        	

@@ -35,37 +35,27 @@ public class Elementos_comunes_carrito extends VistaElementoscomunescarrito{
 	public Datos_compra _datos_compra;
 	public double totalCarrito;
 	
-	public VerticalLayout direccionEnvio;
-	public VerticalLayout metodoPago;
-	public VerticalLayout totalDinero;
-	public VerticalLayout botones;
 	
-	public Label totalCarritoLabel;
-	public Label totalPortes;
-	public Label totalImpuestos;
-	public Label totalPagar;
-	public Label estadoPedido;
-	public List<Lineas_de_Pedido> carrito;
-	public Button realizarPago;
-	public Button terminarPedido;
+	public TextField estadoPedido;
+	
+	
+	public Pendiente pedido;
 	
 	public Elementos_comunes_carrito() {
 		super();
+		_datos_compra = new Datos_compra();
+		_lista_elementos_carrito = new Lista_elementos_carrito();
+		
 		iUsuario_registrado usr = new BDPrincipal();
 		iAdmin admin = new BDPrincipal();
 		VaadinSession session = VaadinSession.getCurrent();
 		Cliente cliente = (Cliente) session.getAttribute("cliente");
-		Pendiente pedido = new Pendiente();
+		pedido = new Pendiente();
 		pedido.setFechaPedido(new java.util.Date());
 		pedido.setHoraPedido(new Time(new java.util.Date().getTime()));
 		pedido.setRealizado_por(cliente);
 		pedido.setMarcado_por(admin.cargarEncargadoCompras(3));
-		if (cookiesHelper.isNoRegistrado()) {
-			carrito = (List<Lineas_de_Pedido>) session.getAttribute("carrito_invitado");
-
-		}else {
-			carrito = (List<Lineas_de_Pedido>) session.getAttribute(String.valueOf(cookiesHelper.idUsuario));
-		}
+		
 		
 //		Pedido pedido = (Pedido)session.getAttribute("pedidoCarrito");
 //		pedido.
@@ -83,12 +73,9 @@ public class Elementos_comunes_carrito extends VistaElementoscomunescarrito{
 	    
 		scrollableLayout.setId("verticalLayout_carrito");
 		
-		if (carrito == null) {
-			carrito = new ArrayList<Lineas_de_Pedido>();
-		}
 		
 		
-		for (Lineas_de_Pedido ldp: carrito) {
+		for (Lineas_de_Pedido ldp: _lista_elementos_carrito.carrito) {
 			ldp.setPertenecen_a(pedido);
 			System.out.println("Producto " + ldp.getDe_un().getNombreProducto() + " cantidad " + ldp.getCantidad());
 		    Producto_Carrito puc = new Producto_Carrito(ldp);
@@ -98,9 +85,9 @@ public class Elementos_comunes_carrito extends VistaElementoscomunescarrito{
 					// TODO Auto-generated method stub
 					System.out.println("Cambio el precio " + puc.precio.getValue());
 					ldp.setCantidad(Integer.parseInt(puc.placeholderSelect.getValue()));
-					session.setAttribute("lineasDePedido", carrito);
+					session.setAttribute("lineasDePedido", _lista_elementos_carrito.carrito);
 
-					calcularTotal(carrito);
+					calcularTotal(_lista_elementos_carrito.carrito);
 					actualizarLineas();
 				}
 			});
@@ -110,12 +97,12 @@ public class Elementos_comunes_carrito extends VistaElementoscomunescarrito{
 				@Override
 				public void onComponentEvent(ClickEvent<Button> event) {
 					// TODO Auto-generated method stub
-					carrito.remove(ldp);
-					session.setAttribute("lineasDePedido", carrito);
+					_lista_elementos_carrito.carrito.remove(ldp);
+					session.setAttribute("lineasDePedido", _lista_elementos_carrito.carrito);
 
 					scrollableLayout.remove(puc);
 
-					calcularTotal(carrito);
+					calcularTotal(_lista_elementos_carrito.carrito);
 					actualizarLineas();
 				}
 			});
@@ -124,7 +111,7 @@ public class Elementos_comunes_carrito extends VistaElementoscomunescarrito{
 			scrollableLayout.add(puc);
 			
 		}
-		calcularTotal(carrito);
+		calcularTotal(_lista_elementos_carrito.carrito);
 	    //for(int i = 0; i< 10; i++){
 	    //  scrollableLayout.add(new Producto_busqueda(false));
 	    //}
@@ -141,7 +128,7 @@ public class Elementos_comunes_carrito extends VistaElementoscomunescarrito{
 	    tituloCarritoUsuario.add(new Text("Carrito de usuario"));
 	    tituloCarritoUsuario.getStyle().set("font-size", "1em").set("font-weight", "bold").set("text-decoration", "underline").set("color", "blue");
 
-	    TextField estadoPedido = new TextField("Estado del Pedido");
+	    estadoPedido = new TextField("Estado del Pedido");
 	    estadoPedido.setReadOnly(true);
 	    estadoPedido.getStyle().set("margin", "20px");
 	    estadoPedido.setValue("Pedido creado");
@@ -159,42 +146,10 @@ public class Elementos_comunes_carrito extends VistaElementoscomunescarrito{
 	    barraDerecha.add(scrollableLayout, barraInferiorDerecha);
 	    this.getVaadinHorizontalLayout().add(barraIzquierda, barraDerecha);
 	    
-	    direccionEnvio = new VerticalLayout();
-	    direccionEnvio.getStyle().set("border","1px solid blue").set("margin", "20px").set("width", "100%");
-	    Label tituloDireccionEnvio = new Label();
-	    tituloDireccionEnvio.setText("Datos del cliente");
-	    tituloDireccionEnvio.getStyle().set("font-size", "1em").set("font-weight", "bold").set("text-decoration", "underline").set("color", "blue");
-	    
-	    Label nombreApellidos = new Label();
-	    Label calle = new Label();
-	    Label telefono = new Label();
-	    
-	    if (cookiesHelper.isNoRegistrado()) {
-	    	nombreApellidos.setText("USUARIO NO REGISTRADO");
-		    calle.setText("- - - - - - -");
-		    telefono.setText("- - - - - - - ");
-		    
-		    direccionEnvio.add(tituloDireccionEnvio, nombreApellidos, calle, telefono);
-		    metodoPago = new VerticalLayout();
-		    metodoPago.getStyle().set("border","1px solid blue").set("margin", "20px").set("width", "100%");
-	    }else {
-	    	nombreApellidos.setText(cliente.getNombre() + " " + cliente.getApellidos());
-		    calle.setText(cliente.getDireccion());
-		    telefono.setText("676546546");
-		    
-		    direccionEnvio.add(tituloDireccionEnvio, nombreApellidos, calle, telefono);
-		    metodoPago = new VerticalLayout();
-		    metodoPago.getStyle().set("border","1px solid blue").set("margin", "20px").set("width", "100%");
-	    }
-	    
+	   
 
-	    totalDinero = new VerticalLayout();
-	    totalDinero.getStyle().set("border","1px solid blue").set("margin", "20px").set("width", "100%");
-
-	    botones = new VerticalLayout();
-	    
-	    realizarPago = new Button("Realizar pago");
-	    realizarPago.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
+	   
+	    _datos_compra.realizarPago.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
 
 			@Override
 			public void onComponentEvent(ClickEvent<Button> event) {
@@ -204,8 +159,8 @@ public class Elementos_comunes_carrito extends VistaElementoscomunescarrito{
 				pedido.setPagado(true);
 			}
 		});
-	    terminarPedido = new Button("Realizar pedido");
-	    terminarPedido.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
+	   
+	    _datos_compra.terminarPedido.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
 
 			@Override
 			public void onComponentEvent(ClickEvent<Button> event) {
@@ -225,30 +180,21 @@ public class Elementos_comunes_carrito extends VistaElementoscomunescarrito{
 
 				}
 				//carrito = new ArrayList<Lineas_de_Pedido>();
-				carrito.removeAll(carrito);
+				_lista_elementos_carrito.carrito.removeAll(_lista_elementos_carrito.carrito);
 				scrollableLayout.removeAll();
-				session.setAttribute(String.valueOf(cookiesHelper.idUsuario), carrito);
+				session.setAttribute(String.valueOf(cookiesHelper.idUsuario), _lista_elementos_carrito.carrito);
 
 			}
 		});
 	    
-	    botones.add(realizarPago, terminarPedido);
-	    
-	    totalCarritoLabel = new Label();
-	    totalPortes = new Label();
-	    totalImpuestos = new Label();
-	    totalPagar = new Label();
-
-	    totalCarritoLabel.setText("Total pedido : " + this.totalCarrito + "€");
-	    totalPortes.setText("Total portes : " + "5€");
+	    _datos_compra.totalCarritoLabel.setText("Total pedido : " + this.totalCarrito + "€");
+	    _datos_compra.totalPortes.setText("Total portes : " + "5€");
 	    double totalImpuestosDouble = this.totalCarrito * 0.21;
-	    totalImpuestos.setText("Total impuestos : " + totalImpuestosDouble + "€");
+	    _datos_compra.totalImpuestos.setText("Total impuestos : " + totalImpuestosDouble + "€");
 	    double totalPagarDouble = this.totalCarrito+5+totalImpuestosDouble;
-	    totalPagar.setText("Total a pagar : " + totalPagarDouble + "€");
-
-	    totalDinero.add(totalCarritoLabel, totalPortes, totalImpuestos, totalPagar);
+	    _datos_compra.totalPagar.setText("Total a pagar : " + totalPagarDouble + "€");
 		
-		barraInferiorDerecha.add(direccionEnvio, metodoPago, totalDinero, botones);
+		barraInferiorDerecha.add( _datos_compra.direccionEnvio,  _datos_compra.metodoPago,  _datos_compra.totalDinero,  _datos_compra.botones);
 		
 	}
 
@@ -286,22 +232,22 @@ public class Elementos_comunes_carrito extends VistaElementoscomunescarrito{
 	
 	public void actualizarLineas() {
 		
-	    totalDinero.removeAll();
+		 _datos_compra.totalDinero.removeAll();
 	    
 	    
 	    
-	    totalCarritoLabel = new Label();
-	    totalPortes = new Label();
-	    totalImpuestos = new Label();
-	    totalPagar = new Label();
+		 _datos_compra.totalCarritoLabel = new Label();
+		 _datos_compra.totalPortes = new Label();
+		 _datos_compra.totalImpuestos = new Label();
+		 _datos_compra.totalPagar = new Label();
 
-	    totalCarritoLabel.setText("Total pedido : " + this.totalCarrito + "€");
-	    totalPortes.setText("Total portes : " + "5€");
+		 _datos_compra.totalCarritoLabel.setText("Total pedido : " + this.totalCarrito + "€");
+		 _datos_compra.totalPortes.setText("Total portes : " + "5€");
 	    double totalImpuestosDouble = this.totalCarrito * 0.21;
-	    totalImpuestos.setText("Total impuestos : " + totalImpuestosDouble + "€");
+	    _datos_compra.totalImpuestos.setText("Total impuestos : " + totalImpuestosDouble + "€");
 	    double totalPagarDouble = this.totalCarrito+5+totalImpuestosDouble;
-	    totalPagar.setText("Total a pagar : " + totalPagarDouble + "€");
-	    totalDinero.add(totalCarritoLabel, totalPortes, totalImpuestos, totalPagar);
+	    _datos_compra.totalPagar.setText("Total a pagar : " + totalPagarDouble + "€");
+	    _datos_compra.totalDinero.add( _datos_compra.totalCarritoLabel,  _datos_compra.totalPortes,  _datos_compra.totalImpuestos,  _datos_compra.totalPagar);
 	  
 
 

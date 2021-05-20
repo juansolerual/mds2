@@ -148,15 +148,12 @@ public class Usuario_no_identificado extends VistaUsuarionoidentificado{
 			@Override
 			public void onComponentEvent(ClickEvent<HorizontalLayout> event) {
 				// TODO Auto-generated method stub
-//				vlayout.removeAll();
-//				vlayout.add(_cabecera_usuario_no_registrado);
-//				_visualizar_Pantalla_Usuario_no_registrado = new Visualizar_Pantalla_Usuario_no_registrado(vlayout);
-//				vlayout.add(_visualizar_Pantalla_Usuario_no_registrado);
 				VerticalLayout verticalLayoutUsuarioNoIdentificado = (VerticalLayout) session.getAttribute("verticalLayoutUsuarioNoIdentificado");
 	    		Visualizar_Pantalla_Usuario_no_registrado visualizar_Pantalla_Usuario_no_registrado = (Visualizar_Pantalla_Usuario_no_registrado) session.getAttribute("Visualizar_Pantalla_Usuario_no_registrado");
 	    		VistaProductousuario vistaProductoUsuario = (VistaProductousuario) session.getAttribute("vistaProductoUsuario");
 	    		
-	    		verticalLayoutUsuarioNoIdentificado.remove(vistaProductoUsuario);
+	    		verticalLayoutUsuarioNoIdentificado.removeAll();
+	    		verticalLayoutUsuarioNoIdentificado.add(_cabecera_usuario_no_registrado);
 	    		verticalLayoutUsuarioNoIdentificado.add(visualizar_Pantalla_Usuario_no_registrado);
 			}
 		});

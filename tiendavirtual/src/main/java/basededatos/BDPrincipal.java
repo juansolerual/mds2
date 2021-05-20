@@ -145,8 +145,16 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 		return cls;	
 	}
 
-	public boolean guardarCambiosUsuario(Usuario aUsuario) {
-		throw new UnsupportedOperationException();
+	public boolean guardarCambiosUsuario(Cliente aUsuario) {
+		System.out.println("BDPRINCIPAL guardarCambiosUsuario");
+		boolean resultado = false;
+		try {
+			return _bD_Cliente.guardarCambiosUsuario(aUsuario);
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultado;
 	}
 
 	public boolean darBajaUsuario(int aIdUsuario) {
@@ -281,7 +289,16 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 	}
 
 	public boolean eliminarCategoria(int aId) {
-		throw new UnsupportedOperationException();
+		System.out.println("BDPRINCIPAL eliminarCategoria");
+		boolean resultado = false;
+		try {
+			resultado = _bD_Categoria.eliminarCategoria(aId);
+			
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultado;
 	}
 
 	public Producto[] verProductosCategoria(int aIdCategoria) {

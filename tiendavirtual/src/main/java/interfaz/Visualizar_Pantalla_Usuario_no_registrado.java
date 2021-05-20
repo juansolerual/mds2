@@ -15,7 +15,7 @@ public class Visualizar_Pantalla_Usuario_no_registrado extends Visualizar_Pantal
 		horizontalLayout.addComponentAsFirst(_productos_Usuario);
 		
 		
-
+		
         
 
 	}

@@ -54,14 +54,16 @@ public class Registrarse extends VistaRegistrarse {
 
 	public String fotoPerfil = "";
 	public VaadinSession session;
-
+	public Cliente cliente;
+	public iUsuario_no_identificado usr;
+	
 	public Registrarse() {
 		super();
-		Cliente cliente = new Cliente();
+		cliente = new Cliente();
 		session = VaadinSession.getCurrent();
 		getTipoUsuario().setVisible(false);
 
-		iUsuario_no_identificado usr = new BDPrincipal();
+		usr = new BDPrincipal();
 		getFormaDePago().setItems("Tarjeta de crédito", "Transferencia", "Paypal", "Bizum");
 
 		MemoryBuffer buffer = new MemoryBuffer();
@@ -97,46 +99,7 @@ public class Registrarse extends VistaRegistrarse {
 			@Override
 			public void onComponentEvent(ClickEvent<Button> event) {
 				// TODO Auto-generated method stub
-				cliente.setApellidos(getApellidos().getValue());
-				cliente.setDireccion(getDireccion().getValue());
-				cliente.setDni(getDni().getValue());
-				cliente.setEmail(getEmail().getValue());
-				cliente.setNombre(getNombre().getValue());
-				cliente.setFormaDePago(getFormaDePago().getValue());
-				cliente.setDatosPago(getNumeroTarjeta().getValue());
-
-				if (getPassword().getValue().equals(getPassword2().getValue())) {
-					cliente.setPassword(getPassword().getValue());
-				} else {
-					Notification.show("La contraseña debe coincidir.", 3000, Position.MIDDLE);
-
-				}
-				if (fotoPerfil.startsWith("http")) {
-					cliente.setFoto_perfil(fotoPerfil);
-				}else {
-					cliente.setFoto_perfil("https://happytravel.viajes/wp-content/uploads/2020/04/146-1468479_my-profile-icon-blank-profile-picture-circle-hd-300x238.png");
-				}
-				
-
-				if (usr.nuevo_usuario(cliente)) {
-					Notification.show("El usuario ha sido creado con éxito.", 3000, Position.MIDDLE);
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-					VerticalLayout mainView = (VerticalLayout) session.getAttribute("MainView");
-					Usuario_no_identificado usuarioNoIdentificado = (Usuario_no_identificado) session
-							.getAttribute("usuarioNoIdentificado");
-
-					Iniciar_sesion _iniciar_sesion = new Iniciar_sesion();
-
-					mainView.remove(usuarioNoIdentificado);
-					mainView.add(_iniciar_sesion);
-
-				}
+				Validar_registro();
 
 			}
 		});
@@ -691,7 +654,46 @@ public class Registrarse extends VistaRegistrarse {
 	public Usuario_no_identificado _usuario_no_identificado;
 
 	public void Validar_registro() {
+		cliente.setApellidos(getApellidos().getValue());
+		cliente.setDireccion(getDireccion().getValue());
+		cliente.setDni(getDni().getValue());
+		cliente.setEmail(getEmail().getValue());
+		cliente.setNombre(getNombre().getValue());
+		cliente.setFormaDePago(getFormaDePago().getValue());
+		cliente.setDatosPago(getNumeroTarjeta().getValue());
 
+		if (getPassword().getValue().equals(getPassword2().getValue())) {
+			cliente.setPassword(getPassword().getValue());
+		} else {
+			Notification.show("La contraseña debe coincidir.", 3000, Position.MIDDLE);
+
+		}
+		if (fotoPerfil.startsWith("http")) {
+			cliente.setFoto_perfil(fotoPerfil);
+		}else {
+			cliente.setFoto_perfil("https://happytravel.viajes/wp-content/uploads/2020/04/146-1468479_my-profile-icon-blank-profile-picture-circle-hd-300x238.png");
+		}
+		
+
+		if (usr.nuevo_usuario(cliente)) {
+			Notification.show("El usuario ha sido creado con éxito.", 3000, Position.MIDDLE);
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			VerticalLayout mainView = (VerticalLayout) session.getAttribute("MainView");
+			Usuario_no_identificado usuarioNoIdentificado = (Usuario_no_identificado) session
+					.getAttribute("usuarioNoIdentificado");
+
+			Iniciar_sesion _iniciar_sesion = new Iniciar_sesion();
+
+			mainView.remove(usuarioNoIdentificado);
+			mainView.add(_iniciar_sesion);
+
+		}
 	}
 
 	private Component createComponent(String mimeType, String fileName, InputStream stream) {

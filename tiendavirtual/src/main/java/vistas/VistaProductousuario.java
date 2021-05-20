@@ -160,7 +160,9 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 			cantidadItems.add(i+"");
 		}
 		cantidad.setItems(cantidadItems);
-		
+		precio.setReadOnly(true);
+		nombreProducto.setReadOnly(true);
+		precioRebajado.setReadOnly(true);
 		buttonCrearCategoria.setVisible(false);
 		categoria.setReadOnly(true);
 		categoria.setVisible(false);
@@ -361,27 +363,31 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 			}
 		});
 		dialogUpload.add(dialogUploadHorizontal, upload, output, guardarUploadButton);
+		
+		if (admin) {
+			image1.addClickListener(event -> {
+				image1b = true;
+				dialogUpload.open();
+			});
+			image2.addClickListener(event -> {
+				image2b = true;
+				dialogUpload.open();
+			});
+			image3.addClickListener(event -> {
+				image3b = true;
+				dialogUpload.open();
+			});
+			image4.addClickListener(event -> {
+				image4b = true;
+				dialogUpload.open();
+			});
+			image5.addClickListener(event -> {
+				image5b = true;
+				dialogUpload.open();
+			});
+		}
 
-		image1.addClickListener(event -> {
-			image1b = true;
-			dialogUpload.open();
-		});
-		image2.addClickListener(event -> {
-			image2b = true;
-			dialogUpload.open();
-		});
-		image3.addClickListener(event -> {
-			image3b = true;
-			dialogUpload.open();
-		});
-		image4.addClickListener(event -> {
-			image4b = true;
-			dialogUpload.open();
-		});
-		image5.addClickListener(event -> {
-			image5b = true;
-			dialogUpload.open();
-		});
+		
 
 		categoria.setItemLabelGenerator(Categoria::getNombreCategoria);
 		categoria.setItems(categorias);
@@ -420,15 +426,13 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 					
 
 					System.out.println(foto.getURLFoto());
+					System.out.println("Contador " + contadorFoto);
+					System.out.println("isPrincipal " + !foto.getIsPrincipal());
 					if (contadorFoto == 6) {
 						break;
 					}
 					
-					if (foto.getIsPrincipal()) {
-						image1.setSrc(foto.getURLFoto());
-						foto1 = foto;
-					}
-				
+					
 					
 
 //					if (contadorFoto == 1) {
@@ -437,24 +441,53 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 //							foto1 = foto;
 //						}
 //					}
-					if (contadorFoto == 2 && !foto.getIsPrincipal()) {
+					if (contadorFoto == 1) {
+						if (foto.getIsPrincipal()) {
+							image1.setSrc(foto.getURLFoto());
+							foto1 = foto;
+							continue;
+						}
+						System.out.println("Dentrod e image1");
 						image2.setSrc(foto.getURLFoto());
 						foto2 = foto;
 					}
-					if (contadorFoto == 3 && !foto.getIsPrincipal()) {
+					if (contadorFoto == 2) {
+						if (foto.getIsPrincipal()) {
+							image1.setSrc(foto.getURLFoto());
+							foto1 = foto;
+							continue;
+						}
 						image3.setSrc(foto.getURLFoto());
 						foto3 = foto;
 
 					}
-					if (contadorFoto == 4 && !foto.getIsPrincipal()) {
+					if (contadorFoto == 3 ) {
+						if (foto.getIsPrincipal()) {
+							image1.setSrc(foto.getURLFoto());
+							foto1 = foto;
+							continue;
+						}
 						image4.setSrc(foto.getURLFoto());
 						foto4 = foto;
 
 					}
-					if (contadorFoto == 5 && !foto.getIsPrincipal()) {
+					if (contadorFoto == 4) {
+						if (foto.getIsPrincipal()) {
+							image1.setSrc(foto.getURLFoto());
+							foto1 = foto;
+							continue;
+						}
 						image5.setSrc(foto.getURLFoto());
 						foto5 = foto;
 
+					}
+					
+					if (contadorFoto == 5) {
+						if (foto.getIsPrincipal()) {
+							image1.setSrc(foto.getURLFoto());
+							foto1 = foto;
+							continue;
+						}
 					}
 					
 					contadorFoto++;

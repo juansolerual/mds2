@@ -8,6 +8,7 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
+import tiendavirtual.cookiesHelper;
 import vistas.VistaCategoria;
 
 public class Categoria extends VistaCategoria{
@@ -15,6 +16,7 @@ public class Categoria extends VistaCategoria{
 	public Div avatar;
 	public Div name;
 	public Button verCategoria;
+	public Button eliminarCategoria;
 	public Categoria(basededatos.Categoria cat) {
 		
 		System.out.println("Categoria creada");
@@ -34,9 +36,16 @@ public class Categoria extends VistaCategoria{
 	    name.getStyle().set("color", "blue");
 	    
 	    verCategoria = new Button("Ver categoría");
+	    eliminarCategoria = new Button("Eliminar categoria");
+
+	    if (cookiesHelper.isAdministrador()) {
+		    this.getVerticalLayout().add(avatar,name, verCategoria, eliminarCategoria);
+
+	    }else {
+		    this.getVerticalLayout().add(avatar,name, verCategoria);
+	    }
 	    
 	    
-	    this.getVerticalLayout().add(avatar,name, verCategoria);
 
 	    this.getVerticalLayout().setSpacing(false);
 	    this.getVerticalLayout().setWidth("95%");

@@ -13,6 +13,7 @@ import com.vaadin.flow.component.HasValue.ValueChangeListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.server.VaadinRequest;
 import com.vaadin.flow.server.VaadinService;
@@ -21,6 +22,7 @@ import com.vaadin.flow.server.VaadinSession;
 import basededatos.Lineas_de_Pedido;
 import tiendavirtual.LocalStorage;
 import tiendavirtual.cookiesHelper;
+import vistas.VistaProductousuario;
 import vistas.VistaUsuarioregistrado;
 
 //import basededatos.iUsuario_registrado;
@@ -87,9 +89,27 @@ public class Usuario_registrado extends VistaUsuarioregistrado{
 			@Override
 			public void onComponentEvent(ClickEvent<Div> event) {
 				// TODO Auto-generated method stub
-				
+				vlayout.removeAll();
+				vlayout.add(_cabecera_usuario_registrado);
+				vlayout.add(_visualizar_Pantalla_Principal_Usuario_Registrado);
 			}
 			
+		});
+		
+		_cabecera_usuario_registrado.getHorizontalTitulo().addClickListener(new ComponentEventListener<ClickEvent<HorizontalLayout>>() {
+
+			@Override
+			public void onComponentEvent(ClickEvent<HorizontalLayout> event) {
+				// TODO Auto-generated method stub
+//				vlayout.removeAll();
+//				vlayout.add(_cabecera_usuario_no_registrado);
+//				_visualizar_Pantalla_Usuario_no_registrado = new Visualizar_Pantalla_Usuario_no_registrado(vlayout);
+//				vlayout.add(_visualizar_Pantalla_Usuario_no_registrado);
+				vlayout.removeAll();
+				vlayout.add(_cabecera_usuario_registrado);
+				vlayout.add(_visualizar_Pantalla_Principal_Usuario_Registrado);
+				
+			}
 		});
 		
 		_cabecera_usuario_registrado.getCarritoButton().addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
@@ -97,8 +117,10 @@ public class Usuario_registrado extends VistaUsuarioregistrado{
 			@Override
 			public void onComponentEvent(ClickEvent<Button> event) {
 				System.out.println("click ver carrito");
-				vlayout.remove(_visualizar_Pantalla_Principal_Usuario_Registrado);
+				vlayout.removeAll();
+				
 				_vista_carrito_Usuario_registrado = new Vista_carrito_Usuario_registrado();
+				vlayout.add(_cabecera_usuario_registrado);
 				vlayout.add(_vista_carrito_Usuario_registrado);
 				
 
@@ -142,6 +164,16 @@ public class Usuario_registrado extends VistaUsuarioregistrado{
 				_cabecera_usuario_registrado.getCarritoButton().setText("Carrito ("+_visualizar_Pantalla_Principal_Usuario_Registrado._productos_Usuario.carritoInt+")");
 			}
 		});
+		
+//		_visualizar_Pantalla_Principal_Usuario_Registrado._elementos_comunes_pantalla_principal._categorias._vista_busqueda_productos_categorias.carritoText.addValueChangeListener(new ValueChangeListener() {
+//			@Override
+//			public void valueChanged(ValueChangeEvent event) {
+//				// TODO Auto-generated method stub
+//
+//				System.out.println("El numero en el carrito ha cambiado " + _visualizar_Pantalla_Principal_Usuario_Registrado._elementos_comunes_pantalla_principal._categorias._vista_busqueda_productos_categorias.carritoInt);
+//				_cabecera_usuario_registrado.getCarritoButton().setText("Carrito ("+_visualizar_Pantalla_Principal_Usuario_Registrado._elementos_comunes_pantalla_principal._categorias._vista_busqueda_productos_categorias.carritoInt+")");
+//			}
+//		});
 		
 		_cabecera_usuario_registrado.getCerrarSesionButton().addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
 

@@ -1,7 +1,10 @@
 package interfaz;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -9,12 +12,15 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.server.VaadinSession;
 
 import basededatos.BDPrincipal;
+import basededatos.Lineas_de_Pedido;
 import basededatos.Producto;
 import basededatos.ProductoDAO;
 import basededatos.iUsuario_registrado;
+import tiendavirtual.cookiesHelper;
 import vistas.VistaBusqueda;
 
 public class Vista_busqueda_de_productos_categorias extends VistaBusqueda {
@@ -28,6 +34,8 @@ public class Vista_busqueda_de_productos_categorias extends VistaBusqueda {
 	public Button filtrar_por_precio;
 	public Button filtrar_por_categoria;
 	public Button filtrar_por_marca;
+	public TextField carritoText = new TextField();
+	public int carritoInt = 0;
 
 	public Vista_busqueda_de_productos_categorias(String busqueda) {
 		super();
@@ -123,27 +131,77 @@ public class Vista_busqueda_de_productos_categorias extends VistaBusqueda {
 				System.out.println("Producto ");
 				System.out.println("Producto " + producto.getNombreProducto() + " y categoria " + producto.getPertenece_a().getNombreCategoria());
 				System.out.println("Categoria buscada " + cat.getNombreCategoria());	
-			    scrollableLayout.add(new Producto_busqueda(false, producto));
+				Producto_busqueda pb = new Producto_busqueda(false, producto);
+				
+				pb.anadirCarrito.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
+						
+						@Override
+						public void onComponentEvent(ClickEvent<Button> event) {
+							// TODO Auto-generated method stub
+							
+							VaadinSession session = VaadinSession.getCurrent();
+							
+							List<Lineas_de_Pedido> carrito = new ArrayList<Lineas_de_Pedido>();
+							if (cookiesHelper.isNoRegistrado()) {
+								carrito = (List<Lineas_de_Pedido>) session.getAttribute("carrito_invitado");
+
+							}else {
+								carrito = (List<Lineas_de_Pedido>) session.getAttribute(String.valueOf(cookiesHelper.idUsuario));
+							}
+							
+
+							if (carrito == null) {
+								carrito = new ArrayList<Lineas_de_Pedido>();
+							}
+
+							//String tipoUsuario = (String) session.getAttribute("tipoUsuario");
+							//Cliente cliente = null;
+							//if (tipoUsuario.equals("cliente")) {
+							//	cliente = (Cliente) session.getAttribute("cliente");
+							//}
+							
+							//pedido.setRealizado_por(cliente);
+							for (Lineas_de_Pedido ldp : carrito) {
+								if (ldp.getDe_un().getID() == producto.getID()) {
+									ldp.setCantidad(ldp.getCantidad()+1);
+									if (cookiesHelper.isNoRegistrado()) {
+										session.setAttribute("carrito_invitado", carrito);
+
+									}else {
+										session.setAttribute(String.valueOf(cookiesHelper.idUsuario), carrito);
+
+									}						
+									return;
+								}
+							}
+							
+							Lineas_de_Pedido linea = new Lineas_de_Pedido();
+							linea.setDe_un(producto);
+							linea.setCantidad(1);
+							carrito.add(linea);
+							//linea.setPertenecen_a(pedido);
+							if (cookiesHelper.isNoRegistrado()) {
+								System.out.println("carrito is not registrado");
+								session.setAttribute("carrito_invitado", carrito);
+
+							}else {
+								System.out.println("carrito is registrado");
+
+								session.setAttribute(String.valueOf(cookiesHelper.idUsuario), carrito);
+
+							}
+							carritoInt++;
+							carritoText.setValue(carritoInt+"");
+							
+						}
+				      });
+			    scrollableLayout.add(pb);
 			}
 			
 		}
 		
 		VaadinSession session = VaadinSession.getCurrent();
-		try {
-			System.out.println(session.getAttribute("username").toString());
-			
-			
-					/*
-			 * VerticalLayout mainView = (VerticalLayout) session.getAttribute("MainView");
-			 * Usuario_no_identificado user = (Usuario_no_identificado)
-			 * session.getAttribute("usuarioNoIdentificado"); mainView.remove(user);
-			 */
-			
-		} catch(Exception e) {
-			// no username is session
-			System.out.println(e);
-		}
-        
+		
 
 		
 		barraIzquierda = this.getBarraIzquierda().as(VerticalLayout.class);
