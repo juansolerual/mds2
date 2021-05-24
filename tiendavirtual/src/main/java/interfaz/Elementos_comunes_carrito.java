@@ -21,6 +21,8 @@ import com.vaadin.flow.server.VaadinSession;
 
 import basededatos.BDPrincipal;
 import basededatos.Cliente;
+import basededatos.Entregado;
+import basededatos.Enviado;
 import basededatos.Lineas_de_Pedido;
 import basededatos.Pedido;
 import basededatos.Pendiente;
@@ -38,8 +40,10 @@ public class Elementos_comunes_carrito extends VistaElementoscomunescarrito{
 	
 	public TextField estadoPedido;
 	
-	
+	public Pedido pedidoNuevo;
 	public Pendiente pedido;
+	public Enviado enviado;
+	private Entregado entregado;
 	
 	public Elementos_comunes_carrito() {
 		super();
@@ -64,12 +68,12 @@ public class Elementos_comunes_carrito extends VistaElementoscomunescarrito{
 		VerticalLayout barraIzquierda = new VerticalLayout();
 		VerticalLayout barraDerecha = new VerticalLayout();
 		HorizontalLayout barraInferiorDerecha = new HorizontalLayout();
-		barraInferiorDerecha.getStyle().set("border","1px solid blue").set("margin", "20px").set("padding-left", "20px");
+		barraInferiorDerecha.getStyle().set("border", "1px solid #1676f3").set("border-radius", "25px").set("padding", "20px").set("padding-left", "20px");
 		barraInferiorDerecha.setWidth("95%");
 		barraDerecha.getStyle().set("width", "85%");
 		barraIzquierda.getStyle().set("width", "15%");
-	    barraDerecha.getStyle().set("border","1px solid blue").set("margin", "20px");
-	    barraIzquierda.getStyle().set("border","1px solid blue").set("margin", "20px");
+	    barraDerecha.getStyle().set("border", "1px solid #1676f3").set("border-radius", "25px").set("padding", "20px");
+	    barraIzquierda.getStyle().set("border", "1px solid #1676f3").set("border-radius", "25px").set("padding", "20px");
 	    
 		scrollableLayout.setId("verticalLayout_carrito");
 		
@@ -197,6 +201,443 @@ public class Elementos_comunes_carrito extends VistaElementoscomunescarrito{
 		barraInferiorDerecha.add( _datos_compra.direccionEnvio,  _datos_compra.metodoPago,  _datos_compra.totalDinero,  _datos_compra.botones);
 		
 	}
+	
+	
+	public Elementos_comunes_carrito(Pendiente pendiente) {
+		super();
+		_datos_compra = new Datos_compra(pendiente.getRealizado_por());
+		_lista_elementos_carrito = new Lista_elementos_carrito(pendiente.getID());
+		
+		iUsuario_registrado usr = new BDPrincipal();
+		iAdmin admin = new BDPrincipal();
+		VaadinSession session = VaadinSession.getCurrent();
+		Cliente cliente = (Cliente) session.getAttribute("cliente");
+		pedido = pendiente;
+		
+		
+		
+//		Pedido pedido = (Pedido)session.getAttribute("pedidoCarrito");
+//		pedido.
+//		
+		VerticalLayout scrollableLayout = new VerticalLayout();
+		VerticalLayout barraIzquierda = new VerticalLayout();
+		VerticalLayout barraDerecha = new VerticalLayout();
+		HorizontalLayout barraInferiorDerecha = new HorizontalLayout();
+		barraInferiorDerecha.getStyle().set("border","1px solid blue").set("margin", "20px").set("padding-left", "20px");
+		barraInferiorDerecha.setWidth("95%");
+		barraDerecha.getStyle().set("width", "85%");
+		barraIzquierda.getStyle().set("width", "15%");
+	    barraDerecha.getStyle().set("border", "1px solid #1676f3").set("border-radius", "25px").set("padding", "20px");
+	    barraIzquierda.getStyle().set("border", "1px solid #1676f3").set("border-radius", "25px").set("padding", "20px");
+	    
+		scrollableLayout.setId("verticalLayout_carrito");
+		
+		
+		
+		for (Lineas_de_Pedido ldp: _lista_elementos_carrito.carrito) {
+			ldp.setPertenecen_a(pedido);
+			System.out.println("Producto " + ldp.getDe_un().getNombreProducto() + " cantidad " + ldp.getCantidad());
+		    Producto_Carrito puc = new Producto_Carrito(ldp);
+		    puc.precio.addValueChangeListener(new ValueChangeListener() {
+				@Override
+				public void valueChanged(ValueChangeEvent event) {
+					// TODO Auto-generated method stub
+					System.out.println("Cambio el precio " + puc.precio.getValue());
+					ldp.setCantidad(Integer.parseInt(puc.placeholderSelect.getValue()));
+					session.setAttribute("lineasDePedido", _lista_elementos_carrito.carrito);
+
+					calcularTotal(_lista_elementos_carrito.carrito);
+					actualizarLineas();
+				}
+			});
+		    
+		    puc.eliminarLinea.setVisible(false);
+		    puc.placeholderSelect.setEnabled(false);
+		    
+		    // totalCarrito+= puc.precioLinea;
+			scrollableLayout.add(puc);
+			
+		}
+		calcularTotal(_lista_elementos_carrito.carrito);
+	    //for(int i = 0; i< 10; i++){
+	    //  scrollableLayout.add(new Producto_busqueda(false));
+	    //}
+	    // Give the layout a defined height that fits the parent layout
+	    scrollableLayout.setHeight("100%");
+	    scrollableLayout.setWidth("100%");
+	    // Set overflow on the y-axis to "auto".
+	    // It can be also "scroll", but then you 
+	    // have a scroll bar even when one isn't needed.
+	    scrollableLayout.getStyle().set("overflow-y", "auto");
+	    // Another element to show that it stays in the same place
+	    Div tituloCarritoUsuario = new Div();
+	    tituloCarritoUsuario.getStyle().set("margin", "20px");
+	    tituloCarritoUsuario.add(new Text("Carrito de usuario"));
+	    tituloCarritoUsuario.getStyle().set("font-size", "1em").set("font-weight", "bold").set("text-decoration", "underline").set("color", "blue");
+
+	    estadoPedido = new TextField("Estado del Pedido");
+	    estadoPedido.setReadOnly(true);
+	    estadoPedido.getStyle().set("margin", "20px");
+	    estadoPedido.setValue("Pedido creado");
+	    
+	    if (pedido.getPagado()) {
+		    estadoPedido.setValue("Pedido pagado");
+	    }
+	    // if (pedido.)  FALTA PONER SI HA SIDO ENVIADO...ETc
+	    
+	    
+	    
+	    // Add both the scrollable layout and 
+	    // the static element to the layout
+	    barraIzquierda.add(tituloCarritoUsuario, estadoPedido);
+	    barraDerecha.add(scrollableLayout, barraInferiorDerecha);
+	    this.getVaadinHorizontalLayout().add(barraIzquierda, barraDerecha);
+	    
+	   
+	    _datos_compra.realizarPago.setVisible(false);
+		   _datos_compra.terminarPedido.setVisible(false);
+	   
+	    
+	    
+	    _datos_compra.totalCarritoLabel.setText("Total pedido : " + this.totalCarrito + "€");
+	    _datos_compra.totalPortes.setText("Total portes : " + "5€");
+	    double totalImpuestosDouble = this.totalCarrito * 0.21;
+	    _datos_compra.totalImpuestos.setText("Total impuestos : " + totalImpuestosDouble + "€");
+	    double totalPagarDouble = this.totalCarrito+5+totalImpuestosDouble;
+	    _datos_compra.totalPagar.setText("Total a pagar : " + totalPagarDouble + "€");
+		
+		barraInferiorDerecha.add( _datos_compra.direccionEnvio,  _datos_compra.metodoPago,  _datos_compra.totalDinero,  _datos_compra.botones);
+		
+	}
+	
+	
+	public Elementos_comunes_carrito(Enviado enviadoP) {
+		super();
+		_datos_compra = new Datos_compra(enviadoP.getRealizado_por());
+		_lista_elementos_carrito = new Lista_elementos_carrito(enviadoP.getID());
+		
+		iUsuario_registrado usr = new BDPrincipal();
+		iAdmin admin = new BDPrincipal();
+		VaadinSession session = VaadinSession.getCurrent();
+		Cliente cliente = (Cliente) session.getAttribute("cliente");
+		this.enviado = enviadoP;
+		
+		
+		
+//		Pedido pedido = (Pedido)session.getAttribute("pedidoCarrito");
+//		pedido.
+//		
+		VerticalLayout scrollableLayout = new VerticalLayout();
+		VerticalLayout barraIzquierda = new VerticalLayout();
+		VerticalLayout barraDerecha = new VerticalLayout();
+		HorizontalLayout barraInferiorDerecha = new HorizontalLayout();
+		barraInferiorDerecha.getStyle().set("border","1px solid blue").set("margin", "20px").set("padding-left", "20px");
+		barraInferiorDerecha.setWidth("95%");
+		barraDerecha.getStyle().set("width", "85%");
+		barraIzquierda.getStyle().set("width", "15%");
+	    barraDerecha.getStyle().set("border","1px solid blue").set("margin", "20px");
+	    barraIzquierda.getStyle().set("border","1px solid blue").set("margin", "20px");
+	    
+		scrollableLayout.setId("verticalLayout_carrito");
+		
+		
+		
+		for (Lineas_de_Pedido ldp: _lista_elementos_carrito.carrito) {
+			ldp.setPertenecen_a(pedido);
+			System.out.println("Producto " + ldp.getDe_un().getNombreProducto() + " cantidad " + ldp.getCantidad());
+		    Producto_Carrito puc = new Producto_Carrito(ldp);
+		    puc.precio.addValueChangeListener(new ValueChangeListener() {
+				@Override
+				public void valueChanged(ValueChangeEvent event) {
+					// TODO Auto-generated method stub
+					System.out.println("Cambio el precio " + puc.precio.getValue());
+					ldp.setCantidad(Integer.parseInt(puc.placeholderSelect.getValue()));
+					session.setAttribute("lineasDePedido", _lista_elementos_carrito.carrito);
+
+					calcularTotal(_lista_elementos_carrito.carrito);
+					actualizarLineas();
+				}
+			});
+		    
+		    puc.eliminarLinea.setVisible(false);
+		    puc.placeholderSelect.setEnabled(false);
+		    
+		    // totalCarrito+= puc.precioLinea;
+			scrollableLayout.add(puc);
+			
+		}
+		calcularTotal(_lista_elementos_carrito.carrito);
+	    //for(int i = 0; i< 10; i++){
+	    //  scrollableLayout.add(new Producto_busqueda(false));
+	    //}
+	    // Give the layout a defined height that fits the parent layout
+	    scrollableLayout.setHeight("100%");
+	    scrollableLayout.setWidth("100%");
+	    // Set overflow on the y-axis to "auto".
+	    // It can be also "scroll", but then you 
+	    // have a scroll bar even when one isn't needed.
+	    scrollableLayout.getStyle().set("overflow-y", "auto");
+	    // Another element to show that it stays in the same place
+	    Div tituloCarritoUsuario = new Div();
+	    tituloCarritoUsuario.getStyle().set("margin", "20px");
+	    tituloCarritoUsuario.add(new Text("Carrito de usuario"));
+	    tituloCarritoUsuario.getStyle().set("font-size", "1em").set("font-weight", "bold").set("text-decoration", "underline").set("color", "blue");
+
+	    estadoPedido = new TextField("Estado del Pedido");
+	    estadoPedido.setReadOnly(true);
+	    estadoPedido.getStyle().set("margin", "20px");
+	    estadoPedido.setValue("Pedido creado");
+	    
+	    if (enviado.getPagado()) {
+		    estadoPedido.setValue("Pedido pagado");
+	    }
+	    // if (pedido.)  FALTA PONER SI HA SIDO ENVIADO...ETc
+	    
+	    
+	    
+	    // Add both the scrollable layout and 
+	    // the static element to the layout
+	    barraIzquierda.add(tituloCarritoUsuario, estadoPedido);
+	    barraDerecha.add(scrollableLayout, barraInferiorDerecha);
+	    this.getVaadinHorizontalLayout().add(barraIzquierda, barraDerecha);
+	    
+	   
+
+	   
+	   
+	   _datos_compra.realizarPago.setVisible(false);
+	   _datos_compra.terminarPedido.setVisible(false);
+	   
+	    
+	    _datos_compra.totalCarritoLabel.setText("Total pedido : " + this.totalCarrito + "€");
+	    _datos_compra.totalPortes.setText("Total portes : " + "5€");
+	    double totalImpuestosDouble = this.totalCarrito * 0.21;
+	    _datos_compra.totalImpuestos.setText("Total impuestos : " + totalImpuestosDouble + "€");
+	    double totalPagarDouble = this.totalCarrito+5+totalImpuestosDouble;
+	    _datos_compra.totalPagar.setText("Total a pagar : " + totalPagarDouble + "€");
+		
+		barraInferiorDerecha.add( _datos_compra.direccionEnvio,  _datos_compra.metodoPago,  _datos_compra.totalDinero,  _datos_compra.botones);
+		
+	}
+
+
+	public Elementos_comunes_carrito(Entregado entregadoTemp) {
+		// TODO Auto-generated constructor stub
+		super();
+		_datos_compra = new Datos_compra(entregadoTemp.getRealizado_por());
+		_lista_elementos_carrito = new Lista_elementos_carrito(entregadoTemp.getID());
+		
+		iUsuario_registrado usr = new BDPrincipal();
+		iAdmin admin = new BDPrincipal();
+		VaadinSession session = VaadinSession.getCurrent();
+		Cliente cliente = (Cliente) session.getAttribute("cliente");
+		this.entregado = entregadoTemp;
+		
+		
+		
+//		Pedido pedido = (Pedido)session.getAttribute("pedidoCarrito");
+//		pedido.
+//		
+		VerticalLayout scrollableLayout = new VerticalLayout();
+		VerticalLayout barraIzquierda = new VerticalLayout();
+		VerticalLayout barraDerecha = new VerticalLayout();
+		HorizontalLayout barraInferiorDerecha = new HorizontalLayout();
+		barraInferiorDerecha.getStyle().set("border","1px solid blue").set("margin", "20px").set("padding-left", "20px");
+		barraInferiorDerecha.setWidth("95%");
+		barraDerecha.getStyle().set("width", "85%");
+		barraIzquierda.getStyle().set("width", "15%");
+	    barraDerecha.getStyle().set("border","1px solid blue").set("margin", "20px");
+	    barraIzquierda.getStyle().set("border","1px solid blue").set("margin", "20px");
+	    
+		scrollableLayout.setId("verticalLayout_carrito");
+		
+		
+		
+		for (Lineas_de_Pedido ldp: _lista_elementos_carrito.carrito) {
+			ldp.setPertenecen_a(pedido);
+			System.out.println("Producto " + ldp.getDe_un().getNombreProducto() + " cantidad " + ldp.getCantidad());
+		    Producto_Carrito puc = new Producto_Carrito(ldp);
+		    puc.precio.addValueChangeListener(new ValueChangeListener() {
+				@Override
+				public void valueChanged(ValueChangeEvent event) {
+					// TODO Auto-generated method stub
+					System.out.println("Cambio el precio " + puc.precio.getValue());
+					ldp.setCantidad(Integer.parseInt(puc.placeholderSelect.getValue()));
+					session.setAttribute("lineasDePedido", _lista_elementos_carrito.carrito);
+
+					calcularTotal(_lista_elementos_carrito.carrito);
+					actualizarLineas();
+				}
+			});
+		    
+		    puc.eliminarLinea.setVisible(false);
+		    puc.placeholderSelect.setEnabled(false);
+		    
+		    // totalCarrito+= puc.precioLinea;
+			scrollableLayout.add(puc);
+			
+		}
+		calcularTotal(_lista_elementos_carrito.carrito);
+	    //for(int i = 0; i< 10; i++){
+	    //  scrollableLayout.add(new Producto_busqueda(false));
+	    //}
+	    // Give the layout a defined height that fits the parent layout
+	    scrollableLayout.setHeight("100%");
+	    scrollableLayout.setWidth("100%");
+	    // Set overflow on the y-axis to "auto".
+	    // It can be also "scroll", but then you 
+	    // have a scroll bar even when one isn't needed.
+	    scrollableLayout.getStyle().set("overflow-y", "auto");
+	    // Another element to show that it stays in the same place
+	    Div tituloCarritoUsuario = new Div();
+	    tituloCarritoUsuario.getStyle().set("margin", "20px");
+	    tituloCarritoUsuario.add(new Text("Carrito de usuario"));
+	    tituloCarritoUsuario.getStyle().set("font-size", "1em").set("font-weight", "bold").set("text-decoration", "underline").set("color", "blue");
+
+	    estadoPedido = new TextField("Estado del Pedido");
+	    estadoPedido.setReadOnly(true);
+	    estadoPedido.getStyle().set("margin", "20px");
+	    estadoPedido.setValue("Pedido creado");
+	    
+	    if (entregado.getPagado()) {
+		    estadoPedido.setValue("Pedido pagado");
+	    }
+	    // if (pedido.)  FALTA PONER SI HA SIDO ENVIADO...ETc
+	    
+	    
+	    
+	    // Add both the scrollable layout and 
+	    // the static element to the layout
+	    barraIzquierda.add(tituloCarritoUsuario, estadoPedido);
+	    barraDerecha.add(scrollableLayout, barraInferiorDerecha);
+	    this.getVaadinHorizontalLayout().add(barraIzquierda, barraDerecha);
+	    
+	   
+
+	   
+	   
+	   _datos_compra.realizarPago.setVisible(false);
+	   _datos_compra.terminarPedido.setVisible(false);
+	   
+	    
+	    _datos_compra.totalCarritoLabel.setText("Total pedido : " + this.totalCarrito + "€");
+	    _datos_compra.totalPortes.setText("Total portes : " + "5€");
+	    double totalImpuestosDouble = this.totalCarrito * 0.21;
+	    _datos_compra.totalImpuestos.setText("Total impuestos : " + totalImpuestosDouble + "€");
+	    double totalPagarDouble = this.totalCarrito+5+totalImpuestosDouble;
+	    _datos_compra.totalPagar.setText("Total a pagar : " + totalPagarDouble + "€");
+		
+		barraInferiorDerecha.add( _datos_compra.direccionEnvio,  _datos_compra.metodoPago,  _datos_compra.totalDinero,  _datos_compra.botones);
+	}
+
+
+	public Elementos_comunes_carrito(basededatos.Pedido _pedido) {
+		// TODO Auto-generated constructor stub
+		super();
+		_datos_compra = new Datos_compra(_pedido.getRealizado_por());
+		_lista_elementos_carrito = new Lista_elementos_carrito(_pedido.getID());
+		
+		iUsuario_registrado usr = new BDPrincipal();
+		iAdmin admin = new BDPrincipal();
+		VaadinSession session = VaadinSession.getCurrent();
+		Cliente cliente = (Cliente) session.getAttribute("cliente");
+		this.pedidoNuevo = _pedido;
+		
+		
+		
+//		Pedido pedido = (Pedido)session.getAttribute("pedidoCarrito");
+//		pedido.
+//		
+		VerticalLayout scrollableLayout = new VerticalLayout();
+		VerticalLayout barraIzquierda = new VerticalLayout();
+		VerticalLayout barraDerecha = new VerticalLayout();
+		HorizontalLayout barraInferiorDerecha = new HorizontalLayout();
+		barraInferiorDerecha.getStyle().set("border","1px solid blue").set("margin", "20px").set("padding-left", "20px");
+		barraInferiorDerecha.setWidth("95%");
+		barraDerecha.getStyle().set("width", "85%");
+		barraIzquierda.getStyle().set("width", "15%");
+	    barraDerecha.getStyle().set("border","1px solid blue").set("margin", "20px");
+	    barraIzquierda.getStyle().set("border","1px solid blue").set("margin", "20px");
+	    
+		scrollableLayout.setId("verticalLayout_carrito");
+		
+		
+		
+		for (Lineas_de_Pedido ldp: _lista_elementos_carrito.carrito) {
+			ldp.setPertenecen_a(pedido);
+			System.out.println("Producto " + ldp.getDe_un().getNombreProducto() + " cantidad " + ldp.getCantidad());
+		    Producto_Carrito puc = new Producto_Carrito(ldp);
+		    puc.precio.addValueChangeListener(new ValueChangeListener() {
+				@Override
+				public void valueChanged(ValueChangeEvent event) {
+					// TODO Auto-generated method stub
+					System.out.println("Cambio el precio " + puc.precio.getValue());
+					ldp.setCantidad(Integer.parseInt(puc.placeholderSelect.getValue()));
+					session.setAttribute("lineasDePedido", _lista_elementos_carrito.carrito);
+
+					calcularTotal(_lista_elementos_carrito.carrito);
+					actualizarLineas();
+				}
+			});
+		    
+		    puc.eliminarLinea.setVisible(false);
+		    puc.placeholderSelect.setEnabled(false);
+		    
+		    // totalCarrito+= puc.precioLinea;
+			scrollableLayout.add(puc);
+			
+		}
+		calcularTotal(_lista_elementos_carrito.carrito);
+	    //for(int i = 0; i< 10; i++){
+	    //  scrollableLayout.add(new Producto_busqueda(false));
+	    //}
+	    // Give the layout a defined height that fits the parent layout
+	    scrollableLayout.setHeight("100%");
+	    scrollableLayout.setWidth("100%");
+	    // Set overflow on the y-axis to "auto".
+	    // It can be also "scroll", but then you 
+	    // have a scroll bar even when one isn't needed.
+	    scrollableLayout.getStyle().set("overflow-y", "auto");
+	    // Another element to show that it stays in the same place
+	    Div tituloCarritoUsuario = new Div();
+	    tituloCarritoUsuario.getStyle().set("margin", "20px");
+	    tituloCarritoUsuario.add(new Text("Carrito de usuario"));
+	    tituloCarritoUsuario.getStyle().set("font-size", "1em").set("font-weight", "bold").set("text-decoration", "underline").set("color", "blue");
+
+	    estadoPedido = new TextField("Estado del Pedido");
+	    estadoPedido.setReadOnly(true);
+	    estadoPedido.getStyle().set("margin", "20px");
+	    estadoPedido.setValue("Pedido creado");
+	    
+	    if (entregado.getPagado()) {
+		    estadoPedido.setValue("Pedido pagado");
+	    }
+	    // if (pedido.)  FALTA PONER SI HA SIDO ENVIADO...ETc
+	    
+	    
+	    
+	    // Add both the scrollable layout and 
+	    // the static element to the layout
+	    barraIzquierda.add(tituloCarritoUsuario, estadoPedido);
+	    barraDerecha.add(scrollableLayout, barraInferiorDerecha);
+	    this.getVaadinHorizontalLayout().add(barraIzquierda, barraDerecha);
+	    
+	   
+
+	   
+	   
+	   _datos_compra.realizarPago.setVisible(false);
+	   _datos_compra.terminarPedido.setVisible(false);
+	   
+	    
+	    _datos_compra.totalCarritoLabel.setText("Total pedido : " + this.totalCarrito + "€");
+	    _datos_compra.totalPortes.setText("Total portes : " + "5€");
+	    double totalImpuestosDouble = this.totalCarrito * 0.21;
+	    _datos_compra.totalImpuestos.setText("Total impuestos : " + totalImpuestosDouble + "€");
+	    double totalPagarDouble = this.totalCarrito+5+totalImpuestosDouble;
+	    _datos_compra.totalPagar.setText("Total a pagar : " + totalPagarDouble + "€");
+		
+		barraInferiorDerecha.add( _datos_compra.direccionEnvio,  _datos_compra.metodoPago,  _datos_compra.totalDinero,  _datos_compra.botones);	}
 
 
 	protected void calcularTotal(List<Lineas_de_Pedido> carrito) {

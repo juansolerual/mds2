@@ -152,10 +152,12 @@ public class Productos_Usuario extends VistaProductosusuario{
 	      if (fotos != null) {
 	    	  for (Foto foto : fotos) {
 	    		  if (foto.getIsPrincipal()) {
-			    	  pu.getAvatar().getStyle().set("background", "url("+foto.getURLFoto()+")");
+			    	  pu.avatarImage.setSrc(foto.getURLFoto());
 	    		  }
 			}
 		      
+	      }else {
+	    	  pu.avatarImage.setSrc("https://picsum.photos/200");
 	      }
 	      
 	      
@@ -166,58 +168,8 @@ public class Productos_Usuario extends VistaProductosusuario{
 			@Override
 			public void onComponentEvent(ClickEvent<Button> event) {
 				// TODO Auto-generated method stub
-				
-				VaadinSession session = VaadinSession.getCurrent();
-				
-				List<Lineas_de_Pedido> carrito = new ArrayList<Lineas_de_Pedido>();
-				if (cookiesHelper.isNoRegistrado()) {
-					carrito = (List<Lineas_de_Pedido>) session.getAttribute("carrito_invitado");
-
-				}else {
-					carrito = (List<Lineas_de_Pedido>) session.getAttribute(String.valueOf(cookiesHelper.idUsuario));
-				}
-				
-
-				if (carrito == null) {
-					carrito = new ArrayList<Lineas_de_Pedido>();
-				}
-
-				//String tipoUsuario = (String) session.getAttribute("tipoUsuario");
-				//Cliente cliente = null;
-				//if (tipoUsuario.equals("cliente")) {
-				//	cliente = (Cliente) session.getAttribute("cliente");
-				//}
-				
-				//pedido.setRealizado_por(cliente);
-				for (Lineas_de_Pedido ldp : carrito) {
-					if (ldp.getDe_un().getID() == producto.getID()) {
-						ldp.setCantidad(ldp.getCantidad()+1);
-						if (cookiesHelper.isNoRegistrado()) {
-							session.setAttribute("carrito_invitado", carrito);
-
-						}else {
-							session.setAttribute(String.valueOf(cookiesHelper.idUsuario), carrito);
-
-						}						
-						return;
-					}
-				}
-				
-				Lineas_de_Pedido linea = new Lineas_de_Pedido();
-				linea.setDe_un(producto);
-				linea.setCantidad(1);
-				carrito.add(linea);
-				//linea.setPertenecen_a(pedido);
-				if (cookiesHelper.isNoRegistrado()) {
-					System.out.println("carrito is not registrado");
-					session.setAttribute("carrito_invitado", carrito);
-
-				}else {
-					System.out.println("carrito is registrado");
-
-					session.setAttribute(String.valueOf(cookiesHelper.idUsuario), carrito);
-
-				}
+				pu.producto = producto;
+				pu.Anadir_al_carrito();
 				carritoInt++;
 				carritoText.setValue(carritoInt+"");
 				

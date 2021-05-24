@@ -5,6 +5,8 @@ import javax.servlet.http.Cookie;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.VaadinSession;
@@ -49,29 +51,34 @@ public class Admin extends VistaAdmin{
 			@Override
 			public void onComponentEvent(ClickEvent<Button> event) {
 				// TODO Auto-generated method stub
-				cookiesHelper.encargado_compras = null;
-				session.setAttribute("tipoUsuario", "noUser");
-				session.setAttribute("admin", null);
+				_cabecera_administrador.Cerrar_sesion_administrador();
+		    	
+		    	
+
+			}
+		});
+    	
+    	_cabecera_administrador.getDivLogo().addClickListener(new ComponentEventListener<ClickEvent<Div>>() {
+
+			@Override
+			public void onComponentEvent(ClickEvent<Div> event) {
+				// TODO Auto-generated method stub
+				vlayout.removeAll();
+				vlayout.add(_cabecera_administrador);
+				vlayout.add(_visualizar_Pantalla_Principal_Administrador);
+			}
+			
+		});
+    	
+    	_cabecera_administrador.getVaadinHorizontalLayout().addClickListener(new ComponentEventListener<ClickEvent<HorizontalLayout>>() {
+
+			@Override
+			public void onComponentEvent(ClickEvent<HorizontalLayout> event) {
+				// TODO Auto-generated method stub
+				vlayout.removeAll();
+				vlayout.add(_cabecera_administrador);
+				vlayout.add(_visualizar_Pantalla_Principal_Administrador);
 				
-				Cookie cookiecliente = new Cookie("cliente", "-1");
-
-				Cookie cookieTipoUsuario= new Cookie("tipoUsuario", "");
-
-				cookiecliente.setMaxAge(60); // define after how many *seconds* the cookie should expire
-				cookiecliente.setPath("/"); // single slash means the cookie is set for your whole application.
-				cookieTipoUsuario.setMaxAge(60); // define after how many *seconds* the cookie should expire
-				cookieTipoUsuario.setPath("/"); // single slash means the cookie is set for your whole application.
-				VaadinService.getCurrentResponse().addCookie(cookiecliente);
-				VaadinService.getCurrentResponse().addCookie(cookieTipoUsuario);
-				Admin admin = (Admin) session.getAttribute("adminInterfaz");
-				Usuario_no_identificado usuario_no_identificado = new Usuario_no_identificado();
-
-		    	VerticalLayout mainView = (VerticalLayout) session.getAttribute("MainView");
-		    	mainView.remove(admin);
-		    	mainView.add(usuario_no_identificado);
-		    	
-		    	
-
 			}
 		});
     	

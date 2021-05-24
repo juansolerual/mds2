@@ -5,6 +5,8 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
@@ -48,7 +50,8 @@ public class Recuperar_contrasena {
 			@Override
 			public void onComponentEvent(ClickEvent<Button> event) {
 				System.out.println("click ver recuperar contraseña");
-				recuperarContrasena.open();
+				Notification notification = Notification.show("Se ha enviado un correo electrónico para restablecer la contraseña", 3000,
+						Position.MIDDLE);
 				
 			}
 		});

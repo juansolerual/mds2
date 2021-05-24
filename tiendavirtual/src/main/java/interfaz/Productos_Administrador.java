@@ -38,9 +38,6 @@ public class Productos_Administrador extends VistaProductosadministrador{
 	//public Vector<Producto_admin> _list_Producto_admin = new Vector<Producto_admin>();
 
 	public Productos_Administrador(List<Producto_usuario> list) {
-		for (Producto_usuario producto_administrador : list) {
-			//this.getVaadinHorizontalLayout().add(new Producto_usuario());
-		}
 		
 		
 	}
@@ -107,7 +104,7 @@ public class Productos_Administrador extends VistaProductosadministrador{
 		iAdmin user = new BDPrincipal();
 		List<Producto> productos = user.cargarProductos();
 		for (Producto producto : productos) {
-	    	 Producto_usuario pu = new Producto_usuario(true);
+			  Producto_admin pu = new Producto_admin();
 		      //double start = 0;
 		      //double end = 400;
 		      //double random = new Random().nextDouble();
@@ -139,30 +136,37 @@ public class Productos_Administrador extends VistaProductosadministrador{
 		      if (fotos != null) {
 		    	  for (Foto foto : fotos) {
 		    		  if (foto.getIsPrincipal()) {
-				    	  pu.getAvatar().getStyle().set("background", "url("+foto.getURLFoto()+")");
+				    	  pu.avatarImage.setSrc(foto.getURLFoto());
 		    		  }
 				}
 			      
 		      }
 		      
+		      pu.avatar.addClickListener(new ComponentEventListener<ClickEvent<Div>>() {
+					
+					@Override
+					public void onComponentEvent(ClickEvent<Div> event) {
+						Editar_producto_admin(producto);
+					}
+			      });
 			      
 		      pu.editarProducto.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
 				
 				@Override
 				public void onComponentEvent(ClickEvent<Button> event) {
-					VistaProductousuario vistaProductoUsuario = new VistaProductousuario(producto, true);
-					
-					System.out.println("Click administrador en producto con precio.. " + pu.getPrecio().getText());
-					VaadinSession session = VaadinSession.getCurrent();
-
-			    	VerticalLayout verticalLayoutAdmin = (VerticalLayout) session.getAttribute("verticalLayoutAdmin");
-			    	Visualizar_Pantalla_Principal_Administrador visualizar_Pantalla_Principal_Administrador = (Visualizar_Pantalla_Principal_Administrador) session.getAttribute("visualizar_Pantalla_Principal_Administrador");
-			    	session.setAttribute("vistaProductoUsuario", vistaProductoUsuario);
-
-			    	verticalLayoutAdmin.remove(visualizar_Pantalla_Principal_Administrador);
-			    	verticalLayoutAdmin.add(vistaProductoUsuario);
+					Editar_producto_admin(producto);
 				}
 		      });
+		      
+		      pu.verDescripcion.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
+
+					@Override
+					public void onComponentEvent(ClickEvent<Button> event) {
+						// TODO Auto-generated method stub
+						pu._ver_descripcion_producto_admin = new Ver_descripcion_producto_admin(producto);
+					}
+			    	
+				});
 	      scrollableLayout.add(pu);
 	    }
 	    // Give the layout a defined height that fits the parent layout
@@ -187,7 +191,7 @@ public class Productos_Administrador extends VistaProductosadministrador{
 //	    staticElement.getStyle().set("color", "blue").set("font-weight", "bold");
 	    
 	    Label staticElement = new Label("Productos destacados");
-	    staticElement.getStyle().set("color", "blue").set("font-weight", "bold").set("margin", "20px");
+	    staticElement.getStyle().set("color", "#1676f3").set("font-weight", "bold").set("margin", "20px");
 	    
 	    Button nuevoProducto = new Button("+");
 	    nuevoProducto.getElement().getStyle().set("margin-left", "auto");
@@ -215,19 +219,57 @@ public class Productos_Administrador extends VistaProductosadministrador{
 			}
 			
 		});
+		
+		 Button editarProductos = new Button("Editar productos");
+		 editarProductos.getElement().getStyle().set("margin-left", "auto");
+		    editarProductos.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
+
+				@Override
+				public void onComponentEvent(ClickEvent<Button> event) {
+					// TODO Auto-generated method stub
+//					HorizontalLayout horizontalLayoutAdministrador =
+//							  (HorizontalLayout)
+//							  session.getAttribute("horizontalLayoutAdministrador");
+//					
+//					horizontalLayoutAdministrador.removeAll();
+					
+					Visualizar_Pantalla_Principal_Administrador _visualizar_Pantalla_Principal_Administrador =
+					  (Visualizar_Pantalla_Principal_Administrador)
+					  session.getAttribute("visualizar_Pantalla_Principal_Administrador");
+					
+					  VerticalLayout verticalLayoutAdmin = (VerticalLayout)
+					  session.getAttribute("verticalLayoutAdmin");
+					  verticalLayoutAdmin.remove(_visualizar_Pantalla_Principal_Administrador);
+					 
+					  Vista_producto_Admin _vista_producto_Admin = new Vista_producto_Admin();
+					verticalLayoutAdmin.add(_vista_producto_Admin);
+				}
+				
+			});
 	    
 	    
 	    // Add both the scrollable layout and 
 	    // the static element to the layout
-	    primeraLinea.add(staticElement, nuevoProducto);
+	    primeraLinea.add(staticElement, editarProductos, nuevoProducto);
 	    primeraLinea.getStyle().set("width", "100%").set("margin-left", "20px").set("margin-right", "20px");
 
 	    this.getHorizontalProductos().add(primeraLinea, scrollableLayout);
-	    this.getHorizontalProductos().getStyle().set("border","2px solid blue").set("border-radius","25px");
+	    this.getHorizontalProductos().getStyle().set("border","2px solid #1676f3").set("border-radius","25px");
 	}
 
-	public void Editar_producto_admin() {
-		throw new UnsupportedOperationException();
+	public void Editar_producto_admin(Producto producto) {
+		Editar_producto vistaProductoAdmin = new Editar_producto(producto, true);
+		
+		//Vista_producto_Admin vistaProductoAdmin = new Vista_producto_Admin(producto, true);
+		
+		VaadinSession session = VaadinSession.getCurrent();
+
+    	VerticalLayout verticalLayoutAdmin = (VerticalLayout) session.getAttribute("verticalLayoutAdmin");
+    	Visualizar_Pantalla_Principal_Administrador visualizar_Pantalla_Principal_Administrador = (Visualizar_Pantalla_Principal_Administrador) session.getAttribute("visualizar_Pantalla_Principal_Administrador");
+    	session.setAttribute("vistaProductoUsuario", vistaProductoAdmin);
+
+    	verticalLayoutAdmin.remove(visualizar_Pantalla_Principal_Administrador);
+    	verticalLayoutAdmin.add(vistaProductoAdmin);
 	}
 	
 	

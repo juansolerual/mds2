@@ -79,6 +79,11 @@ import com.vaadin.flow.component.datepicker.DatePicker;
 @JsModule("./src/vista-productousuario.js")
 public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.VistaProductousuarioModel> {
 
+	
+	public Producto nuevoProducto;
+	public int resultado;
+	public Producto productoEditado;
+
 	private boolean image1b = false;
 	private boolean image2b = false;
 	private boolean image3b = false;
@@ -145,6 +150,8 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 	private TextField precioRebajado;
 	@Id("volver")
 	private Button volver;
+	private String fotoCategoria;
+	public iAdmin adm;
 
 	/**
 	 * Creates a new VistaProducto_usuario.
@@ -170,7 +177,7 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 		oferta.setReadOnly(true);
 		oferta.setVisible(false);
 		cantidad.setLabel("Cantidad");
-		iAdmin adm = new BDPrincipal();
+		adm = new BDPrincipal();
 		List<Categoria> categorias = adm.cargarCategorias();
 		List<Oferta> ofertas = adm.cargarOfertas();
 		
@@ -399,8 +406,8 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 			System.out.println(producto.getNombreProducto());
 			java.util.Date date = producto.getAplica_oferta().getFechaCaducidadOferta();
 			java.util.Date datenow = new java.util.Date();
-			int resultado = datenow.compareTo(date);
-			if (producto.getAplica_oferta().getActivada() && resultado == -1) {
+			int resultadoDate = datenow.compareTo(date);
+			if (producto.getAplica_oferta().getActivada() && resultadoDate == -1) {
 				if (producto.getAplica_oferta().getPorcentajeOferta()) {
 					precioRebajado.setValue(String.valueOf(producto.getPrecio()
 							- (producto.getPrecio() * (producto.getAplica_oferta().getPrecioOferta() / 100))));
@@ -523,6 +530,10 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 
 			addCarritoButton.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
 
+				
+
+
+
 				@Override
 				public void onComponentEvent(ClickEvent<Button> event) {
 
@@ -552,7 +563,7 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 					if (producto == null) {
 						Producto producto = new Producto();
 					}
-					Producto nuevoProducto = new Producto();
+					nuevoProducto = new Producto();
 					nuevoProducto.setNombreProducto(nombreProducto.getValue());
 					nuevoProducto.setDescripcion(descripcionText.getValue());
 					nuevoProducto.setCaracteristicas(caracteristicasText.getValue());
@@ -560,11 +571,11 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 					nuevoProducto.setAplica_oferta(oferta.getValue());
 					nuevoProducto.setPertenece_a(categoria.getValue());
 					nuevoProducto.setLimiteFotos(0);
-					int resultado = -1;
+					resultado = -1;
 					if (isEditarProducto) {
 						
 							System.out.println("ID producto a EDITAR " + producto.getID());
-							Producto productoEditado = adm.cargarProducto(producto.getID());
+							productoEditado = adm.cargarProducto(producto.getID());
 							//Producto productoEditado = ProductoDAO.getProductoByORMID(producto.getID());
 							productoEditado.setNombreProducto(nombreProducto.getValue());
 							productoEditado.setDescripcion(descripcionText.getValue());
@@ -603,8 +614,7 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 							}
 							
 							
-							
-							resultado = adm.editarProducto(productoEditado);
+							editarProducto();
 							System.out.println("Resultado editar id " + resultado);
 							
 							
@@ -678,7 +688,9 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 							nuevoProducto.tieneFoto.add(foto5);
 							image5Editada = false;
 						}
-						resultado = adm.guardarProducto(nuevoProducto);
+						
+						guardarProducto();
+						
 					}
 
 					if (resultado != -1) {
@@ -719,6 +731,10 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 			TextField descripcion = new TextField("Descripción:");
 			descripcion.getStyle().set("margin", "20px").set("width", "400px");
 
+			Image imageCategoriaNueva = new Image();
+			imageCategoriaNueva.setWidth("150px");
+			imageCategoriaNueva.setHeight("150px");
+			
 			Button guardar = new Button("Guardar");
 			guardar.getStyle().set("margin", "20px");
 
@@ -731,6 +747,34 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 			Shortcuts.addShortcutListener(dialog, () -> {
 				dialog.close();
 			}, Key.ESCAPE);
+			
+			MemoryBuffer bufferCategoria = new MemoryBuffer();
+			Upload uploadCategoria = new Upload(bufferCategoria);
+			uploadCategoria.setAcceptedFileTypes("image/jpeg", "image/png", "image/gif");
+
+			
+
+			uploadCategoria.addSucceededListener(event -> {
+				Component component = createComponent(event.getMIMEType(), event.getFileName(), bufferCategoria.getInputStream());
+				File targetFile = new File("src/main/resources/targetFile.tmp");
+
+				try {
+					FileUtils.copyInputStreamToFile(bufferCategoria.getInputStream(), targetFile);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				fotoCategoria = Uploader.upload(targetFile);
+				System.out.println(fotoCategoria);
+				System.out.println("index of title  " + fotoCategoria.indexOf("title"));
+				System.out.println("https://i.imgur.com/" + fotoCategoria.subSequence(15, 22) + ".jpg");
+				fotoCategoria = "https://i.imgur.com/" + fotoCategoria.subSequence(15, 22) + ".jpg";
+				imageCategoriaNueva.setSrc(fotoCategoria);
+				//output.removeAll();
+				//showOutput(event.getFileName(), component, output);
+			});
+
 
 			guardar.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
 
@@ -758,7 +802,7 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 				}
 
 			});
-			VerticalLayout dialogVertical = new VerticalLayout(nombreCategoria, descripcion);
+			VerticalLayout dialogVertical = new VerticalLayout(nombreCategoria, descripcion, imageCategoriaNueva, uploadCategoria);
 			HorizontalLayout dialogButtons = new HorizontalLayout(guardar, cancelButton);
 			dialogHorizontal.getStyle().set("margin", "20px").set("width", "100%");
 			dialogVertical.getStyle().set("margin", "20px").set("width", "100%");
@@ -894,6 +938,17 @@ public class VistaProductousuario extends PolymerTemplate<VistaProductousuario.V
 			System.out.println("final clase Vista Prudcto " );
 		}
 
+	}
+
+	protected void editarProducto() {
+		// TODO Auto-generated method stub
+		resultado = adm.editarProducto(productoEditado);
+
+	}
+
+	protected void guardarProducto() {
+		// TODO Auto-generated method stub
+		resultado = adm.guardarProducto(nuevoProducto);
 	}
 
 	/**

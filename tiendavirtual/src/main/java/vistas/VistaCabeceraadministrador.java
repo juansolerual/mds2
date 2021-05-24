@@ -10,6 +10,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.html.Div;
 
 /**
  * A Designer generated component for the vista-cabeceraadministrador template.
@@ -23,6 +24,14 @@ public class VistaCabeceraadministrador extends PolymerTemplate<VistaCabeceraadm
 
     @Id("vaadinVerticalLayout")
 	private Element vaadinVerticalLayout;
+	public Div getDivLogo() {
+		return divLogo;
+	}
+
+	public void setDivLogo(Div divLogo) {
+		this.divLogo = divLogo;
+	}
+
 	@Id("vaadinHorizontalLayout")
 	private HorizontalLayout vaadinHorizontalLayout;
 	@Id("label")
@@ -121,12 +130,16 @@ public class VistaCabeceraadministrador extends PolymerTemplate<VistaCabeceraadm
 	private Button vaadinButton;
 	@Id("cerrarSesion")
 	private Button cerrarSesion;
+	@Id("divLogo")
+	private Div divLogo;
 
 	/**
      * Creates a new VistaCabeceraadministrador.
      */
     public VistaCabeceraadministrador() {
         // You can initialise any data required for the connected UI components here.
+	    label.getStyle().set("font-size", "2em").set("font-weight", "bold").set("text-decoration", "underline").set("color", "#1676f3");
+
     }
 
     /**

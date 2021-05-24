@@ -1,5 +1,8 @@
 package interfaz;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Text;
@@ -9,7 +12,11 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.server.VaadinSession;
 
+import basededatos.Lineas_de_Pedido;
+import basededatos.Producto;
+import tiendavirtual.cookiesHelper;
 import vistas.VistaProductolista;
 import vistas.VistaProductousuario;
 
@@ -23,6 +30,10 @@ public class Producto_usuario extends VistaProductolista{
 	public Label precioRebajado;
 	public Text nombreProducto;
 	public Div avatar;
+	
+	public Producto producto;
+	private int carritoInt;
+	public Image avatarImage;
 
 	
 
@@ -60,7 +71,58 @@ public class Producto_usuario extends VistaProductolista{
 	}
 
 	public void Anadir_al_carrito() {
-		throw new UnsupportedOperationException();
+		VaadinSession session = VaadinSession.getCurrent();
+		
+		List<Lineas_de_Pedido> carrito = new ArrayList<Lineas_de_Pedido>();
+		if (cookiesHelper.isNoRegistrado()) {
+			carrito = (List<Lineas_de_Pedido>) session.getAttribute("carrito_invitado");
+
+		}else {
+			carrito = (List<Lineas_de_Pedido>) session.getAttribute(String.valueOf(cookiesHelper.idUsuario));
+		}
+		
+
+		if (carrito == null) {
+			carrito = new ArrayList<Lineas_de_Pedido>();
+		}
+
+		//String tipoUsuario = (String) session.getAttribute("tipoUsuario");
+		//Cliente cliente = null;
+		//if (tipoUsuario.equals("cliente")) {
+		//	cliente = (Cliente) session.getAttribute("cliente");
+		//}
+		
+		//pedido.setRealizado_por(cliente);
+		for (Lineas_de_Pedido ldp : carrito) {
+			if (ldp.getDe_un().getID() == producto.getID()) {
+				ldp.setCantidad(ldp.getCantidad()+1);
+				if (cookiesHelper.isNoRegistrado()) {
+					session.setAttribute("carrito_invitado", carrito);
+
+				}else {
+					session.setAttribute(String.valueOf(cookiesHelper.idUsuario), carrito);
+
+				}						
+				return;
+			}
+		}
+		
+		Lineas_de_Pedido linea = new Lineas_de_Pedido();
+		linea.setDe_un(producto);
+		linea.setCantidad(1);
+		carrito.add(linea);
+		//linea.setPertenecen_a(pedido);
+		if (cookiesHelper.isNoRegistrado()) {
+			System.out.println("carrito is not registrado");
+			session.setAttribute("carrito_invitado", carrito);
+
+		}else {
+			System.out.println("carrito is registrado");
+
+			session.setAttribute(String.valueOf(cookiesHelper.idUsuario), carrito);
+
+		}
+		
 	}
 
 	public Producto_usuario(boolean admin) {
@@ -71,18 +133,21 @@ public class Producto_usuario extends VistaProductolista{
 		image.addStyleName("my-img-button");
 		
 		*/
-		
 		avatar = new Div();
-	    avatar.setWidth("152px");
-	    avatar.setHeight("152px");
-	    avatar.getStyle()
+		avatar.getStyle().set("margin", "16px");
+
+		avatar.setWidth("152px");
+		avatar.setHeight("152px");
+		avatarImage = new Image();
+	    avatarImage.setWidth("152px");
+	    avatarImage.setHeight("152px");
+	    avatarImage.getStyle()
 	      .set("background-color", "gray")
-	      .set("border-radius", "12px")
-	      .set("margin-left", "10px")
-	      .set("margin-top", "10px")
-	      .set("margin-bottom", "10px")
-	      .set("background", "url(https://picsum.photos/200)")
+	      .set("border-radius", "6px")
+	      .set("margin", "16px")
 	      .set("cursor", "pointer");
+	    
+	    avatar.add(avatarImage);
 
 	    
 	   
@@ -116,19 +181,21 @@ public class Producto_usuario extends VistaProductolista{
 	    vl.getStyle().set("margin-right", "10px")
 	      .set("margin-top", "10px")
 	      .set("margin-bottom", "10px");
+	    verDescripcion = new Button("Ver descripción");
+
+	    VerticalLayout vlav = new VerticalLayout(avatarImage,verDescripcion);
+
 	    
 	    if (admin) {
 	    	editarProducto = new Button("Editar producto");
-	    	editarProducto.getStyle().set("margin-top", "52px");
-		    vl.add(editarProducto);
+	    	editarProducto.getStyle().set("margin-top", "25px");
+		    vlav.add(editarProducto);
 	    }else {
 	    	anadirCarrito = new Button("Añadir Carrito");
-	    	anadirCarrito.getStyle().set("margin-top", "52px");
-		    vl.add(anadirCarrito);
+	    	anadirCarrito.getStyle().set("margin-top", "25px");
+		    vlav.add(anadirCarrito);
 	    }
 	    
-	    verDescripcion = new Button("Ver descripción");
-	    VerticalLayout vlav = new VerticalLayout(avatar,verDescripcion);
 
 	    //vl.add();
 	    //HorizontalLayout hl = new HorizontalLayout(avatar, vl);

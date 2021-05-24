@@ -30,6 +30,12 @@ public class Vista_gestion_empleados extends VerticalLayout {
 	public Button nuevoEmpleado; 
 	public HorizontalLayout cabeceraVista;
 	public VaadinSession session;
+	protected Transportista transportistaTemp;
+	protected Empleado empleadoTemp;
+	public VerticalLayout scrollableLayout;
+	public iAdmin adm;
+	protected Encargado_compras encargadoTemp;
+	protected Administrador administradorTemp;
 
 	public Vista_gestion_empleados() {
 		super();
@@ -42,14 +48,14 @@ public class Vista_gestion_empleados extends VerticalLayout {
 		_lista_empleados.setHeight("100%");
 		
 		
-		iAdmin adm = new BDPrincipal();
+		adm = new BDPrincipal();
 		
 		List<Administrador> administradores = adm.cargarAdministradores();
 		// List<Cliente> clientes = adm.cargarClientes();
 		List<basededatos.Encargado_compras> encargadosCompras = adm.cargarEncargadosCompras();
 		List<basededatos.Transportista> transportistas = adm.cargarTransportistas();
 		
-		VerticalLayout scrollableLayout = new VerticalLayout();
+		scrollableLayout = new VerticalLayout();
 		scrollableLayout.setId("verticalLayout_empleados");
 		for (Administrador administrador: administradores) {
 			System.out.println("Administrador " + administrador.getNombre());
@@ -66,8 +72,10 @@ public class Vista_gestion_empleados extends VerticalLayout {
 				@Override
 				public void onComponentEvent(ClickEvent<Button> event) {
 					// TODO Auto-generated method stub
-					scrollableLayout.remove(empleado);
-					adm.eliminarAdministrador(administrador.getID());
+					empleadoTemp = empleado;
+					administradorTemp = administrador;
+					eliminarAdministrador();
+					
 
 				}
 			});
@@ -106,8 +114,10 @@ public class Vista_gestion_empleados extends VerticalLayout {
 
 				@Override
 				public void onComponentEvent(ClickEvent<Button> event) {
-					scrollableLayout.remove(empleado);
-					adm.eliminarEncargadoCompras(encargado.getID());
+					empleadoTemp = empleado;
+					encargadoTemp = encargado;
+					eliminarEncargadoCompras();
+					
 				}
 			});
 			
@@ -145,8 +155,9 @@ public class Vista_gestion_empleados extends VerticalLayout {
 				@Override
 				public void onComponentEvent(ClickEvent<Button> event) {
 					// TODO Auto-generated method stub
-					scrollableLayout.remove(empleado);
-					adm.eliminarTransportista(transportista.getID());
+					empleadoTemp = empleado;
+					transportistaTemp = transportista;
+					eliminarTransportista();
 
 				}
 			});
@@ -188,7 +199,7 @@ public class Vista_gestion_empleados extends VerticalLayout {
 	    // Add both the scrollable layout and 
 	    // the static element to the layout
 	    _lista_empleados.add(scrollableLayout);
-	    _lista_empleados.getStyle().set("border","1px solid blue");
+	    _lista_empleados.getStyle().set("border","2px solid #1676f3").set("border-radius","25px");
 	    
 	    cabeceraVista = new HorizontalLayout();
 	    nuevoEmpleado = new Button("Nuevo empleado");
@@ -201,14 +212,9 @@ public class Vista_gestion_empleados extends VerticalLayout {
 			@Override
 			public void onComponentEvent(ClickEvent<Button> event) {
 				// TODO Auto-generated method stub
-				Vista_gestion_empleados _vista_gestion_empleados = (Vista_gestion_empleados) session.getAttribute("Vista_gestion_empleados");
-				VerticalLayout verticalLayoutAdmin = (VerticalLayout) session.getAttribute("verticalLayoutAdmin");
 				
-				verticalLayoutAdmin.remove(_vista_gestion_empleados);
-				Registrarse _registrarse = new Registrarse(true);
-		    	session.setAttribute("Registrarse", _registrarse);
-
-		    	verticalLayoutAdmin.add(_registrarse);
+				crearEmpleado();
+				
 
 
 			}
@@ -219,6 +225,36 @@ public class Vista_gestion_empleados extends VerticalLayout {
 	    
 		
 		
+	}
+
+	protected void eliminarAdministrador() {
+		// TODO Auto-generated method stub
+		scrollableLayout.remove(empleadoTemp);
+		adm.eliminarAdministrador(administradorTemp.getID());
+	}
+
+	protected void eliminarEncargadoCompras() {
+		// TODO Auto-generated method stub
+		scrollableLayout.remove(empleadoTemp);
+		adm.eliminarEncargadoCompras(encargadoTemp.getID());
+	}
+
+	protected void eliminarTransportista() {
+		// TODO Auto-generated method stub
+		scrollableLayout.remove(this.empleadoTemp);
+		adm.eliminarTransportista(this.transportistaTemp.getID());
+	}
+
+	protected void crearEmpleado() {
+		// TODO Auto-generated method stub
+		Vista_gestion_empleados _vista_gestion_empleados = (Vista_gestion_empleados) session.getAttribute("Vista_gestion_empleados");
+		VerticalLayout verticalLayoutAdmin = (VerticalLayout) session.getAttribute("verticalLayoutAdmin");
+		
+		verticalLayoutAdmin.remove(_vista_gestion_empleados);
+		_dar_alta_empleado = new Dar_alta_empleado();
+    	session.setAttribute("_dar_alta_empleado", _dar_alta_empleado);
+
+    	verticalLayoutAdmin.add(_dar_alta_empleado);
 	}
 	
 	

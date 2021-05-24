@@ -40,27 +40,13 @@ public class Vista_busqueda_de_productos_categorias extends VistaBusqueda {
 	public Vista_busqueda_de_productos_categorias(String busqueda) {
 		super();
 		iUsuario_registrado usuario = new BDPrincipal();
-		List<Producto> productos = usuario.cargarProductos(busqueda);
+		_resultado_de_la_busqueda = new Resultado_de_la_busqueda(null);
+		_resultado_de_la_busqueda._list_Producto_busqueda = usuario.cargarProductos(busqueda);
 		
-		for (Producto producto : productos) {
-			System.out.println(producto.getNombreProducto());
-		}
+		
 		
 		VaadinSession session = VaadinSession.getCurrent();
-		try {
-			System.out.println(session.getAttribute("username").toString());
-			
-			
-					/*
-			 * VerticalLayout mainView = (VerticalLayout) session.getAttribute("MainView");
-			 * Usuario_no_identificado user = (Usuario_no_identificado)
-			 * session.getAttribute("usuarioNoIdentificado"); mainView.remove(user);
-			 */
-			
-		} catch(Exception e) {
-			// no username is session
-			System.out.println(e);
-		}
+		
         
 
 		
@@ -72,7 +58,7 @@ public class Vista_busqueda_de_productos_categorias extends VistaBusqueda {
 		
 		VerticalLayout scrollableLayout = new VerticalLayout();
 		scrollableLayout.setId("verticalLayout_productos");
-		for (Producto producto : productos) {
+		for (Producto producto : _resultado_de_la_busqueda._list_Producto_busqueda) {
 			System.out.println(producto.getNombreProducto());
 		    scrollableLayout.add(new Producto_busqueda(false, producto));
 
@@ -94,7 +80,7 @@ public class Vista_busqueda_de_productos_categorias extends VistaBusqueda {
 	    // Add both the scrollable layout and 
 	    // the static element to the layout
 	    barraDerecha.add(staticElement, scrollableLayout);
-	    barraDerecha.getStyle().set("border","1px solid blue");
+	    barraDerecha.getStyle().set("border", "2px solid #1676f3").set("border-radius", "25px");
 	    
 	    filtrar_por_categoria = new Button("Filtrar por categoria");
 	    filtrar_por_precio = new Button("Filtrar por precio");
@@ -226,7 +212,7 @@ public class Vista_busqueda_de_productos_categorias extends VistaBusqueda {
 	    // Add both the scrollable layout and 
 	    // the static element to the layout
 	    barraDerecha.add(staticElement, scrollableLayout);
-	    barraDerecha.getStyle().set("border","1px solid blue");
+	    barraDerecha.getStyle().set("border", "2px solid #1676f3").set("border-radius", "25px");
 	    
 	    filtrar_por_categoria = new Button("Filtrar por categoria");
 	    filtrar_por_precio = new Button("Filtrar por precio");

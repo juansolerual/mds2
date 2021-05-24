@@ -42,42 +42,49 @@ import com.vaadin.flow.internal.MessageDigestUtil;
 import com.vaadin.flow.server.StreamResource;
 
 import basededatos.BDPrincipal;
+import basededatos.Producto;
 import basededatos.iAdmin;
 import tiendavirtual.Uploader;
+import vistas.VistaProductousuario;
 
-public class Editar_oferta {
+public class Editar_producto extends VistaProductousuario{
+
 	public Lista_ofertas _lista_ofertas;
 	private String fotoOferta;
 	public basededatos.Oferta aOferta;
-	public Dialog dialogOferta;
+	public Dialog dialogProducto;
 	public Button guardarOferta;
-	public TextField nombreOferta;
+	public TextField nombreProducto;
 	public Image imageOfertaNueva;
 	public TextField precioOferta;
 	public Checkbox porcentajeOferta;
 	public DatePicker fechaCaducidad;
 	public Checkbox activada;
 	
-	
+	public Editar_producto(Producto producto, boolean admin) {
+		super(producto, admin);
+	}
 
-	public Editar_oferta(basededatos.Oferta oferta) {
-		super();
+	public Editar_producto(Producto productoTemp) {
+		// TODO Auto-generated constructor stub
+		super(productoTemp, true);
 		
-		dialogOferta = new Dialog();
-		HorizontalLayout dialogOfertaHorizontal = new HorizontalLayout();
-		dialogOferta.setCloseOnOutsideClick(true);
-		Label tituloOfertaDialog = new Label("Nueva oferta");
-		dialogOfertaHorizontal.add(tituloOfertaDialog);
-		dialogOferta.setWidth("800px");
-		dialogOferta.setHeight("600px");
-		dialogOferta.setMinHeight("600px");
-		dialogOferta.setMinWidth("800px");
+		dialogProducto = new Dialog();
+		HorizontalLayout dialogProductoHorizontal = new HorizontalLayout();
+		dialogProducto.setCloseOnOutsideClick(true);
+		Label tituloProductoDialog = new Label("Nuevo producto");
+		
+		dialogProductoHorizontal.add(tituloProductoDialog);
+		dialogProducto.setWidth("800px");
+		dialogProducto.setHeight("600px");
+		dialogProducto.setMinHeight("600px");
+		dialogProducto.setMinWidth("800px");
 
-		dialogOferta.setModal(false);
-		dialogOferta.setDraggable(true);
-		dialogOferta.setResizable(true);
-		nombreOferta = new TextField("Nombre oferta:");
-		nombreOferta.getStyle().set("margin", "20px").set("width", "400px");
+		dialogProducto.setModal(false);
+		dialogProducto.setDraggable(true);
+		dialogProducto.setResizable(true);
+		nombreProducto = new TextField("Nombre producto:");
+		nombreProducto.getStyle().set("margin", "20px").set("width", "400px");
 		
 		imageOfertaNueva = new Image();
 		imageOfertaNueva.setWidth("150px");
@@ -103,24 +110,24 @@ public class Editar_oferta {
 		guardarOferta.getStyle().set("margin", "20px");
 
 		Button cancelOfertaButton = new Button("Cancelar", event -> {
-			dialogOferta.close();
+			dialogProducto.close();
 		});
 		cancelOfertaButton.getStyle().set("margin", "20px");
 		
-		if (oferta != null) {
-			precioOferta.setValue(String.valueOf(oferta.getPrecioOferta()));
-			nombreOferta.setValue(oferta.getNombreOferta());
-			imageOfertaNueva.setSrc(oferta.getUrlImagen());
-			porcentajeOferta.setEnabled(oferta.getPorcentajeOferta());
-			activada.setEnabled(oferta.getActivada());
-			fechaCaducidad.setValue(LocalDate.parse(oferta.getFechaCaducidadOferta().toString()));
-			aOferta = oferta;
-
-		}
+//		if (oferta != null) {
+//			precioOferta.setValue(String.valueOf(oferta.getPrecioOferta()));
+//			nombreProducto.setValue(oferta.getNombreOferta());
+//			imageOfertaNueva.setSrc(oferta.getUrlImagen());
+//			porcentajeOferta.setEnabled(oferta.getPorcentajeOferta());
+//			activada.setEnabled(oferta.getActivada());
+//			fechaCaducidad.setValue(LocalDate.parse(oferta.getFechaCaducidadOferta().toString()));
+//			aOferta = oferta;
+//
+//		}
 
 		// Cancel action on ESC press
-		Shortcuts.addShortcutListener(dialogOferta, () -> {
-			dialogOferta.close();
+		Shortcuts.addShortcutListener(dialogProducto, () -> {
+			dialogProducto.close();
 		}, Key.ESCAPE);
 		
 		MemoryBuffer bufferOferta = new MemoryBuffer();
@@ -155,53 +162,46 @@ public class Editar_oferta {
 			public void onComponentEvent(ClickEvent<Button> event) {
 				// TODO Auto-generated method stub
 				
-				guardarOferta();
-				
-				
+				if (fotoOferta == null) {
+					Notification notification = Notification.show("Debe seleccionar una foto para la oferta.", 3000,Position.MIDDLE);
+					return;
+				}
+				iAdmin adm = new BDPrincipal();
+				aOferta = new basededatos.Oferta();
+				aOferta.setNombreOferta(nombreProducto.getValue());
+				aOferta.setPrecioOferta(Double.parseDouble(precioOferta.getValue()));
+				aOferta.setActivada(activada.getValue());
+				aOferta.setFechaCaducidadOferta(java.sql.Date.valueOf(fechaCaducidad.getValue()));
+				aOferta.setPorcentajeOferta(porcentajeOferta.getValue());
+				aOferta.setUrlImagen(fotoOferta);
+				int result = adm.guardarOferta(aOferta);
+				if (result != -1) {
+					Notification notification = Notification.show("La oferta ha sido creada correctamente", 3000,
+							Position.MIDDLE);
+					nombreProducto.setValue("");
+					precioOferta.setValue("");
+					fechaCaducidad.clear();
+					porcentajeOferta.setValue(false);
+					dialogProducto.close();
+					_lista_ofertas._lista_ofertas.add(aOferta);
+
+				} else {
+					Notification notification = Notification.show("Ha habido un error. Inténtalo de nuevo.", 3000,
+							Position.TOP_CENTER);
+				}
 			}
 
 		});
-		VerticalLayout dialogOfertaVertical = new VerticalLayout(nombreOferta, precioOferta, porcentajeOferta, uploadOferta, imageOfertaNueva,
+		VerticalLayout dialogOfertaVertical = new VerticalLayout(nombreProducto, precioOferta, porcentajeOferta, uploadOferta, imageOfertaNueva,
 				fechaCaducidad, activada);
 		HorizontalLayout dialogOfertaButtons = new HorizontalLayout(guardarOferta, cancelOfertaButton);
-		dialogOfertaHorizontal.getStyle().set("margin", "20px").set("width", "100%");
+		dialogProductoHorizontal.getStyle().set("margin", "20px").set("width", "100%");
 		dialogOfertaVertical.getStyle().set("margin", "20px").set("width", "100%");
 		Label mesageOfertaEsc = new Label("pulsa ESC para salir");
 
-		dialogOferta.add(dialogOfertaHorizontal, dialogOfertaVertical, dialogOfertaButtons, mesageOfertaEsc);
+		dialogProducto.add(this);
 	}
 	
-	protected void guardarOferta() {
-		// TODO Auto-generated method stub
-		if (fotoOferta == null) {
-			Notification notification = Notification.show("Debe seleccionar una foto para la oferta.", 3000,Position.MIDDLE);
-			return;
-		}
-		iAdmin adm = new BDPrincipal();
-		aOferta = new basededatos.Oferta();
-		aOferta.setNombreOferta(nombreOferta.getValue());
-		aOferta.setPrecioOferta(Double.parseDouble(precioOferta.getValue()));
-		aOferta.setActivada(activada.getValue());
-		aOferta.setFechaCaducidadOferta(java.sql.Date.valueOf(fechaCaducidad.getValue()));
-		aOferta.setPorcentajeOferta(porcentajeOferta.getValue());
-		aOferta.setUrlImagen(fotoOferta);
-		int result = adm.guardarOferta(aOferta);
-		if (result != -1) {
-			Notification notification = Notification.show("La oferta ha sido creada correctamente", 3000,
-					Position.MIDDLE);
-			nombreOferta.setValue("");
-			precioOferta.setValue("");
-			fechaCaducidad.clear();
-			porcentajeOferta.setValue(false);
-			dialogOferta.close();
-			_lista_ofertas._lista_ofertas.add(aOferta);
-
-		} else {
-			Notification notification = Notification.show("Ha habido un error. Inténtalo de nuevo.", 3000,
-					Position.TOP_CENTER);
-		}
-	}
-
 	private Component createComponent(String mimeType, String fileName, InputStream stream) {
 		if (mimeType.startsWith("text")) {
 			return createTextComponent(stream);

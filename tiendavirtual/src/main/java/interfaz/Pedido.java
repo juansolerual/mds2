@@ -16,6 +16,7 @@ public class Pedido extends HorizontalLayout{
 	public VerticalLayout v2 = new VerticalLayout();  // Pedido y estado
 	public VerticalLayout v3 = new VerticalLayout();  
 	public VerticalLayout v4 = new VerticalLayout();
+	public Label numeroPedido = new Label();
 	public Label cliente = new Label();
 	public Label direccion = new Label();
 	public Label pedido = new Label();
@@ -24,12 +25,13 @@ public class Pedido extends HorizontalLayout{
 	public Label entregadoPor = new Label();
 	public Button marcarEntregado = new Button("Marcar como entregado");
 	public Button verDetalles = new Button("Ver detalles");
+	protected Ver_detalle verDetalle;
 
 
 	public Pedido() {
 		super();
 		setWidth("100%");
-		v1.add(cliente, direccion);
+		v1.add(numeroPedido,cliente, direccion);
 		v1.getStyle().set("border", "1px solid grey").set("border-radius", "25px").set("margin", "20px");
 		v2.add(pedido, numeroArticulos, entregadoPor, estadoPedido);
 		v2.getStyle().set("border", "1px solid grey").set("border-radius", "25px").set("margin", "20px");

@@ -68,7 +68,7 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 	public List<Lineas_de_Pedido> cargarCarrito(int numeroPedido) {
 		List<Lineas_de_Pedido> cls = null;
 		try {
-			cls = _bD_LineaDePedido.cargarCarrito();
+			cls = _bD_LineaDePedido.cargarCarrito(numeroPedido);
 		} catch (PersistentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -285,7 +285,20 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 	}
 
 	public boolean desmarcarComoEntregado(int aIdPedido) {
-		throw new UnsupportedOperationException();
+		System.out.println("BDPRINCIPAL desmarcar como entregado");
+
+		boolean resultado = false;
+		
+
+		try {
+			
+			resultado = _bD_Entregado.desmarcar_como_entregado(aIdPedido);
+			
+		} catch (PersistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultado;	
 	}
 
 	public boolean eliminarCategoria(int aId) {
@@ -614,6 +627,8 @@ public class BDPrincipal implements iUsuario_no_identificado, iUsuario_registrad
 
 	@Override
 	public Cliente cargarCliente(int idUsuario) {
+		System.out.println("BDPRINCIPAL cargarCliente");
+
 		Cliente cliente = null;
 		try {
 			cliente = _bD_Cliente.cargarCliente(idUsuario);

@@ -60,6 +60,19 @@ public class Vista_pedidos_cliente extends VerticalLayout{
 			List<Lineas_de_Pedido> carrito = apptrans.cargarCarrito(enviado.getID());
 			pedido.pedido.setText("Total pedido: " + this.calcularTotal(carrito) + "€");
 			pedido.numeroArticulos.setText(carrito.size() + "articulos");
+			
+			pedido.marcarEntregado.setText("Anular pedido");
+			
+			pedido.verDetalles.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
+				
+				@Override
+				public void onComponentEvent(ClickEvent<Button> event) {
+					// TODO Auto-generated method stub
+					pedido.verDetalle = new Ver_detalle(enviado);
+					pedido.verDetalle.verDetalleDialog.open();
+				}
+			});
+			
 			scrollableLayout.add(pedido);
 //			pedido.marcarEntregado.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
 //				
@@ -91,6 +104,18 @@ public class Vista_pedidos_cliente extends VerticalLayout{
 			List<Lineas_de_Pedido> carrito = apptrans.cargarCarrito(entregado.getID());
 			pedido.pedido.setText("Total pedido: " + this.calcularTotal(carrito) + "€");
 			pedido.numeroArticulos.setText(carrito.size() + "articulos");
+			
+			pedido.marcarEntregado.setVisible(false);
+			
+			pedido.verDetalles.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
+				
+				@Override
+				public void onComponentEvent(ClickEvent<Button> event) {
+					// TODO Auto-generated method stub
+					pedido.verDetalle = new Ver_detalle(entregado);
+					pedido.verDetalle.verDetalleDialog.open();
+				}
+			});
 			scrollableLayout.add(pedido);
 //			pedido.marcarEntregado.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
 //				
@@ -123,6 +148,15 @@ public class Vista_pedidos_cliente extends VerticalLayout{
 			List<Lineas_de_Pedido> carrito = apptrans.cargarCarrito(pendiente.getID());
 			pedido.pedido.setText("Total pedido: " + this.calcularTotal(carrito) + "€");
 			pedido.numeroArticulos.setText(carrito.size() + " articulos.");
+			pedido.verDetalles.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
+				
+				@Override
+				public void onComponentEvent(ClickEvent<Button> event) {
+					// TODO Auto-generated method stub
+					pedido.verDetalle = new Ver_detalle(pendiente);
+					pedido.verDetalle.verDetalleDialog.open();
+				}
+			});
 			scrollableLayout.add(pedido);
 //			pedido.marcarEntregado.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
 //				
@@ -148,8 +182,8 @@ public class Vista_pedidos_cliente extends VerticalLayout{
 		    scrollableLayout.getStyle().set("overflow-y", "auto");
 		    // Another element to show that it stays in the same place
 		    Div staticElement = new Div();
-		    staticElement.getStyle().set("margin", "20px");
-			staticElement.add(new Text("Pedidos enviados"));
+		    staticElement.getStyle().set("color", "#1676f3").set("font-size", "larger").set("font-weight", "bold").set("margin", "20px");
+			staticElement.add(new Text("Pedidos realizados"));
 			add(staticElement, scrollableLayout);	
 			
 	}

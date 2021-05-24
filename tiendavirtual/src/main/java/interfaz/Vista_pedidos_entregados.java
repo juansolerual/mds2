@@ -2,9 +2,13 @@ package interfaz;
 
 import java.util.List;
 
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 import basededatos.BDPrincipal;
@@ -20,19 +24,26 @@ public class Vista_pedidos_entregados extends VistaPedidosentregados {
 	public App_transportes _app_transportes;
 	public Lista_pedidos_entregados _lista_pedidos_entregados;
 	public VerticalLayout verticalVistaPedidos;
+	protected Entregado entregadoTemp;
+	protected Pedido pedidoTemp;
+	private iApp_transportes apptrans;
+	private VerticalLayout scrollableLayout;
 
 	public Vista_pedidos_entregados() {
 		super();
-		iApp_transportes apptrans = new BDPrincipal();
+		apptrans = new BDPrincipal();
 		List<Entregado> pedidosEntregados = apptrans.cargarPedidosEntregados();
 		verticalVistaPedidos = this.getVerticalPedidosEntregados().as(VerticalLayout.class);
 		
-		VerticalLayout scrollableLayout = new VerticalLayout();
+		scrollableLayout = new VerticalLayout();
 		scrollableLayout.setId("verticalLayout_pedidos_entregadoss");
 		
 		for (Entregado entregado : pedidosEntregados) {
 			Pedido pedido = new Pedido();
-			pedido.marcarEntregado.setVisible(false);
+			pedido.marcarEntregado.setVisible(true);
+			pedido.marcarEntregado.setText("Desmarcar como entregado");
+			pedido.numeroPedido.setText("Numero de pedido " + entregado.getID());
+			pedido.numeroPedido.getStyle().set("font-size", "1em").set("font-weight", "bold").set("text-decoration", "underline").set("color", "#1676f3");
 			pedido.cliente.setText(
 					entregado.getRealizado_por().getNombre() + " " + entregado.getRealizado_por().getApellidos());
 			pedido.direccion.setText(entregado.getRealizado_por().getDireccion());
@@ -44,6 +55,35 @@ public class Vista_pedidos_entregados extends VistaPedidosentregados {
 			pedido.numeroArticulos.setText("Número de articulos: " + carrito.size());
 			pedido.entregadoPor.setText("Transportista: " + entregado.getGestionado_por().getNombre() + " " + entregado.getGestionado_por().getNombre());
 			scrollableLayout.add(pedido);
+			pedido.marcarEntregado.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
+				
+				@Override
+				public void onComponentEvent(ClickEvent<Button> event) {
+					// TODO Auto-generated method stub
+					
+					entregadoTemp = entregado;
+					pedidoTemp = pedido;
+					desmarcarComoEntregado();
+					
+					
+				}
+			});
+			
+			pedido.verDetalles.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
+				
+				@Override
+				public void onComponentEvent(ClickEvent<Button> event) {
+					// TODO Auto-generated method stub
+					
+					entregadoTemp = entregado;
+					pedidoTemp = pedido;
+					verDetalle();
+					
+					
+				}
+			});
+			
+			
 		}
 		
 		  scrollableLayout.setHeight("100%");
@@ -58,6 +98,25 @@ public class Vista_pedidos_entregados extends VistaPedidosentregados {
 			staticElement.add(new Text("Pedidos entregados"));
 			verticalVistaPedidos.add(staticElement ,scrollableLayout);
 
+	}
+
+	protected void verDetalle() {
+		// TODO Auto-generated method stub
+		Lista_compras lcTemp = new Lista_compras();
+		lcTemp.verDetalle = new Ver_detalle(entregadoTemp);
+		lcTemp.verDetalle.verDetalleDialog.open();
+	}
+
+
+	protected void desmarcarComoEntregado() {
+		// TODO Auto-generated method stub
+		if (apptrans.desmarcarComoEntregado(entregadoTemp.getID())) {
+			Notification.show("Ha sido marcado como enviado con exito.", 3000, Position.MIDDLE);
+			scrollableLayout.remove(pedidoTemp);
+
+		}else {
+			Notification.show("Ha habido un error al marcarlo como enviado.", 3000, Position.MIDDLE);
+		}
 	}
 
 	protected int calcularTotal(List<Lineas_de_Pedido> carrito) {

@@ -79,4 +79,47 @@ public class Datos_compra {
 		    totalDinero.add(totalCarritoLabel, totalPortes, totalImpuestos, totalPagar);
 		    
 	}
+
+	public Datos_compra(Cliente cliente) {
+		// TODO Auto-generated constructor stub
+		super();
+		
+	 	direccionEnvio = new VerticalLayout();
+	    direccionEnvio.getStyle().set("border","1px solid blue").set("margin", "20px").set("width", "100%");
+	    tituloDireccionEnvio = new Label();
+	    tituloDireccionEnvio.setText("Datos del cliente");
+	    tituloDireccionEnvio.getStyle().set("font-size", "1em").set("font-weight", "bold").set("text-decoration", "underline").set("color", "blue");
+	    
+	    nombreApellidos = new Label();
+	    calle = new Label();
+	    telefono = new Label();
+	    
+	  
+	    	nombreApellidos.setText(cliente.getNombre() + " " + cliente.getApellidos());
+		    calle.setText(cliente.getDireccion());
+		    telefono.setText("676546546");
+		    
+		    direccionEnvio.add(tituloDireccionEnvio, nombreApellidos, calle, telefono);
+		    metodoPago = new VerticalLayout();
+		    metodoPago.getStyle().set("border","1px solid blue").set("margin", "20px").set("width", "100%");
+	    
+	    totalDinero = new VerticalLayout();
+	    totalDinero.getStyle().set("border","1px solid blue").set("margin", "20px").set("width", "100%");
+
+	    botones = new VerticalLayout();
+	    
+	    realizarPago = new Button("Realizar pago");
+	    terminarPedido = new Button("Realizar pedido");
+	    botones.add(realizarPago, terminarPedido);
+	    
+	    totalCarritoLabel = new Label();
+	    totalPortes = new Label();
+	    totalImpuestos = new Label();
+	    totalPagar = new Label();
+
+	   
+
+	    totalDinero.add(totalCarritoLabel, totalPortes, totalImpuestos, totalPagar);
+	    
+	}
 }

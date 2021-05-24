@@ -137,7 +137,7 @@ public class Producto_Carrito extends VistaProductocarrito{
 	    //this.getVaadinHorizontalLayout().setVerticalComponentAlignment(Alignment.END, vl);
 
 	    this.getVaadinHorizontalLayout().setSpacing(false);
-	    this.getVaadinHorizontalLayout().getStyle().set("border","1px solid blue");
+	    this.getVaadinHorizontalLayout().getStyle().set("border", "1px solid #1676f3").set("border-radius", "25px").set("padding", "20px");
 	}
 	
 }

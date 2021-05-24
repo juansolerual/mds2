@@ -81,7 +81,7 @@ class VistaCabecerausuario extends PolymerElement {
   </svg>
  </div>
  <vaadin-horizontal-layout theme="spacing" style="cursor: pointer; align-self: center;" id="horizontalTitulo">
-  <label style="width: 100%; height: 100%; margin: var(--lumo-space-m); align-self: center;" id="labelTitulo">Tienda Virtual</label>
+  <label style="cursor: pointer; width: 100%; height: 100%; margin: var(--lumo-space-m); align-self: center; padding: var(--lumo-space-m);" id="labelTitulo">Tienda Virtual</label>
  </vaadin-horizontal-layout>
 </vaadin-vertical-layout>
 <vaadin-vertical-layout style="width: 100%; flex-direction: row; max-height: 10%;" id="vaadinVerticalLayout">
@@ -104,7 +104,7 @@ class VistaCabecerausuario extends PolymerElement {
     Cerrar Sesión 
   </vaadin-button>
   <vaadin-button id="carritoButton">
-   Mi carrito
+    Mi carrito 
   </vaadin-button>
  </vaadin-horizontal-layout>
 </vaadin-vertical-layout>

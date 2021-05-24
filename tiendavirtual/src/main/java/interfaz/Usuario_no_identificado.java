@@ -67,8 +67,9 @@ public class Usuario_no_identificado extends VistaUsuarionoidentificado{
 				//layout.remove(lpnr);
 				//layout.add(lg);
 				System.out.println("click login");
-				vlayout.remove(_visualizar_Pantalla_Usuario_no_registrado);
-				vlayout.remove(_registrarse);
+				vlayout.removeAll();
+				vlayout.add(_cabecera_usuario_no_registrado);
+
 				_iniciar_sesion = new Iniciar_sesion();
 
 				vlayout.add(_iniciar_sesion);
@@ -100,15 +101,6 @@ public class Usuario_no_identificado extends VistaUsuarionoidentificado{
 			System.out.println(_cabecera_usuario_no_registrado.getBusquedaText().getValue());
 			
 			
-			/*
-			 * Visualizar_Pantalla_Usuario_no_registrado visualizar_pantalla =
-			 * (Visualizar_Pantalla_Usuario_no_registrado)
-			 * session.getAttribute("Visualizar_Pantalla_Usuario_no_registrado");
-			 * VerticalLayout verticalLayoutUsuarioNoIdentificado = (VerticalLayout)
-			 * session.getAttribute("verticalLayoutUsuarioNoIdentificado");
-			 * verticalLayoutUsuarioNoIdentificado.remove(visualizar_pantalla);
-			 */
-			
 			
 			  vlayout.remove(_visualizar_Pantalla_Usuario_no_registrado);
 			  
@@ -117,8 +109,6 @@ public class Usuario_no_identificado extends VistaUsuarionoidentificado{
 			  vlayout.add(_vista_busqueda_productos_categorias);
 			 
 
-	    	//adm.nuevo_usuario();
-	    	//adm.guardarCategoria(cat);
 			
 		});
 
@@ -127,10 +117,6 @@ public class Usuario_no_identificado extends VistaUsuarionoidentificado{
 			@Override
 			public void onComponentEvent(ClickEvent<Div> event) {
 				// TODO Auto-generated method stub
-//				vlayout.removeAll();
-//				vlayout.add(_cabecera_usuario_no_registrado);
-//				_visualizar_Pantalla_Usuario_no_registrado = new Visualizar_Pantalla_Usuario_no_registrado(vlayout);
-//				vlayout.add(_visualizar_Pantalla_Usuario_no_registrado);
 				VerticalLayout verticalLayoutUsuarioNoIdentificado = (VerticalLayout) session.getAttribute("verticalLayoutUsuarioNoIdentificado");
 	    		Visualizar_Pantalla_Usuario_no_registrado visualizar_Pantalla_Usuario_no_registrado = (Visualizar_Pantalla_Usuario_no_registrado) session.getAttribute("Visualizar_Pantalla_Usuario_no_registrado");
 	    		VistaProductousuario vistaProductoUsuario = (VistaProductousuario) session.getAttribute("vistaProductoUsuario");

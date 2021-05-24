@@ -85,10 +85,6 @@ public class BD_Producto {
 			ProductoCriteria productoCriteria = new ProductoCriteria();
 			productoCriteria.nombreProducto.like("%"+string+"%");
 			Producto[] productos2 = ProductoDAO.listProductoByCriteria(productoCriteria);
-			for (Producto producto : productos2) {
-				System.out.println("dentro de carcarProducto ");
-				//productos.add(producto);
-			}
 			productos = Arrays.asList(productos2);
 			t.commit();
 		} catch (Exception e) {

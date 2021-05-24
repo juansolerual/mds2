@@ -58,6 +58,8 @@ public class Categorias extends VistaCategorias {
 	public String fotoCategoria = "";
 	public Vista_busqueda_de_productos_categorias _vista_busqueda_productos_categorias;
 	public iAdmin adm;
+	public Dar_de_alta_categoria dar_de_alta_categoria;
+	protected basededatos.Categoria categoriaTemp;
 
 	// public Vector<Categoria> _list_Categoria = new Vector<Categoria>();
 
@@ -81,7 +83,8 @@ public class Categorias extends VistaCategorias {
 				@Override
 				public void onComponentEvent(ClickEvent<Div> event) {
 					// TODO Auto-generated method stub
-					verCategoria(categoria);
+					categoriaTemp = categoria;
+					verCategoria();
 
 				}
 			});
@@ -91,8 +94,9 @@ public class Categorias extends VistaCategorias {
 				@Override
 				public void onComponentEvent(ClickEvent<Button> event) {
 					// TODO Auto-generated method stub
+					categoriaTemp = categoria;
 
-					verCategoria(categoria);
+					verCategoria();
 
 					
 
@@ -105,8 +109,9 @@ public class Categorias extends VistaCategorias {
 				@Override
 				public void onComponentEvent(ClickEvent<Button> event) {
 					// TODO Auto-generated method stub
+					categoriaTemp = categoria;
 
-					eliminarCategoria(categoria.getID());
+					eliminarCategoria();
 
 				}
 			});
@@ -125,103 +130,62 @@ public class Categorias extends VistaCategorias {
 		Label staticElement = new Label("Categoria destacados");
 		staticElement.getStyle().set("color", "#1676f3").set("font-weight", "bold").set("margin", "20px");
 
-		Dialog dialog = new Dialog();
-		HorizontalLayout dialogHorizontal = new HorizontalLayout();
-		Label tituloDialog = new Label("Nueva categoría");
-		dialogHorizontal.add(tituloDialog);
-		dialog.setWidth("800px");
-		dialog.setHeight("600px");
-		dialog.setMinHeight("600px");
-		dialog.setMinWidth("800px");
+		
 
-		dialog.setModal(false);
-		dialog.setDraggable(true);
-		dialog.setResizable(true);
-		// dialog.add(new Text("Close me with the esc-key or an outside click"));
-		TextField nombreCategoria = new TextField("Nombre categoría:");
-		nombreCategoria.getStyle().set("margin", "20px").set("width", "400px");
-
-		TextField descripcion = new TextField("Descripción:");
-		descripcion.getStyle().set("margin", "20px").set("width", "400px");
-
-		Button guardar = new Button("Guardar");
-		guardar.getStyle().set("margin", "20px");
-
-		Button cancelButton = new Button("Cancelar", event -> {
-			dialog.close();
+		Button nuevoCategoria = new Button("+");
+		nuevoCategoria.getElement().getStyle().set("margin-left", "auto");
+		nuevoCategoria.addClickListener(event -> {
+			dar_de_alta_categoria = new Dar_de_alta_categoria(scrollableLayout);
+			
+			dar_de_alta_categoria.dialog.open();
 		});
-		cancelButton.getStyle().set("margin", "20px");
+		
+		Button editarCategorias = new Button("Editar Categorias");
+		editarCategorias.setVisible(cookiesHelper.isAdministrador());
 
-		// Cancel action on ESC press
-		Shortcuts.addShortcutListener(dialog, () -> {
-			dialog.close();
-		}, Key.ESCAPE);
-
-		MemoryBuffer buffer = new MemoryBuffer();
-		Upload upload = new Upload(buffer);
-		upload.setAcceptedFileTypes("image/jpeg", "image/png", "image/gif");
-
-		Div output = new Div();
-		output.setWidth("320px");
-		output.setHeight("320px");
-
-		upload.addSucceededListener(event -> {
-			Component component = createComponent(event.getMIMEType(), event.getFileName(), buffer.getInputStream());
-			File targetFile = new File("src/main/resources/targetFile.tmp");
-
-			try {
-				FileUtils.copyInputStreamToFile(buffer.getInputStream(), targetFile);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			fotoCategoria = Uploader.upload(targetFile);
-			System.out.println(fotoCategoria);
-			System.out.println("index of title  " + fotoCategoria.indexOf("title"));
-			System.out.println("https://i.imgur.com/" + fotoCategoria.subSequence(15, 22) + ".jpg");
-			fotoCategoria = "https://i.imgur.com/" + fotoCategoria.subSequence(15, 22) + ".jpg";
-			output.removeAll();
-			showOutput(event.getFileName(), component, output);
-		});
-
-		guardar.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
+		editarCategorias.getElement().getStyle().set("margin-left", "auto");
+		
+		editarCategorias.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
 
 			@Override
 			public void onComponentEvent(ClickEvent<Button> event) {
 				// TODO Auto-generated method stub
-				iAdmin adm = new BDPrincipal();
-				basededatos.Categoria aCategoria = new basededatos.Categoria();
-				aCategoria.setNombreCategoria(nombreCategoria.getValue());
-				aCategoria.setDescripcion(descripcion.getValue());
-				aCategoria.setImagen(fotoCategoria);
-				int result = adm.guardarCategoria(aCategoria);
-				scrollableLayout.add(new Categoria(aCategoria));
+				Vista_Categoria_Admin vista_categoria_admin = new Vista_Categoria_Admin();
+				VaadinSession session = VaadinSession.getCurrent();
 
-				if (result != -1) {
-					Notification notification = Notification.show("La categoría ha sido creada correctamente", 3000,
-							Position.MIDDLE);
-					nombreCategoria.setValue("");
-					descripcion.setValue("");
-					dialog.close();
-				} else {
-					Notification notification = Notification.show("Ha habido un error. Inténtalo de nuevo.", 3000,
-							Position.TOP_CENTER);
-				}
+				session.setAttribute("_vista_busqueda_productos_categorias", _vista_busqueda_productos_categorias);
+
+				VerticalLayout verticalLayoutAdmin = (VerticalLayout) session.getAttribute("verticalLayoutAdmin");
+				Visualizar_Pantalla_Principal_Administrador visualizar_Pantalla_Principal_Administrador = (Visualizar_Pantalla_Principal_Administrador) session
+						.getAttribute("visualizar_Pantalla_Principal_Administrador");
+				verticalLayoutAdmin.remove(visualizar_Pantalla_Principal_Administrador);
+				verticalLayoutAdmin.add(vista_categoria_admin);
+				
+//				if (cookiesHelper.isCliente()) {
+//					VerticalLayout verticalLayoutUsuarioIdentificado = (VerticalLayout) session
+//							.getAttribute("verticalLayoutUsuarioIdentificado");
+//					Visualizar_Pantalla_Principal_Usuario_Registrado visualizar_Pantalla_Principal_Usuario_Registrado = (Visualizar_Pantalla_Principal_Usuario_Registrado) session
+//							.getAttribute("Visualizar_Pantalla_Principal_Usuario_Registrado");
+//					verticalLayoutUsuarioIdentificado.remove(visualizar_Pantalla_Principal_Usuario_Registrado);
+//					verticalLayoutUsuarioIdentificado.add(vista_categoria_admin);
+//				}
+//
+//				if (cookiesHelper.isNoRegistrado()) {
+//					VerticalLayout verticalLayoutUsuarioNoIdentificado = (VerticalLayout) session
+//							.getAttribute("verticalLayoutUsuarioNoIdentificado");
+//					Visualizar_Pantalla_Usuario_no_registrado visualizar_Pantalla_Usuario_no_registrado = (Visualizar_Pantalla_Usuario_no_registrado) session
+//							.getAttribute("Visualizar_Pantalla_Usuario_no_registrado");
+//					verticalLayoutUsuarioNoIdentificado.remove(visualizar_Pantalla_Usuario_no_registrado);
+//					verticalLayoutUsuarioNoIdentificado.add(vista_categoria_admin);
+//
+//				}
+//
+//				if (cookiesHelper.isAdministrador()) {
+//					
+//				}
+				
 			}
-
 		});
-		VerticalLayout dialogVertical = new VerticalLayout(nombreCategoria, descripcion, upload, output);
-		HorizontalLayout dialogButtons = new HorizontalLayout(guardar, cancelButton);
-		dialogHorizontal.getStyle().set("margin", "20px").set("width", "100%");
-		dialogVertical.getStyle().set("margin", "20px").set("width", "100%");
-		Label mesageEsc = new Label("o pulsa ESC para salir");
-
-		dialog.add(dialogHorizontal, dialogVertical, dialogButtons, mesageEsc);
-
-		Button nuevoCategoria = new Button("+");
-		nuevoCategoria.getElement().getStyle().set("margin-left", "auto");
-		nuevoCategoria.addClickListener(event -> dialog.open());
 
 		/*
 		 * nuevoCategoria.addClickListener(new
@@ -248,12 +212,12 @@ public class Categorias extends VistaCategorias {
 		 * });
 		 */
 
-		nuevoCategoria.setVisible(false);
+		
 		nuevoCategoria.setVisible(cookiesHelper.isAdministrador());
 
 		HorizontalLayout primeraLinea = new HorizontalLayout();
 		primeraLinea.setPadding(true);
-		primeraLinea.add(staticElement, nuevoCategoria);
+		primeraLinea.add(staticElement, editarCategorias, nuevoCategoria);
 		primeraLinea.getStyle().set("width", "100%").set("margin-left", "20px").set("margin-right", "20px");
 
 		// Add both the scrollable layout and
@@ -264,15 +228,15 @@ public class Categorias extends VistaCategorias {
 
 	}
 
-	protected void eliminarCategoria(int id) {
+	protected void eliminarCategoria() {
 		// TODO Auto-generated method stub
-		adm.eliminarCategoria(id);
+		adm.eliminarCategoria(this.categoriaTemp.getID());
 	}
 
-	protected void verCategoria(basededatos.Categoria categoria) {
+	protected void verCategoria() {
 		// TODO Auto-generated method stub
 		VaadinSession session = VaadinSession.getCurrent();
-		_vista_busqueda_productos_categorias = new Vista_busqueda_de_productos_categorias(categoria);
+		_vista_busqueda_productos_categorias = new Vista_busqueda_de_productos_categorias(this.categoriaTemp);
 
 		session.setAttribute("_vista_busqueda_productos_categorias", _vista_busqueda_productos_categorias);
 

@@ -36,6 +36,7 @@ public class Usuario_registrado extends VistaUsuarioregistrado{
 	public Vista_busqueda_de_productos_categorias _vista_busqueda_de_productos_categorias;
 	public Vista_carrito_Usuario_registrado _vista_carrito_Usuario_registrado;
 	public VerticalLayout vlayout;
+	protected Vista_busqueda_de_productos_categorias _vista_busqueda_productos_categorias;
 
 	public Usuario_registrado() {
 		super();
@@ -81,6 +82,11 @@ public class Usuario_registrado extends VistaUsuarioregistrado{
 				// TODO Auto-generated method stub
 				System.out.println(_cabecera_usuario_registrado.getBusquedaText().getValue());
 
+				vlayout.removeAll();
+				vlayout.add(_cabecera_usuario_registrado);				  
+				  _vista_busqueda_productos_categorias = new Vista_busqueda_de_productos_categorias(_cabecera_usuario_registrado.getBusquedaText().getValue());
+				  
+				  vlayout.add(_vista_busqueda_productos_categorias);
 			}
 		});
 		
@@ -132,7 +138,8 @@ public class Usuario_registrado extends VistaUsuarioregistrado{
 			@Override
 			public void onComponentEvent(ClickEvent<Button> event) {
 				System.out.println("click ver cuenta");
-				vlayout.remove(_visualizar_Pantalla_Principal_Usuario_Registrado);
+				vlayout.removeAll();
+				vlayout.add(_cabecera_usuario_registrado);
 				_vista_cuenta_usuario = new Vista_cuenta_usuario(cookiesHelper.cliente);
 				
 				vlayout.add(_vista_cuenta_usuario);
@@ -180,27 +187,7 @@ public class Usuario_registrado extends VistaUsuarioregistrado{
 			@Override
 			public void onComponentEvent(ClickEvent<Button> event) {
 				// TODO Auto-generated method stub
-				cookiesHelper.cliente = null;
-				session.setAttribute("tipoUsuario", "noUser");
-				session.setAttribute("cliente", null);
-				
-				
-				Cookie cookiecliente = new Cookie("cliente", "-1");
-
-				Cookie cookieTipoUsuario= new Cookie("tipoUsuario", "");
-
-				cookiecliente.setMaxAge(60); // define after how many *seconds* the cookie should expire
-				cookiecliente.setPath("/"); // single slash means the cookie is set for your whole application.
-				cookieTipoUsuario.setMaxAge(60); // define after how many *seconds* the cookie should expire
-				cookieTipoUsuario.setPath("/"); // single slash means the cookie is set for your whole application.
-				VaadinService.getCurrentResponse().addCookie(cookiecliente);
-				VaadinService.getCurrentResponse().addCookie(cookieTipoUsuario);
-				Usuario_registrado usuarioRegistrado = (Usuario_registrado) session.getAttribute("usuarioRegistrado");
-				Usuario_no_identificado usuario_no_identificado = new Usuario_no_identificado();
-
-		    	VerticalLayout mainView = (VerticalLayout) session.getAttribute("MainView");
-		    	mainView.remove(usuarioRegistrado);
-		    	mainView.add(usuario_no_identificado);
+				_cabecera_usuario_registrado.Cerrar_sesion();
 		    	
 		    	
 

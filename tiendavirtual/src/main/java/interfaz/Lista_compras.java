@@ -23,12 +23,11 @@ public class Lista_compras extends HorizontalLayout{
 	public Label cliente = new Label();
 	public Label estadoPedido = new Label();
 	public Label direccion = new Label();
-	public Button verDetalle = new Button("Ver detalle");
+	public Ver_detalle verDetalle;
+	public Button verDetalleButton = new Button("Ver detalle");
 	public Button marcarComoEnviado = new Button("Marcar como enviado");
 
-	public void Marcar_como_enviado() {
-		throw new UnsupportedOperationException();
-	}
+	
 
 	
 
@@ -36,9 +35,9 @@ public class Lista_compras extends HorizontalLayout{
 		// TODO Auto-generated constructor stub
 		
 		v1.add(pedido, cliente, direccion);
-		v2.add(totalPedido, estadoPedido);
-		v3.add(verDetalle);
-		v4.add(marcarComoEnviado);
+		v2.add(totalPedido);
+		v4.add(verDetalleButton, marcarComoEnviado);
+		v3.add(estadoPedido);
 		add(v1, v2, v3, v4);
-	}
+		getStyle().set("border","2px solid #1676f3").set("border-radius","25px");	}
 }

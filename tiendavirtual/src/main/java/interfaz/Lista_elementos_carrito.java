@@ -6,7 +6,10 @@ import java.util.Vector;
 
 import com.vaadin.flow.server.VaadinSession;
 
+import basededatos.BDPrincipal;
 import basededatos.Lineas_de_Pedido;
+import basededatos.Pendiente;
+import basededatos.iEncargado_de_compras;
 import interfaz.Producto_Carrito;
 import tiendavirtual.cookiesHelper;
 
@@ -36,6 +39,22 @@ public class Lista_elementos_carrito {
 		}
 		
 	}
+	
+	public Lista_elementos_carrito(int idPedido) {
+		super();
+
+		VaadinSession session = VaadinSession.getCurrent();
+
+		iEncargado_de_compras encargado = new BDPrincipal();
+		carrito = encargado.cargarCarrito(idPedido);
+		
+		if (carrito == null) {
+			carrito = new ArrayList<Lineas_de_Pedido>();
+		}
+		
+	}
+	
+	
 
 	public void Eliminar_Producto_del_carrito() {
 		throw new UnsupportedOperationException();

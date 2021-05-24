@@ -25,15 +25,19 @@ public class Vista_pedidos_pendientes extends VistaPedidospendientes{
 	public App_transportes _app_transportes;
 	public Lista_pedidos_pendientes _lista_pedidos_pendientes;
 	public VerticalLayout verticalVistaPedidos;
+	protected Enviado enviadoTemp;
+	protected Pedido pedidoTemp;
+	public VerticalLayout scrollableLayout;
+	private iApp_transportes apptrans;
 
 
 	public Vista_pedidos_pendientes() {
 		super();
-		iApp_transportes apptrans = new BDPrincipal();
+		apptrans = new BDPrincipal();
 		List<Enviado> pedidosEnviados = apptrans.cargarPedidosEnviados();
 		verticalVistaPedidos = this.getVerticalPendientes().as(VerticalLayout.class);
 		
-		VerticalLayout scrollableLayout = new VerticalLayout();
+		scrollableLayout = new VerticalLayout();
 		scrollableLayout.setId("verticalLayout_pedidos_entregadoss");
 		
 		for (Enviado enviado : pedidosEnviados) {
@@ -56,13 +60,26 @@ public class Vista_pedidos_pendientes extends VistaPedidospendientes{
 				@Override
 				public void onComponentEvent(ClickEvent<Button> event) {
 					// TODO Auto-generated method stub
-					if (apptrans.marcarComoEntregado(enviado.getID())) {
-						Notification.show("Ha sido marcado como enviado con exito.", 3000, Position.MIDDLE);
-						scrollableLayout.remove(pedido);
-
-					}else {
-						Notification.show("Ha habido un error al marcarlo como enviado.", 3000, Position.MIDDLE);
-					}
+					
+					enviadoTemp = enviado;
+					pedidoTemp = pedido;
+					marcarComoEntregado();
+					
+					
+				}
+			});
+			
+			pedido.verDetalles.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
+				
+				@Override
+				public void onComponentEvent(ClickEvent<Button> event) {
+					// TODO Auto-generated method stub
+					
+					enviadoTemp = enviado;
+					pedidoTemp = pedido;
+					verDetalle();
+					
+					
 				}
 			});
 		}
@@ -81,6 +98,17 @@ public class Vista_pedidos_pendientes extends VistaPedidospendientes{
 			
 	}
 	
+	protected void marcarComoEntregado() {
+		// TODO Auto-generated method stub
+		if (apptrans.marcarComoEntregado(enviadoTemp.getID())) {
+			Notification.show("Ha sido marcado como enviado con exito.", 3000, Position.MIDDLE);
+			scrollableLayout.remove(pedidoTemp);
+
+		}else {
+			Notification.show("Ha habido un error al marcarlo como enviado.", 3000, Position.MIDDLE);
+		}
+	}
+
 	protected int calcularTotal(List<Lineas_de_Pedido> carrito) {
 
 		int totalCarrito = 0;
@@ -112,6 +140,14 @@ public class Vista_pedidos_pendientes extends VistaPedidospendientes{
 		return totalCarrito;
 
 	}
+	
+	protected void verDetalle() {
+		// TODO Auto-generated method stub
+		Lista_compras lcTemp = new Lista_compras();
+		lcTemp.verDetalle = new Ver_detalle(enviadoTemp);
+		lcTemp.verDetalle.verDetalleDialog.open();
+	}
+
 
 	public void Ir__a_pagina_principal() {
 		throw new UnsupportedOperationException();

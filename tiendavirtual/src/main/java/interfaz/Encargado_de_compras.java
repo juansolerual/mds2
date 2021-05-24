@@ -5,6 +5,8 @@ import javax.servlet.http.Cookie;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.VaadinSession;
@@ -28,6 +30,7 @@ public class Encargado_de_compras extends VistaEncargadodecompras{
 	public Vista_listado_de_compras _vista_listado_de_compras;
 	public Cabecera_encargado_compras _cabecera_encargado_compras;
 	public VerticalLayout vlayout;
+	protected Vista_cuenta_usuario _vista_cuenta_usuario;
 
 
 	public Encargado_de_compras() {
@@ -73,6 +76,43 @@ public class Encargado_de_compras extends VistaEncargadodecompras{
 		    	
 		    	
 
+			}
+		});
+    	
+    	_cabecera_encargado_compras.getMiCuentaButton().addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
+
+
+			@Override
+			public void onComponentEvent(ClickEvent<Button> event) {
+				System.out.println("click ver cuenta");
+				vlayout.removeAll();
+				_vista_cuenta_usuario = new Vista_cuenta_usuario(cookiesHelper.encargado_compras);
+				vlayout.add(_cabecera_encargado_compras);
+				vlayout.add(_vista_cuenta_usuario);
+			}	
+		});
+    	
+    	_cabecera_encargado_compras.getDivLogo().addClickListener(new ComponentEventListener<ClickEvent<Div>>() {
+
+			@Override
+			public void onComponentEvent(ClickEvent<Div> event) {
+				// TODO Auto-generated method stub
+				vlayout.removeAll();
+				vlayout.add(_cabecera_encargado_compras);
+				vlayout.add(_vista_listado_de_compras);
+			}
+			
+		});
+    	
+    	_cabecera_encargado_compras.getVaadinHorizontalLayout().addClickListener(new ComponentEventListener<ClickEvent<HorizontalLayout>>() {
+
+			@Override
+			public void onComponentEvent(ClickEvent<HorizontalLayout> event) {
+				// TODO Auto-generated method stub
+				vlayout.removeAll();
+				vlayout.add(_cabecera_encargado_compras);
+				vlayout.add(_vista_listado_de_compras);
+				
 			}
 		});
 

@@ -6,4 +6,9 @@ public class Vista_centro_de_mensajes extends Cabecera_usuario_registrado {
 	public Mensajes_recibidos _mensajes_recibidos;
 	public Mensajes_enviados _mensajes_enviados;
 	
+	public Vista_centro_de_mensajes() {
+		super();
+	}
+	
+	
 }

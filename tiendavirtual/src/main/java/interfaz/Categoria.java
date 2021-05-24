@@ -5,6 +5,7 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
@@ -17,18 +18,28 @@ public class Categoria extends VistaCategoria{
 	public Div name;
 	public Button verCategoria;
 	public Button eliminarCategoria;
+	public Image avatarImage;
 	public Categoria(basededatos.Categoria cat) {
 		
 		System.out.println("Categoria creada");
 		avatar = new Div();
-	    avatar.setWidth("100px");
-	    avatar.setHeight("100px");
-	    avatar.getStyle()
+		avatar.getStyle().set("margin", "16px");
+		avatar.setWidth("152px");
+		avatar.setHeight("152px");
+		avatarImage = new Image();
+		if (cat.getImagen() != null) {
+			avatarImage.setSrc(cat.getImagen());
+		}else {
+			avatarImage.setSrc("https://picsum.photos/200");
+		}
+	    avatarImage.setWidth("152px");
+	    avatarImage.setHeight("152px");
+	    avatarImage.getStyle()
 	      .set("background-color", "gray")
-	      .set("border-radius", "12px")
-	      .set("background", "url("+cat.getImagen()+")")
-	      .set("margin", "6px")
+	      .set("border-radius", "6px")
 	      .set("cursor", "pointer");
+	    
+	    avatar.add(avatarImage);
 
 	    
 	    name = new Div();
