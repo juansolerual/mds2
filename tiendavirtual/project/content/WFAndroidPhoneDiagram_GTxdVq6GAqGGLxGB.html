@@ -1,0 +1,413 @@
+<html>
+<head>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="report.css" type="text/css"/>
+	<title>Android Phone Wireframe - Pedidos entregados</title>
+	<script type="text/javascript" src="report.js"></script>
+	<script type="text/javascript" src="link_popup.js"></script>
+	<script type="text/javascript" src="tooltip.js"></script>
+</head>
+<body style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;" onload="initPage();initDiagram();initWireframeDiagram();">
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_top">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_bottom">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_left">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_right">
+	</div>
+	<canvas width="100" style="position:absolute; z-index:2; visibility:hidden" id="spotlight_c" height="100">
+	</canvas>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesTop">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesRight">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute;z-index:4;visibility:hidden" id="linkPopupMenuLayer">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="linkPopupMenuTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="referenceIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Ref.gif" style="border:none" onclick="movePopupPositionToReferenceIconPosition();resetPopupForReference();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="subdiagramIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Subdiagram.gif" style="border:none" onclick="movePopupPositionToSubdiagramIconPosition();resetPopupForSubdiagram();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="transitorIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Transitor.gif" style="border:none" onclick="movePopupPositionToTransitorIconPosition();resetPopupForTransitor();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="documentationIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Documentation.png" style="border:none" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="HeaderText">
+		Tiendavirtual	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="HeaderLine1">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine2">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine3">
+			</td>
+		</tr>
+	</table>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="referencedBys">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="referencedBysTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="vplink">
+		<table border="1" cellpadding="0" cellspacing="0" bordercolor="#A9BFD3">
+			<tr>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0">
+						<tr style="background:#DDDDDD">
+							<td style="font-size: 12px;" align="left">
+								<select onchange="vpLinkToggleName()" id="vplink-linkType">
+	<option value="Project Link">Project Link</option>
+	<option value="Page URL">Page URL</option>
+</select>
+							</td>
+							<td style="font-size: 12px;" align="right">
+								<input onclick="javascript: vpLinkToggleName()" id="vplink-checkbox" type="checkbox" />
+								<label for="vplink-checkbox">with Name</label>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<textarea id="vplink-text" style="width: 348px; height: 60px; border-color: #7EADD9; outline: none;"></textarea>				</td>
+			</tr>
+		</table>
+	</div>
+	<p class="PageTitle">
+		<span id="PageTitleText">
+			Android Phone Wireframe - Pedidos entregados		</span>
+<a onclick="javascript: showVpLink('copiaSeguiridad20052021.vpp://diagram/GTxdVq6GAqGGLxGB', 'Pedidos entregados\ncopiaSeguiridad20052021.vpp://diagram/GTxdVq6GAqGGLxGB', 'Pedidos entregados', this); return false;" style="padding-left: 16px; font-size: 12px" href="#"><img src="../images/icons/link.png" border="0"> link</a>	</p>
+	<div style="position: relative; padding-bottom: 20px;">
+		<table border="0" cellpadding="0" width="auto" cellspacing="0" style="position: absolute; top: 0; left: 0; z-index: 20;">
+			<tr>
+				<td>
+<a href="javascript:showWireframeStatesDialog()"><span class="TableContent ItemLink">Show State Overview</span></a>				</td>
+				<td width="10px">
+				</td>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0" id="selectShapeuTxdVq6GAqGGLxGD">
+						<tr>
+							<td>
+<span class="TableContent">Jump to:</span>								<select class="TableContent" onChange="scrollWin('diagramuTxdVq6GAqGGLxGD', this.value);hideLinkPopup();showSpotLight('diagramuTxdVq6GAqGGLxGD', this.value)">
+<option value="">Please select an element</option>
+<option value="shape|2.0|2.0|440.0|850.0|#uTxdVq6GAqGGLxGD;uzxdVq6GAqGGLxGE|#uTxdVq6GAqGGLxGD;uzxdVq6GAqGGLxGE|uzxdVq6GAqGGLxGE" id="optionuzxdVq6GAqGGLxGE">Android Phone : Phone</option>
+<option value="shape|46.0|237.0|343.0|473.0|#uTxdVq6GAqGGLxGD;.WoNu66GAqBwASCO|#uTxdVq6GAqGGLxGD;.WoNu66GAqBwASCO|.WoNu66GAqBwASCO" id="option.WoNu66GAqBwASCO">Ver listado pedidos entregados : Panel</option>
+<option value="shape|55.0|247.0|200.0|23.0|#uTxdVq6GAqGGLxGD;1AZdVq6GAqGGLxHB|#uTxdVq6GAqGGLxGD;1AZdVq6GAqGGLxHB|1AZdVq6GAqGGLxHB" id="option1AZdVq6GAqGGLxHB">Listado de pedidos entregados : Label</option>
+<option value="shape|52.0|326.0|330.0|368.0|#uTxdVq6GAqGGLxGD;T6aNu66GAqBwASDE|#uTxdVq6GAqGGLxGD;T6aNu66GAqBwASDE|T6aNu66GAqBwASDE" id="optionT6aNu66GAqBwASDE">Listado pedidos entregados : Panel</option>
+<option value="shape|55.0|339.0|324.0|349.0|#uTxdVq6GAqGGLxGD;pgxNu66GAqBwASEh|#uTxdVq6GAqGGLxGD;pgxNu66GAqBwASEh|pgxNu66GAqBwASEh" id="optionpgxNu66GAqBwASEh">List View : List View</option>
+<option value="shape|336.0|344.0|43.0|39.0|#uTxdVq6GAqGGLxGD;P_pdVq6GAqGGLxG5|#uTxdVq6GAqGGLxGD;P_pdVq6GAqGGLxG5|P_pdVq6GAqGGLxG5" id="optionP_pdVq6GAqGGLxG5">Image : Image</option>
+<option value="shape|336.0|394.0|43.0|39.0|#uTxdVq6GAqGGLxGD;V_pdVq6GAqGGLxGi|#uTxdVq6GAqGGLxGD;V_pdVq6GAqGGLxGi|V_pdVq6GAqGGLxGi" id="optionV_pdVq6GAqGGLxGi">Image : Image</option>
+<option value="shape|57.0|338.0|325.0|33.0|#uTxdVq6GAqGGLxGD;X_pdVq6GAqGGLxGx|#uTxdVq6GAqGGLxGD;X_pdVq6GAqGGLxGx|X_pdVq6GAqGGLxGx" id="optionX_pdVq6GAqGGLxGx">Pedido  3421 - Almería - Calle Jerez, 24
+Juan Soler  : Label</option>
+<option value="shape|57.0|388.0|325.0|33.0|#uTxdVq6GAqGGLxGD;3_pdVq6GAqGGLxG1|#uTxdVq6GAqGGLxGD;3_pdVq6GAqGGLxG1|3_pdVq6GAqGGLxG1" id="option3_pdVq6GAqGGLxG1">Pedido  3422 - Almería - Calle Juan Lirola, 23
+Francisco Lafarga : Label</option>
+<option value="shape|91.0|156.0|283.0|70.0|#uTxdVq6GAqGGLxGD;THrDu66GAqBwASwN|#uTxdVq6GAqGGLxGD;THrDu66GAqBwASwN|THrDu66GAqBwASwN" id="optionTHrDu66GAqBwASwN">Ir a página principal pedidos entregados : Panel</option>
+<option value="shape|117.0|167.0|234.0|40.0|#uTxdVq6GAqGGLxGD;6wodu66GAqBwASZn|#uTxdVq6GAqGGLxGD;6wodu66GAqBwASZn|6wodu66GAqBwASZn" id="option6wodu66GAqBwASZn">IR A PÁGINA PRINCIPAL : Button</option>
+</select>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<span data-value="uTxdVq6GAqGGLxGD" style="display: none;" id="defaultState">
+		</span>
+		<span data-value="Android Phone Wireframe - Pedidos entregados - Initial" style="display: none;" id="defaultPageTitleText">
+		</span>
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: relative; top: 24;">
+			<tr>
+				<td>
+					<img id="diagramuTxdVq6GAqGGLxGD" src="../images/Pedidos_entregados_Initial.png" usemap="#diagramuTxdVq6GAqGGLxGD_map" class="Image" width="446" height="856"/>
+					<map name="diagramuTxdVq6GAqGGLxGD_map">
+<area imageId="diagramuTxdVq6GAqGGLxGD" coords="117, 167, 351, 207" coords2="117, 167, 351, 207" shape="rect" alt="IR A PÁGINA PRINCIPAL:Button" id="areadiagramuTxdVq6GAqGGLxGD_map_6wodu66GAqBwASZn" href="#uTxdVq6GAqGGLxGD;6wodu66GAqBwASZn" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramuTxdVq6GAqGGLxGD" coords="91, 156, 374, 226" coords2="91, 156, 374, 226" shape="rect" alt="Ir a página principal pedidos entregados:Panel" id="areadiagramuTxdVq6GAqGGLxGD_map_THrDu66GAqBwASwN" href="#uTxdVq6GAqGGLxGD;THrDu66GAqBwASwN" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramuTxdVq6GAqGGLxGD" coords="57, 388, 382, 421" coords2="57, 388, 382, 421" shape="rect" alt="Pedido  3422 - Almería - Calle Juan Lirola, 23
+Francisco Lafarga:Label" id="areadiagramuTxdVq6GAqGGLxGD_map_3_pdVq6GAqGGLxG1" href="#uTxdVq6GAqGGLxGD;3_pdVq6GAqGGLxG1" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramuTxdVq6GAqGGLxGD" coords="57, 338, 382, 371" coords2="57, 338, 382, 371" shape="rect" alt="Pedido  3421 - Almería - Calle Jerez, 24
+Juan Soler :Label" id="areadiagramuTxdVq6GAqGGLxGD_map_X_pdVq6GAqGGLxGx" href="#uTxdVq6GAqGGLxGD;X_pdVq6GAqGGLxGx" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramuTxdVq6GAqGGLxGD" coords="336, 394, 379, 433" coords2="336, 394, 379, 433" shape="rect" alt="Image:Image" id="areadiagramuTxdVq6GAqGGLxGD_map_V_pdVq6GAqGGLxGi" href="#uTxdVq6GAqGGLxGD;V_pdVq6GAqGGLxGi" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramuTxdVq6GAqGGLxGD" coords="336, 344, 379, 383" coords2="336, 344, 379, 383" shape="rect" alt="Image:Image" id="areadiagramuTxdVq6GAqGGLxGD_map_P_pdVq6GAqGGLxG5" href="#uTxdVq6GAqGGLxGD;P_pdVq6GAqGGLxG5" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramuTxdVq6GAqGGLxGD" coords="55, 339, 379, 688" coords2="55, 339, 379, 688" shape="rect" alt="List View:List View" id="areadiagramuTxdVq6GAqGGLxGD_map_pgxNu66GAqBwASEh" href="#uTxdVq6GAqGGLxGD;pgxNu66GAqBwASEh" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramuTxdVq6GAqGGLxGD" coords="52, 326, 382, 694" coords2="52, 326, 382, 694" shape="rect" alt="Listado pedidos entregados:Panel" id="areadiagramuTxdVq6GAqGGLxGD_map_T6aNu66GAqBwASDE" href="#uTxdVq6GAqGGLxGD;T6aNu66GAqBwASDE" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramuTxdVq6GAqGGLxGD" coords="55, 247, 255, 270" coords2="55, 247, 255, 270" shape="rect" alt="Listado de pedidos entregados:Label" id="areadiagramuTxdVq6GAqGGLxGD_map_1AZdVq6GAqGGLxHB" href="#uTxdVq6GAqGGLxGD;1AZdVq6GAqGGLxHB" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramuTxdVq6GAqGGLxGD" coords="46, 237, 389, 710" coords2="46, 237, 389, 710" shape="rect" alt="Ver listado pedidos entregados:Panel" id="areadiagramuTxdVq6GAqGGLxGD_map_.WoNu66GAqBwASCO" href="#uTxdVq6GAqGGLxGD;.WoNu66GAqBwASCO" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramuTxdVq6GAqGGLxGD" coords="2, 2, 442, 852" coords2="2, 2, 442, 852" shape="rect" alt="Android Phone:Phone" id="areadiagramuTxdVq6GAqGGLxGD_map_uzxdVq6GAqGGLxGE" href="#uTxdVq6GAqGGLxGD;uzxdVq6GAqGGLxGE" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+</map>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<p>
+	</p>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="Category">
+				Elements			</td>
+		</tr>
+		<tr>
+			<td style="height: 5px">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0" id="elementsuTxdVq6GAqGGLxGD">
+		<tr>
+			<td colSpan="4" class="TableHeaderLine">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine1">
+			</td>
+		</tr>
+		<tr class="TableHeader">
+			<td class="TableCellSpaceHolder10Px">
+			</td>
+			<td width="30%">
+<span class="TableHeaderText">Display Text</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Description</span>			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine2">
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Phone.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Phone.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Android Phone : Phone</span>				</span>
+<a name="uTxdVq6GAqGGLxGD;uzxdVq6GAqGGLxGE"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Panel.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Panel.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Ver listado pedidos entregados : Panel</span>				</span>
+<a name="uTxdVq6GAqGGLxGD;.WoNu66GAqBwASCO"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Label.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Label.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Listado de pedidos entregados : Label</span>				</span>
+<a name="uTxdVq6GAqGGLxGD;1AZdVq6GAqGGLxHB"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Panel.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Panel.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Listado pedidos entregados : Panel</span>				</span>
+<a name="uTxdVq6GAqGGLxGD;T6aNu66GAqBwASDE"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ListView.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ListView.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">List View : List View</span>				</span>
+<a name="uTxdVq6GAqGGLxGD;pgxNu66GAqBwASEh"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Image.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Image.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Image : Image</span>				</span>
+<a name="uTxdVq6GAqGGLxGD;P_pdVq6GAqGGLxG5"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Image.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Image.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Image : Image</span>				</span>
+<a name="uTxdVq6GAqGGLxGD;V_pdVq6GAqGGLxGi"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Label.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Label.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Pedido  3421 - Almería - Calle Jerez, 24<br>Juan Soler  : Label</span>				</span>
+<a name="uTxdVq6GAqGGLxGD;X_pdVq6GAqGGLxGx"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Label.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Label.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Pedido  3422 - Almería - Calle Juan Lirola, 23<br>Francisco Lafarga : Label</span>				</span>
+<a name="uTxdVq6GAqGGLxGD;3_pdVq6GAqGGLxG1"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Panel.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Panel.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Ir a página principal pedidos entregados : Panel</span>				</span>
+<a name="uTxdVq6GAqGGLxGD;THrDu66GAqBwASwN"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Button.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Button.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">IR A PÁGINA PRINCIPAL : Button</span>				</span>
+<a name="uTxdVq6GAqGGLxGD;6wodu66GAqBwASZn"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="TableCellSpaceHolder1PxTall">
+			</td>
+		</tr>
+		<tr>
+			<td class="TableFooter">
+			</td>
+		</tr>
+	</table>
+	<div style="width:370px; height:255px; position: fixed; _position: absolute; overflow: scroll; background-color: #F0F0F0; top: 100px; left: 100px; padding: 10px; display: none;" id="wireframeStatesDialog">
+		<span data-value="Android Phone Wireframe - Pedidos entregados - Initial" style="display: none;" id="pageTitleTextuTxdVq6GAqGGLxGD">
+		</span>
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style=" left: 30; top: 30; width: 340; height: 225; position: absolute; z-index: 10; background: white; border: black 3px solid; padding: 15px 20px 10px 20px; text-align: center;">
+			<tr>
+				<td>
+<a href="javascript:okWireframeStatesDialog('selectShapeuTxdVq6GAqGGLxGD', 'diagramuTxdVq6GAqGGLxGD', 'none', 'elementsuTxdVq6GAqGGLxGD', 'PageTitleText', 'pageTitleTextuTxdVq6GAqGGLxGD')"><img src="../images/Pedidos_entregados_Initial_preview.png" class="Image" style=" width: 104; height: 200; border: none !important;"/>
+</a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:okWireframeStatesDialog('selectShapeuTxdVq6GAqGGLxGD', 'diagramuTxdVq6GAqGGLxGD', 'none', 'elementsuTxdVq6GAqGGLxGD', 'PageTitleText', 'pageTitleTextuTxdVq6GAqGGLxGD')"><span style="color: black !important" class="TableContent ItemLink">Initial</span></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="height: 20px">
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="FooterLine">
+			</td>
+		</tr>
+	</table>
+	<div class="HeaderText">
+		Tiendavirtual	</div>
+</body>
+</html>

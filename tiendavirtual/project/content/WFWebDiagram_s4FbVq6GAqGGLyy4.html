@@ -1,0 +1,523 @@
+<html>
+<head>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="report.css" type="text/css"/>
+	<title>Web Wireframe - Administrador ofertas</title>
+	<script type="text/javascript" src="report.js"></script>
+	<script type="text/javascript" src="link_popup.js"></script>
+	<script type="text/javascript" src="tooltip.js"></script>
+</head>
+<body style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;" onload="initPage();initDiagram();initWireframeDiagram();">
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_top">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_bottom">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_left">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_right">
+	</div>
+	<canvas width="100" style="position:absolute; z-index:2; visibility:hidden" id="spotlight_c" height="100">
+	</canvas>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesTop">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesRight">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute;z-index:4;visibility:hidden" id="linkPopupMenuLayer">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="linkPopupMenuTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="referenceIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Ref.gif" style="border:none" onclick="movePopupPositionToReferenceIconPosition();resetPopupForReference();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="subdiagramIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Subdiagram.gif" style="border:none" onclick="movePopupPositionToSubdiagramIconPosition();resetPopupForSubdiagram();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="transitorIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Transitor.gif" style="border:none" onclick="movePopupPositionToTransitorIconPosition();resetPopupForTransitor();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="documentationIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Documentation.png" style="border:none" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="HeaderText">
+		Tiendavirtual	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="HeaderLine1">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine2">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine3">
+			</td>
+		</tr>
+	</table>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="referencedBys">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="referencedBysTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="vplink">
+		<table border="1" cellpadding="0" cellspacing="0" bordercolor="#A9BFD3">
+			<tr>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0">
+						<tr style="background:#DDDDDD">
+							<td style="font-size: 12px;" align="left">
+								<select onchange="vpLinkToggleName()" id="vplink-linkType">
+	<option value="Project Link">Project Link</option>
+	<option value="Page URL">Page URL</option>
+</select>
+							</td>
+							<td style="font-size: 12px;" align="right">
+								<input onclick="javascript: vpLinkToggleName()" id="vplink-checkbox" type="checkbox" />
+								<label for="vplink-checkbox">with Name</label>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<textarea id="vplink-text" style="width: 348px; height: 60px; border-color: #7EADD9; outline: none;"></textarea>				</td>
+			</tr>
+		</table>
+	</div>
+	<p class="PageTitle">
+		<span id="PageTitleText">
+			Web Wireframe - Administrador ofertas		</span>
+<a onclick="javascript: showVpLink('copiaSeguiridad20052021.vpp://diagram/s4FbVq6GAqGGLyy4', 'Administrador ofertas\ncopiaSeguiridad20052021.vpp://diagram/s4FbVq6GAqGGLyy4', 'Administrador ofertas', this); return false;" style="padding-left: 16px; font-size: 12px" href="#"><img src="../images/icons/link.png" border="0"> link</a>	</p>
+	<div style="position: relative; padding-bottom: 20px;">
+		<table border="0" cellpadding="0" width="auto" cellspacing="0" style="position: absolute; top: 0; left: 0; z-index: 20;">
+			<tr>
+				<td>
+<a href="javascript:showWireframeStatesDialog()"><span class="TableContent ItemLink">Show State Overview</span></a>				</td>
+				<td width="10px">
+				</td>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0" id="selectShapeC4FbVq6GAqGGLyy6">
+						<tr>
+							<td>
+<span class="TableContent">Jump to:</span>								<select class="TableContent" onChange="scrollWin('diagramC4FbVq6GAqGGLyy6', this.value);hideLinkPopup();showSpotLight('diagramC4FbVq6GAqGGLyy6', this.value)">
+<option value="">Please select an element</option>
+<option value="shape|2.0|2.0|1118.0|773.0|#C4FbVq6GAqGGLyy6;EEFbVq6GAqGGLyy7|#C4FbVq6GAqGGLyy6;EEFbVq6GAqGGLyy7|EEFbVq6GAqGGLyy7" id="optionEEFbVq6GAqGGLyy7">Web Browser : Browser</option>
+<option value="shape|98.0|83.0|938.0|66.0|#C4FbVq6GAqGGLyy6;EinKB66GAqBwARsc|#C4FbVq6GAqGGLyy6;EinKB66GAqBwARsc|EinKB66GAqBwARsc" id="optionEinKB66GAqBwARsc">Cabecera admin ofertas : Rectangle</option>
+<option value="shape|112.0|95.0|487.0|44.0|#C4FbVq6GAqGGLyy6;.L.qB66GAqBwARzS|#C4FbVq6GAqGGLyy6;.L.qB66GAqBwARzS|.L.qB66GAqBwARzS" id="option.L.qB66GAqBwARzS">Barra busquedas ofertas : Rectangle</option>
+<option value="shape|121.0|99.0|471.0|32.0|#C4FbVq6GAqGGLyy6;CQVbVq6GAqGGLyzK|#C4FbVq6GAqGGLyy6;CQVbVq6GAqGGLyzK|CQVbVq6GAqGGLyzK" id="optionCQVbVq6GAqGGLyzK">Busqueda de productos o categorias... : Text Field</option>
+<option value="shape|651.0|92.0|30.0|34.0|#C4FbVq6GAqGGLyy6;mQVbVq6GAqGGLyzO|#C4FbVq6GAqGGLyy6;mQVbVq6GAqGGLyzO|mQVbVq6GAqGGLyzO" id="optionmQVbVq6GAqGGLyzO">Image : Image</option>
+<option value="shape|868.0|91.0|140.0|48.0|#C4FbVq6GAqGGLyy6;eVRqB66GAqBwARzg|#C4FbVq6GAqGGLyy6;eVRqB66GAqBwARzg|eVRqB66GAqBwARzg" id="optioneVRqB66GAqBwARzg">Cerrar sesión ofertas : Rectangle</option>
+<option value="shape|883.0|101.0|100.0|30.0|#C4FbVq6GAqGGLyy6;9QVbVq6GAqGGLyzX|#C4FbVq6GAqGGLyy6;9QVbVq6GAqGGLyzX|9QVbVq6GAqGGLyzX" id="option9QVbVq6GAqGGLyzX">Cerrar sesión : Button</option>
+<option value="shape|627.0|131.0|107.0|18.0|#C4FbVq6GAqGGLyy6;JQVbVq6GAqGGLyzS|#C4FbVq6GAqGGLyy6;JQVbVq6GAqGGLyzS|JQVbVq6GAqGGLyzS" id="optionJQVbVq6GAqGGLyzS">Administrador : Label</option>
+<option value="shape|88.0|154.0|948.0|585.0|#C4FbVq6GAqGGLyy6;Jml7u66GAqBwAUET|#C4FbVq6GAqGGLyy6;Jml7u66GAqBwAUET|Jml7u66GAqBwAUET" id="optionJml7u66GAqBwAUET">Ver ofertas admin : Rectangle</option>
+<option value="shape|98.0|242.0|929.0|487.0|#C4FbVq6GAqGGLyy6;V0z7u66GAqBwAUGr|#C4FbVq6GAqGGLyy6;V0z7u66GAqBwAUGr|V0z7u66GAqBwAUGr" id="optionV0z7u66GAqBwAUGr">Lista ofertas : Rectangle</option>
+<option value="shape|121.0|253.0|869.0|458.0|#C4FbVq6GAqGGLyy6;kwVbVq6GAqGGLyzj|#C4FbVq6GAqGGLyy6;kwVbVq6GAqGGLyzj|kwVbVq6GAqGGLyzj" id="optionkwVbVq6GAqGGLyzj">List Group : List Group</option>
+<option value="shape|814.0|265.0|169.0|76.0|#C4FbVq6GAqGGLyy6;xYX7u66GAqBwAUIK|#C4FbVq6GAqGGLyy6;xYX7u66GAqBwAUIK|xYX7u66GAqBwAUIK" id="optionxYX7u66GAqBwAUIK">Eliminar oferta : Rectangle</option>
+<option value="shape|823.0|283.0|149.0|30.0|#C4FbVq6GAqGGLyy6;MwVbVq6GAqGGLyzp|#C4FbVq6GAqGGLyy6;MwVbVq6GAqGGLyzp|MwVbVq6GAqGGLyzp" id="optionMwVbVq6GAqGGLyzp">Eliminar oferta : Button</option>
+<option value="shape|667.0|265.0|135.0|67.0|#C4FbVq6GAqGGLyy6;PKH7u66GAqBwAUH.|#C4FbVq6GAqGGLyy6;PKH7u66GAqBwAUH.|PKH7u66GAqBwAUH." id="optionPKH7u66GAqBwAUH.">Editar oferta : Rectangle</option>
+<option value="shape|691.0|283.0|100.0|30.0|#C4FbVq6GAqGGLyy6;l9s7Vq6GAqGGLy2T|#C4FbVq6GAqGGLyy6;l9s7Vq6GAqGGLy2T|l9s7Vq6GAqGGLy2T" id="optionl9s7Vq6GAqGGLy2T">Editar oferta : Button</option>
+<option value="shape|140.0|278.0|499.0|41.0|#C4FbVq6GAqGGLyy6;kwVbVq6GAqGGLyzl|#C4FbVq6GAqGGLyy6;kwVbVq6GAqGGLyzl|kwVbVq6GAqGGLyzl" id="optionkwVbVq6GAqGGLyzl">Oferta: Día sin iva                 Fecha comienzo: 01/11/2020     Descuento: 21% todos los productos 
+Caducidad: 24 horas              Fecha fin: 02/11/2020 : Label</option>
+<option value="shape|103.0|169.0|258.0|65.0|#C4FbVq6GAqGGLyy6;bzd7u66GAqBwAUFj|#C4FbVq6GAqGGLyy6;bzd7u66GAqBwAUFj|bzd7u66GAqBwAUFj" id="optionbzd7u66GAqBwAUFj">Dar de alta oferta : Rectangle</option>
+<option value="shape|121.0|183.0|208.0|30.0|#C4FbVq6GAqGGLyy6;oIVbVq6GAqGGLy0R|#C4FbVq6GAqGGLyy6;oIVbVq6GAqGGLy0R|oIVbVq6GAqGGLy0R" id="optionoIVbVq6GAqGGLy0R">Dar de alta nueva oferta : Button</option>
+</select>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<span data-value="C4FbVq6GAqGGLyy6" style="display: none;" id="defaultState">
+		</span>
+		<span data-value="Web Wireframe - Administrador ofertas - Initial" style="display: none;" id="defaultPageTitleText">
+		</span>
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: relative; top: 24;">
+			<tr>
+				<td>
+					<img id="diagramC4FbVq6GAqGGLyy6" src="../images/Administrador_ofertas_Initial.png" usemap="#diagramC4FbVq6GAqGGLyy6_map" class="Image" width="1124" height="779"/>
+					<map name="diagramC4FbVq6GAqGGLyy6_map">
+<area imageId="diagramC4FbVq6GAqGGLyy6" coords="121, 183, 329, 213" coords2="121, 183, 329, 213" shape="rect" alt="Dar de alta nueva oferta:Button" id="areadiagramC4FbVq6GAqGGLyy6_map_oIVbVq6GAqGGLy0R" href="#C4FbVq6GAqGGLyy6;oIVbVq6GAqGGLy0R" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramC4FbVq6GAqGGLyy6" coords="103, 169, 361, 234" coords2="103, 169, 361, 234" shape="rect" alt="Dar de alta oferta:Rectangle" id="areadiagramC4FbVq6GAqGGLyy6_map_bzd7u66GAqBwAUFj" href="#C4FbVq6GAqGGLyy6;bzd7u66GAqBwAUFj" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramC4FbVq6GAqGGLyy6" coords="140, 278, 639, 319" coords2="140, 278, 639, 319" shape="rect" alt="Oferta: Día sin iva                 Fecha comienzo: 01/11/2020     Descuento: 21% todos los productos 
+Caducidad: 24 horas              Fecha fin: 02/11/2020:Label" id="areadiagramC4FbVq6GAqGGLyy6_map_kwVbVq6GAqGGLyzl" href="#C4FbVq6GAqGGLyy6;kwVbVq6GAqGGLyzl" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramC4FbVq6GAqGGLyy6" coords="691, 283, 791, 313" coords2="691, 283, 791, 313" shape="rect" alt="Editar oferta:Button" id="areadiagramC4FbVq6GAqGGLyy6_map_l9s7Vq6GAqGGLy2T" href="#C4FbVq6GAqGGLyy6;l9s7Vq6GAqGGLy2T" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramC4FbVq6GAqGGLyy6" coords="667, 265, 802, 332" coords2="667, 265, 802, 332" shape="rect" alt="Editar oferta:Rectangle" id="areadiagramC4FbVq6GAqGGLyy6_map_PKH7u66GAqBwAUH." href="#C4FbVq6GAqGGLyy6;PKH7u66GAqBwAUH." onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramC4FbVq6GAqGGLyy6" coords="823, 283, 972, 313" coords2="823, 283, 972, 313" shape="rect" alt="Eliminar oferta:Button" id="areadiagramC4FbVq6GAqGGLyy6_map_MwVbVq6GAqGGLyzp" href="#C4FbVq6GAqGGLyy6;MwVbVq6GAqGGLyzp" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramC4FbVq6GAqGGLyy6" coords="814, 265, 983, 341" coords2="814, 265, 983, 341" shape="rect" alt="Eliminar oferta:Rectangle" id="areadiagramC4FbVq6GAqGGLyy6_map_xYX7u66GAqBwAUIK" href="#C4FbVq6GAqGGLyy6;xYX7u66GAqBwAUIK" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramC4FbVq6GAqGGLyy6" coords="121, 253, 990, 711" coords2="121, 253, 990, 711" shape="rect" alt="List Group:List Group" id="areadiagramC4FbVq6GAqGGLyy6_map_kwVbVq6GAqGGLyzj" href="#C4FbVq6GAqGGLyy6;kwVbVq6GAqGGLyzj" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramC4FbVq6GAqGGLyy6" coords="98, 242, 1027, 729" coords2="98, 242, 1027, 729" shape="rect" alt="Lista ofertas:Rectangle" id="areadiagramC4FbVq6GAqGGLyy6_map_V0z7u66GAqBwAUGr" href="#C4FbVq6GAqGGLyy6;V0z7u66GAqBwAUGr" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramC4FbVq6GAqGGLyy6" coords="88, 154, 1036, 739" coords2="88, 154, 1036, 739" shape="rect" alt="Ver ofertas admin:Rectangle" id="areadiagramC4FbVq6GAqGGLyy6_map_Jml7u66GAqBwAUET" href="#C4FbVq6GAqGGLyy6;Jml7u66GAqBwAUET" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramC4FbVq6GAqGGLyy6" coords="627, 131, 734, 149" coords2="627, 131, 734, 149" shape="rect" alt="Administrador:Label" id="areadiagramC4FbVq6GAqGGLyy6_map_JQVbVq6GAqGGLyzS" href="#C4FbVq6GAqGGLyy6;JQVbVq6GAqGGLyzS" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramC4FbVq6GAqGGLyy6" coords="883, 101, 983, 131" coords2="883, 101, 983, 131" shape="rect" alt="Cerrar sesión:Button" id="areadiagramC4FbVq6GAqGGLyy6_map_9QVbVq6GAqGGLyzX" href="#C4FbVq6GAqGGLyy6;9QVbVq6GAqGGLyzX" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramC4FbVq6GAqGGLyy6" coords="868, 91, 1008, 139" coords2="868, 91, 1008, 139" shape="rect" alt="Cerrar sesión ofertas:Rectangle" id="areadiagramC4FbVq6GAqGGLyy6_map_eVRqB66GAqBwARzg" href="#C4FbVq6GAqGGLyy6;eVRqB66GAqBwARzg" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramC4FbVq6GAqGGLyy6" coords="651, 92, 681, 126" coords2="651, 92, 681, 126" shape="rect" alt="Image:Image" id="areadiagramC4FbVq6GAqGGLyy6_map_mQVbVq6GAqGGLyzO" href="#C4FbVq6GAqGGLyy6;mQVbVq6GAqGGLyzO" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramC4FbVq6GAqGGLyy6" coords="121, 99, 592, 131" coords2="121, 99, 592, 131" shape="rect" alt="Busqueda de productos o categorias...:Text Field" id="areadiagramC4FbVq6GAqGGLyy6_map_CQVbVq6GAqGGLyzK" href="#C4FbVq6GAqGGLyy6;CQVbVq6GAqGGLyzK" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramC4FbVq6GAqGGLyy6" coords="112, 95, 599, 139" coords2="112, 95, 599, 139" shape="rect" alt="Barra busquedas ofertas:Rectangle" id="areadiagramC4FbVq6GAqGGLyy6_map_.L.qB66GAqBwARzS" href="#C4FbVq6GAqGGLyy6;.L.qB66GAqBwARzS" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramC4FbVq6GAqGGLyy6" coords="98, 83, 1036, 149" coords2="98, 83, 1036, 149" shape="rect" alt="Cabecera admin ofertas:Rectangle" id="areadiagramC4FbVq6GAqGGLyy6_map_EinKB66GAqBwARsc" href="#C4FbVq6GAqGGLyy6;EinKB66GAqBwARsc" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramC4FbVq6GAqGGLyy6" coords="2, 2, 1120, 775" coords2="2, 2, 1120, 775" shape="rect" alt="Web Browser:Browser" id="areadiagramC4FbVq6GAqGGLyy6_map_EEFbVq6GAqGGLyy7" href="#C4FbVq6GAqGGLyy6;EEFbVq6GAqGGLyy7" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+</map>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<p>
+	</p>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="Category">
+				Elements			</td>
+		</tr>
+		<tr>
+			<td style="height: 5px">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0" id="elementsC4FbVq6GAqGGLyy6">
+		<tr>
+			<td colSpan="4" class="TableHeaderLine">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine1">
+			</td>
+		</tr>
+		<tr class="TableHeader">
+			<td class="TableCellSpaceHolder10Px">
+			</td>
+			<td width="30%">
+<span class="TableHeaderText">Display Text</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Description</span>			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine2">
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Browser.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Browser.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Web Browser : Browser</span>				</span>
+<a name="C4FbVq6GAqGGLyy6;EEFbVq6GAqGGLyy7"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/RoundedRectangle.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/RoundedRectangle.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Cabecera admin ofertas : Rectangle</span>				</span>
+<a name="C4FbVq6GAqGGLyy6;EinKB66GAqBwARsc"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/RoundedRectangle.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/RoundedRectangle.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Barra busquedas ofertas : Rectangle</span>				</span>
+<a name="C4FbVq6GAqGGLyy6;.L.qB66GAqBwARzS"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/TextField.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/TextField.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Busqueda de productos o categorias... : Text Field</span>				</span>
+<a name="C4FbVq6GAqGGLyy6;CQVbVq6GAqGGLyzK"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Image.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Image.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Image : Image</span>				</span>
+<a name="C4FbVq6GAqGGLyy6;mQVbVq6GAqGGLyzO"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/RoundedRectangle.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/RoundedRectangle.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Cerrar sesión ofertas : Rectangle</span>				</span>
+<a name="C4FbVq6GAqGGLyy6;eVRqB66GAqBwARzg"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Button.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Button.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Cerrar sesión : Button</span>				</span>
+<a name="C4FbVq6GAqGGLyy6;9QVbVq6GAqGGLyzX"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Label.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Label.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Administrador : Label</span>				</span>
+<a name="C4FbVq6GAqGGLyy6;JQVbVq6GAqGGLyzS"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/RoundedRectangle.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/RoundedRectangle.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Ver ofertas admin : Rectangle</span>				</span>
+<a name="C4FbVq6GAqGGLyy6;Jml7u66GAqBwAUET"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/RoundedRectangle.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/RoundedRectangle.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Lista ofertas : Rectangle</span>				</span>
+<a name="C4FbVq6GAqGGLyy6;V0z7u66GAqBwAUGr"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ListGroup.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ListGroup.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">List Group : List Group</span>				</span>
+<a name="C4FbVq6GAqGGLyy6;kwVbVq6GAqGGLyzj"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/RoundedRectangle.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/RoundedRectangle.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Eliminar oferta : Rectangle</span>				</span>
+<a name="C4FbVq6GAqGGLyy6;xYX7u66GAqBwAUIK"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Button.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Button.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Eliminar oferta : Button</span>				</span>
+<a name="C4FbVq6GAqGGLyy6;MwVbVq6GAqGGLyzp"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/RoundedRectangle.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/RoundedRectangle.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Editar oferta : Rectangle</span>				</span>
+<a name="C4FbVq6GAqGGLyy6;PKH7u66GAqBwAUH."></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Button.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Button.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Editar oferta : Button</span>				</span>
+<a name="C4FbVq6GAqGGLyy6;l9s7Vq6GAqGGLy2T"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Label.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Label.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Oferta: Día sin iva                 Fecha comienzo: 01/11/2020     Descuento: 21% todos los productos <br>Caducidad: 24 horas              Fecha fin: 02/11/2020 : Label</span>				</span>
+<a name="C4FbVq6GAqGGLyy6;kwVbVq6GAqGGLyzl"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/RoundedRectangle.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/RoundedRectangle.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Dar de alta oferta : Rectangle</span>				</span>
+<a name="C4FbVq6GAqGGLyy6;bzd7u66GAqBwAUFj"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Button.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Button.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Dar de alta nueva oferta : Button</span>				</span>
+<a name="C4FbVq6GAqGGLyy6;oIVbVq6GAqGGLy0R"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="TableCellSpaceHolder1PxTall">
+			</td>
+		</tr>
+		<tr>
+			<td class="TableFooter">
+			</td>
+		</tr>
+	</table>
+	<div style="width:370px; height:255px; position: fixed; _position: absolute; overflow: scroll; background-color: #F0F0F0; top: 100px; left: 100px; padding: 10px; display: none;" id="wireframeStatesDialog">
+		<span data-value="Web Wireframe - Administrador ofertas - Initial" style="display: none;" id="pageTitleTextC4FbVq6GAqGGLyy6">
+		</span>
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style=" left: 30; top: 30; width: 340; height: 225; position: absolute; z-index: 10; background: white; border: black 3px solid; padding: 15px 20px 10px 20px; text-align: center;">
+			<tr>
+				<td>
+<a href="javascript:okWireframeStatesDialog('selectShapeC4FbVq6GAqGGLyy6', 'diagramC4FbVq6GAqGGLyy6', 'none', 'elementsC4FbVq6GAqGGLyy6', 'PageTitleText', 'pageTitleTextC4FbVq6GAqGGLyy6')"><img src="../images/Administrador_ofertas_Initial_preview.png" class="Image" style=" width: 288; height: 200; border: none !important;"/>
+</a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:okWireframeStatesDialog('selectShapeC4FbVq6GAqGGLyy6', 'diagramC4FbVq6GAqGGLyy6', 'none', 'elementsC4FbVq6GAqGGLyy6', 'PageTitleText', 'pageTitleTextC4FbVq6GAqGGLyy6')"><span style="color: black !important" class="TableContent ItemLink">Initial</span></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="height: 20px">
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="FooterLine">
+			</td>
+		</tr>
+	</table>
+	<div class="HeaderText">
+		Tiendavirtual	</div>
+</body>
+</html>

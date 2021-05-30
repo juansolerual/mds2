@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.Cookie;
 
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.VaadinSession;
@@ -83,6 +85,9 @@ public class Iniciar_sesion extends VistaIniciarsesion{
 					    	mainView.add(app_transportes);
 			    	    	
 			    	    	System.out.println("app transportes");
+						}else {
+							Notification.show("La contraseña no coincide", 3000, Position.MIDDLE);
+
 						}
 					}
 				}
@@ -115,6 +120,9 @@ public class Iniciar_sesion extends VistaIniciarsesion{
 					        mainView.add(encargado_de_compras);
 			    	    	
 			    	    	System.out.println("encargado");
+						}else {
+							Notification.show("La contraseña no coincide", 3000, Position.MIDDLE);
+
 						}
 						
 					}
@@ -150,6 +158,9 @@ public class Iniciar_sesion extends VistaIniciarsesion{
 					        mainView.add(usuarioRegistrado);
 			    	    	
 			    	    	System.out.println("cliente");
+						}else {
+							Notification.show("La contraseña no coincide", 3000, Position.MIDDLE);
+
 						}
 						
 					}
@@ -183,6 +194,9 @@ public class Iniciar_sesion extends VistaIniciarsesion{
 					        mainView.add(admin);
 			    	    	
 			    	    	System.out.println("admin");
+						}else {
+							Notification.show("La contraseña no coincide", 3000, Position.MIDDLE);
+
 						}
 						
 					}

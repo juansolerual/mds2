@@ -1,0 +1,451 @@
+<html>
+<head>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="report.css" type="text/css"/>
+	<title>Sequence Diagram - Administrador - Centro Mensajes</title>
+	<script type="text/javascript" src="report.js"></script>
+	<script type="text/javascript" src="link_popup.js"></script>
+	<script type="text/javascript" src="tooltip.js"></script>
+</head>
+<body style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;" onload="initPage();initDiagram();initGridDiagram();">
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_top">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_bottom">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_left">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_right">
+	</div>
+	<canvas width="100" style="position:absolute; z-index:2; visibility:hidden" id="spotlight_c" height="100">
+	</canvas>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesTop">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesRight">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute;z-index:4;visibility:hidden" id="linkPopupMenuLayer">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="linkPopupMenuTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="referenceIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Ref.gif" style="border:none" onclick="movePopupPositionToReferenceIconPosition();resetPopupForReference();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="subdiagramIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Subdiagram.gif" style="border:none" onclick="movePopupPositionToSubdiagramIconPosition();resetPopupForSubdiagram();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="transitorIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Transitor.gif" style="border:none" onclick="movePopupPositionToTransitorIconPosition();resetPopupForTransitor();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="documentationIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Documentation.png" style="border:none" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="HeaderText">
+		Tiendavirtual	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="HeaderLine1">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine2">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine3">
+			</td>
+		</tr>
+	</table>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="referencedBys">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="referencedBysTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="vplink">
+		<table border="1" cellpadding="0" cellspacing="0" bordercolor="#A9BFD3">
+			<tr>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0">
+						<tr style="background:#DDDDDD">
+							<td style="font-size: 12px;" align="left">
+								<select onchange="vpLinkToggleName()" id="vplink-linkType">
+	<option value="Project Link">Project Link</option>
+	<option value="Page URL">Page URL</option>
+</select>
+							</td>
+							<td style="font-size: 12px;" align="right">
+								<input onclick="javascript: vpLinkToggleName()" id="vplink-checkbox" type="checkbox" />
+								<label for="vplink-checkbox">with Name</label>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<textarea id="vplink-text" style="width: 348px; height: 60px; border-color: #7EADD9; outline: none;"></textarea>				</td>
+			</tr>
+		</table>
+	</div>
+	<p class="PageTitle">
+		<span id="PageTitleText">
+			Sequence Diagram - Administrador - Centro Mensajes		</span>
+<a onclick="javascript: showVpLink('copiaSeguiridad20052021.vpp://diagram/iQtLfh6GAqGGL8.s', 'Administrador - Centro Mensajes\ncopiaSeguiridad20052021.vpp://diagram/iQtLfh6GAqGGL8.s', 'Administrador - Centro Mensajes', this); return false;" style="padding-left: 16px; font-size: 12px" href="#"><img src="../images/icons/link.png" border="0"> link</a>	</p>
+	<div style="position: relative; padding-bottom: 20px;">
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: absolute; top: 0; left: 0; z-index: 20;" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon(),hideLinkPopup(),hideReferencedBys();">
+			<tr>
+				<td>
+<span class="TableContent">Jump to:</span>					<select id="SelectShape" class="TableContent" onChange="scrollWin('diagram', this.value);hideLinkPopup();showSpotLight('diagram', this.value)">
+<option value="">Please select a model element</option>
+<option value="shape|1886.0|316.0|8.0|12.0|#|Activation_8ab7fh6GAqGGL9Mc.html|Gab7fh6GAqGGL9Me" id="optionGab7fh6GAqGGL9Me">Activation : Activation</option>
+<option value="shape|1626.0|291.0|8.0|49.0|#|Activation_SIV7fh6GAqGGL9L7.html|2IV7fh6GAqGGL9L9" id="option2IV7fh6GAqGGL9L9">Activation : Activation</option>
+<option value="shape|306.0|243.0|8.0|126.0|#|Activation_oxh7fh6GAqGGL9LZ.html|sxh7fh6GAqGGL9Lb" id="optionsxh7fh6GAqGGL9Lb">Activation : Activation</option>
+<option value="shape|1886.0|234.0|8.0|12.0|#|Activation__mw7fh6GAqGGL9Ky.html|4Ww7fh6GAqGGL9K0" id="option4Ww7fh6GAqGGL9K0">Activation : Activation</option>
+<option value="shape|1886.0|136.0|8.0|12.0|#|Activation_RsXbfh6GAqGGL9KR.html|VsXbfh6GAqGGL9KT" id="optionVsXbfh6GAqGGL9KT">Activation : Activation</option>
+<option value="shape|1626.0|113.0|8.0|47.0|#|Activation_h_5bfh6GAqGGL9Ju.html|F_5bfh6GAqGGL9Jw" id="optionF_5bfh6GAqGGL9Jw">Activation : Activation</option>
+<option value="shape|796.0|113.0|8.0|47.0|#|Activation_a_5bfh6GAqGGL9Jo.html|e_5bfh6GAqGGL9Jq" id="optione_5bfh6GAqGGL9Jq">Activation : Activation</option>
+<option value="shape|1243.0|207.0|8.0|53.0|#|Activation_Gkxbfh6GAqGGL9JX.html|.kxbfh6GAqGGL9JZ" id="option.kxbfh6GAqGGL9JZ">Activation : Activation</option>
+<option value="shape|1626.0|207.0|8.0|51.0|#|Activation_dnBbfh6GAqGGL9JM.html|rnBbfh6GAqGGL9JO" id="optionrnBbfh6GAqGGL9JO">Activation : Activation</option>
+<option value="shape|1813.0|2.0|154.0|35.0|#|InteractionLifeLine_rEKbfh6GAqGGL9Hv.html|LEKbfh6GAqGGL9Hu" id="optionLEKbfh6GAqGGL9Hu">bD_Mensaje : Lifeline</option>
+<option value="shape|1582.0|2.0|97.0|35.0|#|InteractionLifeLine_rDsbfh6GAqGGL9HS.html|LDsbfh6GAqGGL9HR" id="optionLDsbfh6GAqGGL9HR">iAdmin : Lifeline</option>
+<option value="shape|90.0|2.0|439.0|35.0|#|InteractionLifeLine_At4rfh6GAqGGL8_2.html|At4rfh6GAqGGL8_1" id="optionAt4rfh6GAqGGL8_1">vista_centro_de_mensajes_administrador : Lifeline</option>
+<option value="shape|1035.0|2.0|425.0|35.0|#|InteractionLifeLine_ttwrfh6GAqGGL8_o.html|ttwrfh6GAqGGL8_n" id="optionttwrfh6GAqGGL8_n">lista_mensajes_enviados_administrador : Lifeline</option>
+<option value="shape|588.0|2.0|425.0|35.0|#|InteractionLifeLine_bVgrfh6GAqGGL8_Y.html|bVgrfh6GAqGGL8_X" id="optionbVgrfh6GAqGGL8_X">lista_mensajes_recibidos_administrador : Lifeline</option>
+<option value="shape|2.0|2.0|60.0|35.0|#|InteractionActor_LHXLfh6GAqGGL8_F.html|zHXLfh6GAqGGL8_E" id="optionzHXLfh6GAqGGL8_E">Admin : Actor</option>
+</select>				</td>
+			</tr>
+		</table>
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: relative; top: 24;">
+			<tr>
+				<td>
+					<img id="diagram" src="../images/Administrador_Centro_Mensajes.png" usemap="#diagram_map" class="Image" width="1971" height="598"/>
+					<map name="diagram_map">
+<area imageId="diagram" coords="1241.0, 200.0, 1241.0, 214.0, 1636.0, 214.0, 1636.0, 200.0" coords2="1241.0, 200.0, 1241.0, 214.0, 1636.0, 214.0, 1636.0, 200.0" shape="poly" alt="2: cargarMensajesEnviados(aIdUsuario : int) : Mensaje[]:Message" id="areadiagram_map_DKvrfh6GAqGGL9G5_default" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="794.0, 106.0, 794.0, 120.0, 1636.0, 120.0, 1636.0, 106.0" coords2="794.0, 106.0, 794.0, 120.0, 1636.0, 120.0, 1636.0, 106.0" shape="poly" alt="1: cargarMensajesRecibidos(aIdUsuario : int) : Mensaje[]:Message" id="areadiagram_map_0AFbfh6GAqGGL9J1_default" onmouseover="storeReferenceAndSubdiagramInfos('diagram','794.0, 106.0, 794.0, 120.0, 1636.0, 120.0, 1636.0, 106.0',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('Class_fzW6dh6GAqGGLzcH.html#CIDbfh6GAqGGL9J./cargarMensajesRecibidos/Method')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '794.0, 106.0, 794.0, 120.0, 1636.0, 120.0, 1636.0, 106.0')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1624.0, 129.0, 1624.0, 143.0, 1896.0, 143.0, 1896.0, 129.0" coords2="1624.0, 129.0, 1624.0, 143.0, 1896.0, 143.0, 1896.0, 129.0" shape="poly" alt="1.1: cargarMensajesRecibidos(aIdUsuario : int) : Mensaje[]:Message" id="areadiagram_map_6cXbfh6GAqGGL9KY_default" onmouseover="storeReferenceAndSubdiagramInfos('diagram','1624.0, 129.0, 1624.0, 143.0, 1896.0, 143.0, 1896.0, 129.0',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('Class__QFjRm6GAqGGLxmB.html#Dl3bfh6GAqGGL9Kf/cargarMensajesRecibidos/Method')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '1624.0, 129.0, 1624.0, 143.0, 1896.0, 143.0, 1896.0, 129.0')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1624.0, 227.0, 1624.0, 241.0, 1896.0, 241.0, 1896.0, 227.0" coords2="1624.0, 227.0, 1624.0, 241.0, 1896.0, 241.0, 1896.0, 227.0" shape="poly" alt="2.1: cargarMensajesEnviados(aIdUsuario : int) : Mensaje[]:Message" id="areadiagram_map_FWw7fh6GAqGGL9K5_default" onmouseover="storeReferenceAndSubdiagramInfos('diagram','1624.0, 227.0, 1624.0, 241.0, 1896.0, 241.0, 1896.0, 227.0',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('Class__QFjRm6GAqGGLxmB.html#DJI7fh6GAqGGL9LC/cargarMensajesEnviados/Method')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '1624.0, 227.0, 1624.0, 241.0, 1896.0, 241.0, 1896.0, 227.0')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="26.0, 236.0, 26.0, 250.0, 316.0, 250.0, 316.0, 236.0" coords2="26.0, 236.0, 26.0, 250.0, 316.0, 250.0, 316.0, 236.0" shape="poly" alt="3: Vista_centro_de_mensajes_administrador():Message" id="areadiagram_map_zxh7fh6GAqGGL9Lg_default" onmouseover="storeReferenceAndSubdiagramInfos('diagram','26.0, 236.0, 26.0, 250.0, 316.0, 250.0, 316.0, 236.0',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('Class_PIO6dh6GAqGGLzdi.html#bPf2eZ6GAqGGL0k6/Vista_centro_de_mensajes_administrador/Method'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '26.0, 236.0, 26.0, 250.0, 316.0, 250.0, 316.0, 236.0')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="304.0, 283.0, 304.0, 297.0, 1636.0, 297.0, 1636.0, 283.0" coords2="304.0, 283.0, 304.0, 297.0, 1636.0, 297.0, 1636.0, 283.0" shape="poly" alt="3.1: enviarMensaje(aMensaje : Mensaje) : boolean:Message" id="areadiagram_map_goV7fh6GAqGGL9MC_default" onmouseover="storeReferenceAndSubdiagramInfos('diagram','304.0, 283.0, 304.0, 297.0, 1636.0, 297.0, 1636.0, 283.0',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('Class_fzW6dh6GAqGGLzcH.html#6h17fh6GAqGGL9MJ/enviarMensaje/Method')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '304.0, 283.0, 304.0, 297.0, 1636.0, 297.0, 1636.0, 283.0')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1624.0, 309.0, 1624.0, 323.0, 1896.0, 323.0, 1896.0, 309.0" coords2="1624.0, 309.0, 1624.0, 323.0, 1896.0, 323.0, 1896.0, 309.0" shape="poly" alt="3.1.1: enviarMensaje(aMensaje : Mensaje) : boolean:Message" id="areadiagram_map_Q6b7fh6GAqGGL9Mj_default" onmouseover="storeReferenceAndSubdiagramInfos('diagram','1624.0, 309.0, 1624.0, 323.0, 1896.0, 323.0, 1896.0, 309.0',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('Class__QFjRm6GAqGGLxmB.html#_h77fh6GAqGGL9Mq/enviarMensaje/Method')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '1624.0, 309.0, 1624.0, 323.0, 1896.0, 323.0, 1896.0, 309.0')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1886, 316, 1894, 328" coords2="1886, 316, 1894, 328" shape="rect" alt="Activation:Activation" id="areadiagram_map_Gab7fh6GAqGGL9Me_default" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1626, 291, 1634, 340" coords2="1626, 291, 1634, 340" shape="rect" alt="Activation:Activation" id="areadiagram_map_2IV7fh6GAqGGL9L9_default" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="306, 243, 314, 369" coords2="306, 243, 314, 369" shape="rect" alt="Activation:Activation" id="areadiagram_map_sxh7fh6GAqGGL9Lb_default" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1886, 234, 1894, 246" coords2="1886, 234, 1894, 246" shape="rect" alt="Activation:Activation" id="areadiagram_map_4Ww7fh6GAqGGL9K0_default" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1886, 136, 1894, 148" coords2="1886, 136, 1894, 148" shape="rect" alt="Activation:Activation" id="areadiagram_map_VsXbfh6GAqGGL9KT_default" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1626, 113, 1634, 160" coords2="1626, 113, 1634, 160" shape="rect" alt="Activation:Activation" id="areadiagram_map_F_5bfh6GAqGGL9Jw_default" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="796, 113, 804, 160" coords2="796, 113, 804, 160" shape="rect" alt="Activation:Activation" id="areadiagram_map_e_5bfh6GAqGGL9Jq_default" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1243, 207, 1251, 260" coords2="1243, 207, 1251, 260" shape="rect" alt="Activation:Activation" id="areadiagram_map_.kxbfh6GAqGGL9JZ_default" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1626, 207, 1634, 258" coords2="1626, 207, 1634, 258" shape="rect" alt="Activation:Activation" id="areadiagram_map_rnBbfh6GAqGGL9JO_default" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1813, 2, 1967, 49.0" coords2="1813, 2, 1967, 49.0" shape="rect" alt="bD_Mensaje : BD_Mensaje:Lifeline" id="areadiagram_map_LEKbfh6GAqGGL9Hu_default" onmouseover="storeReferenceAndSubdiagramInfos('diagram','1813, 2, 1967, 37',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('ClassDiagram_gZhjEm6GAqGGL2E6.html?shapeid=_QFjRm6GAqGGLxmA/BD_Mensaje/Class'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '1813, 2, 1967, 37')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1582, 2, 1679, 49.0" coords2="1582, 2, 1679, 49.0" shape="rect" alt="iAdmin : iAdmin:Lifeline" id="areadiagram_map_LDsbfh6GAqGGL9HR_default" onmouseover="storeReferenceAndSubdiagramInfos('diagram','1582, 2, 1679, 37',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('Class_fzW6dh6GAqGGLzcH.html/iAdmin/Class'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '1582, 2, 1679, 37')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="90, 2, 529, 49.0" coords2="90, 2, 529, 49.0" shape="rect" alt="vista_centro_de_mensajes_administrador : Vista_centro_de_mensajes_administrador:Lifeline" id="areadiagram_map_At4rfh6GAqGGL8_1_default" onmouseover="storeReferenceAndSubdiagramInfos('diagram','90, 2, 529, 37',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('ClassDiagram_ToGj366GAqGGLxQN.html?shapeid=XLl6dh6GAqGGLzo2/Vista_centro_de_mensajes_administrador/Class'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '90, 2, 529, 37')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="1035, 2, 1460, 49.0" coords2="1035, 2, 1460, 49.0" shape="rect" alt="lista_mensajes_enviados_administrador : Lista_mensajes_enviados_administrador:Lifeline" id="areadiagram_map_ttwrfh6GAqGGL8_n_default" onmouseover="storeReferenceAndSubdiagramInfos('diagram','1035, 2, 1460, 37',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('ClassDiagram_ToGj366GAqGGLxQN.html?shapeid=9zl6dh6GAqGGLzni/Lista_mensajes_enviados_administrador/Class'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '1035, 2, 1460, 37')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="588, 2, 1013, 49.0" coords2="588, 2, 1013, 49.0" shape="rect" alt="lista_mensajes_recibidos_administrador : Lista_mensajes_recibidos_administrador:Lifeline" id="areadiagram_map_bVgrfh6GAqGGL8_X_default" onmouseover="storeReferenceAndSubdiagramInfos('diagram','588, 2, 1013, 37',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('ClassDiagram_ToGj366GAqGGLxQN.html?shapeid=7zl6dh6GAqGGLznm/Lista_mensajes_recibidos_administrador/Class'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '588, 2, 1013, 37')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2, 2, 62, 49.0" coords2="2, 2, 62, 49.0" shape="rect" alt="Admin:Actor" id="areadiagram_map_zHXLfh6GAqGGL8_E_default" onmouseover="storeReferenceAndSubdiagramInfos('diagram','2, 2, 62, 37',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('UseCaseDiagram_lI5W8a6GAqGGLxWW.html?shapeid=IW2.wm6GAqGGLxmG/Admin/Actor'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '2, 2, 62, 37')" onmousedown="clearSpotLight();"/>
+</map>
+				</td>
+			</tr>
+		</table>
+		<p>
+		</p>
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="Category">
+				Model Elements			</td>
+		</tr>
+		<tr>
+			<td style="height: 5px">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td colSpan="4" class="TableHeaderLine">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine1">
+			</td>
+		</tr>
+		<tr class="TableHeader">
+			<td class="TableCellSpaceHolder10Px">
+			</td>
+			<td width="30%">
+<span class="TableHeaderText">Name</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Description</span>			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine2">
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Activation.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Activation.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Activation_8ab7fh6GAqGGL9Mc.html" class="ItemLink">Activation : Activation</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Activation.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Activation.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Activation_SIV7fh6GAqGGL9L7.html" class="ItemLink">Activation : Activation</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Activation.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Activation.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Activation_oxh7fh6GAqGGL9LZ.html" class="ItemLink">Activation : Activation</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Activation.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Activation.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Activation__mw7fh6GAqGGL9Ky.html" class="ItemLink">Activation : Activation</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Activation.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Activation.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Activation_RsXbfh6GAqGGL9KR.html" class="ItemLink">Activation : Activation</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Activation.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Activation.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Activation_h_5bfh6GAqGGL9Ju.html" class="ItemLink">Activation : Activation</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Activation.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Activation.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Activation_a_5bfh6GAqGGL9Jo.html" class="ItemLink">Activation : Activation</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Activation.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Activation.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Activation_Gkxbfh6GAqGGL9JX.html" class="ItemLink">Activation : Activation</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Activation.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Activation.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Activation_dnBbfh6GAqGGL9JM.html" class="ItemLink">Activation : Activation</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/LifeLine.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/LifeLine.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="InteractionLifeLine_rEKbfh6GAqGGL9Hv.html" class="ItemLink">bD_Mensaje : Lifeline</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/LifeLine.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/LifeLine.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="InteractionLifeLine_rDsbfh6GAqGGL9HS.html" class="ItemLink">iAdmin : Lifeline</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/LifeLine.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/LifeLine.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="InteractionLifeLine_At4rfh6GAqGGL8_2.html" class="ItemLink">vista_centro_de_mensajes_administrador : Lifeline</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/LifeLine.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/LifeLine.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="InteractionLifeLine_ttwrfh6GAqGGL8_o.html" class="ItemLink">lista_mensajes_enviados_administrador : Lifeline</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/LifeLine.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/LifeLine.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="InteractionLifeLine_bVgrfh6GAqGGL8_Y.html" class="ItemLink">lista_mensajes_recibidos_administrador : Lifeline</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Actor.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Actor.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="InteractionActor_LHXLfh6GAqGGL8_F.html" class="ItemLink">Admin : Actor</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="TableCellSpaceHolder1PxTall">
+			</td>
+		</tr>
+		<tr>
+			<td class="TableFooter">
+			</td>
+		</tr>
+	</table>
+	<div style="height: 20px">
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="FooterLine">
+			</td>
+		</tr>
+	</table>
+	<div class="HeaderText">
+		Tiendavirtual	</div>
+</body>
+</html>

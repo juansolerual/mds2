@@ -1,0 +1,413 @@
+<html>
+<head>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="report.css" type="text/css"/>
+	<title>Android Phone Wireframe - Pedidos pendientes</title>
+	<script type="text/javascript" src="report.js"></script>
+	<script type="text/javascript" src="link_popup.js"></script>
+	<script type="text/javascript" src="tooltip.js"></script>
+</head>
+<body style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;" onload="initPage();initDiagram();initWireframeDiagram();">
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_top">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_bottom">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_left">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_right">
+	</div>
+	<canvas width="100" style="position:absolute; z-index:2; visibility:hidden" id="spotlight_c" height="100">
+	</canvas>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesTop">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesRight">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute;z-index:4;visibility:hidden" id="linkPopupMenuLayer">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="linkPopupMenuTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="referenceIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Ref.gif" style="border:none" onclick="movePopupPositionToReferenceIconPosition();resetPopupForReference();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="subdiagramIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Subdiagram.gif" style="border:none" onclick="movePopupPositionToSubdiagramIconPosition();resetPopupForSubdiagram();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="transitorIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Transitor.gif" style="border:none" onclick="movePopupPositionToTransitorIconPosition();resetPopupForTransitor();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="documentationIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Documentation.png" style="border:none" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="HeaderText">
+		Tiendavirtual	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="HeaderLine1">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine2">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine3">
+			</td>
+		</tr>
+	</table>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="referencedBys">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="referencedBysTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="vplink">
+		<table border="1" cellpadding="0" cellspacing="0" bordercolor="#A9BFD3">
+			<tr>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0">
+						<tr style="background:#DDDDDD">
+							<td style="font-size: 12px;" align="left">
+								<select onchange="vpLinkToggleName()" id="vplink-linkType">
+	<option value="Project Link">Project Link</option>
+	<option value="Page URL">Page URL</option>
+</select>
+							</td>
+							<td style="font-size: 12px;" align="right">
+								<input onclick="javascript: vpLinkToggleName()" id="vplink-checkbox" type="checkbox" />
+								<label for="vplink-checkbox">with Name</label>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<textarea id="vplink-text" style="width: 348px; height: 60px; border-color: #7EADD9; outline: none;"></textarea>				</td>
+			</tr>
+		</table>
+	</div>
+	<p class="PageTitle">
+		<span id="PageTitleText">
+			Android Phone Wireframe - Pedidos pendientes		</span>
+<a onclick="javascript: showVpLink('copiaSeguiridad20052021.vpp://diagram/KBytVq6GAqGGLw9.', 'Pedidos pendientes\ncopiaSeguiridad20052021.vpp://diagram/KBytVq6GAqGGLw9.', 'Pedidos pendientes', this); return false;" style="padding-left: 16px; font-size: 12px" href="#"><img src="../images/icons/link.png" border="0"> link</a>	</p>
+	<div style="position: relative; padding-bottom: 20px;">
+		<table border="0" cellpadding="0" width="auto" cellspacing="0" style="position: absolute; top: 0; left: 0; z-index: 20;">
+			<tr>
+				<td>
+<a href="javascript:showWireframeStatesDialog()"><span class="TableContent ItemLink">Show State Overview</span></a>				</td>
+				<td width="10px">
+				</td>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0" id="selectShapeBBytVq6GAqGGLw.H">
+						<tr>
+							<td>
+<span class="TableContent">Jump to:</span>								<select class="TableContent" onChange="scrollWin('diagramBBytVq6GAqGGLw.H', this.value);hideLinkPopup();showSpotLight('diagramBBytVq6GAqGGLw.H', this.value)">
+<option value="">Please select an element</option>
+<option value="shape|2.0|2.0|440.0|850.0|#BBytVq6GAqGGLw.H;.hytVq6GAqGGLw.I|#BBytVq6GAqGGLw.H;.hytVq6GAqGGLw.I|.hytVq6GAqGGLw.I" id="option.hytVq6GAqGGLw.I">Android Phone : Phone</option>
+<option value="shape|40.0|226.0|351.0|477.0|#BBytVq6GAqGGLw.H;uDeVu66GAqBwARhx|#BBytVq6GAqGGLw.H;uDeVu66GAqBwARhx|uDeVu66GAqBwARhx" id="optionuDeVu66GAqBwARhx">Ver listado pedidos pendientes : Rectangle</option>
+<option value="shape|62.0|255.0|198.0|23.0|#BBytVq6GAqGGLw.H;xV2tVq6GAqGGLxAY|#BBytVq6GAqGGLw.H;xV2tVq6GAqGGLxAY|xV2tVq6GAqGGLxAY" id="optionxV2tVq6GAqGGLxAY">Listado de pedidos pendientes : Label</option>
+<option value="shape|50.0|315.0|337.0|377.0|#BBytVq6GAqGGLw.H;3gtVu66GAqBwARix|#BBytVq6GAqGGLw.H;3gtVu66GAqBwARix|3gtVu66GAqBwARix" id="option3gtVu66GAqBwARix">Listado pedidos pendientes : Rectangle</option>
+<option value="shape|50.0|321.0|337.0|371.0|#BBytVq6GAqGGLw.H;c.g1u66GAqBwARj8|#BBytVq6GAqGGLw.H;c.g1u66GAqBwARj8|c.g1u66GAqBwARj8" id="optionc.g1u66GAqBwARj8">List View : List View</option>
+<option value="shape|62.0|328.0|325.0|33.0|#BBytVq6GAqGGLw.H;_Z.tVq6GAqGGLxAk|#BBytVq6GAqGGLw.H;_Z.tVq6GAqGGLxAk|_Z.tVq6GAqGGLxAk" id="option_Z.tVq6GAqGGLxAk">Pedido  3421 - Almería - Calle Jerez, 24
+Juan Soler  : Label</option>
+<option value="shape|62.0|380.0|325.0|33.0|#BBytVq6GAqGGLw.H;jZltVq6GAqGGLxAy|#BBytVq6GAqGGLw.H;jZltVq6GAqGGLxAy|jZltVq6GAqGGLxAy" id="optionjZltVq6GAqGGLxAy">Pedido  3422 - Almería - Calle Juan Lirola, 23
+Francisco Lafarga : Label</option>
+<option value="shape|337.0|328.0|43.0|39.0|#BBytVq6GAqGGLw.H;c9jtVq6GAqGGLxBI|#BBytVq6GAqGGLw.H;c9jtVq6GAqGGLxBI|c9jtVq6GAqGGLxBI" id="optionc9jtVq6GAqGGLxBI">Image : Image</option>
+<option value="shape|337.0|377.0|43.0|39.0|#BBytVq6GAqGGLw.H;VAntVq6GAqGGLxBa|#BBytVq6GAqGGLw.H;VAntVq6GAqGGLxBa|VAntVq6GAqGGLxBa" id="optionVAntVq6GAqGGLxBa">Image : Image</option>
+<option value="shape|109.0|156.0|259.0|61.0|#BBytVq6GAqGGLw.H;ohFDu66GAqBwASuT|#BBytVq6GAqGGLw.H;ohFDu66GAqBwASuT|ohFDu66GAqBwASuT" id="optionohFDu66GAqBwASuT">Ir a pagina principal pedidos pendientes : Rectangle</option>
+<option value="shape|115.0|166.0|231.0|40.0|#BBytVq6GAqGGLw.H;NCQdu66GAqBwASYh|#BBytVq6GAqGGLw.H;NCQdu66GAqBwASYh|NCQdu66GAqBwASYh" id="optionNCQdu66GAqBwASYh">IR A PÁGINA PRINCIPAL : Button</option>
+</select>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<span data-value="BBytVq6GAqGGLw.H" style="display: none;" id="defaultState">
+		</span>
+		<span data-value="Android Phone Wireframe - Pedidos pendientes - Initial" style="display: none;" id="defaultPageTitleText">
+		</span>
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: relative; top: 24;">
+			<tr>
+				<td>
+					<img id="diagramBBytVq6GAqGGLw.H" src="../images/Pedidos_pendientes_Initial.png" usemap="#diagramBBytVq6GAqGGLw.H_map" class="Image" width="446" height="856"/>
+					<map name="diagramBBytVq6GAqGGLw.H_map">
+<area imageId="diagramBBytVq6GAqGGLw.H" coords="115, 166, 346, 206" coords2="115, 166, 346, 206" shape="rect" alt="IR A PÁGINA PRINCIPAL:Button" id="areadiagramBBytVq6GAqGGLw.H_map_NCQdu66GAqBwASYh" href="#BBytVq6GAqGGLw.H;NCQdu66GAqBwASYh" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramBBytVq6GAqGGLw.H" coords="109, 156, 368, 217" coords2="109, 156, 368, 217" shape="rect" alt="Ir a pagina principal pedidos pendientes:Rectangle" id="areadiagramBBytVq6GAqGGLw.H_map_ohFDu66GAqBwASuT" href="#BBytVq6GAqGGLw.H;ohFDu66GAqBwASuT" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramBBytVq6GAqGGLw.H" coords="337, 377, 380, 416" coords2="337, 377, 380, 416" shape="rect" alt="Image:Image" id="areadiagramBBytVq6GAqGGLw.H_map_VAntVq6GAqGGLxBa" href="#BBytVq6GAqGGLw.H;VAntVq6GAqGGLxBa" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramBBytVq6GAqGGLw.H" coords="337, 328, 380, 367" coords2="337, 328, 380, 367" shape="rect" alt="Image:Image" id="areadiagramBBytVq6GAqGGLw.H_map_c9jtVq6GAqGGLxBI" href="#BBytVq6GAqGGLw.H;c9jtVq6GAqGGLxBI" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramBBytVq6GAqGGLw.H" coords="62, 380, 387, 413" coords2="62, 380, 387, 413" shape="rect" alt="Pedido  3422 - Almería - Calle Juan Lirola, 23
+Francisco Lafarga:Label" id="areadiagramBBytVq6GAqGGLw.H_map_jZltVq6GAqGGLxAy" href="#BBytVq6GAqGGLw.H;jZltVq6GAqGGLxAy" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramBBytVq6GAqGGLw.H" coords="62, 328, 387, 361" coords2="62, 328, 387, 361" shape="rect" alt="Pedido  3421 - Almería - Calle Jerez, 24
+Juan Soler :Label" id="areadiagramBBytVq6GAqGGLw.H_map__Z.tVq6GAqGGLxAk" href="#BBytVq6GAqGGLw.H;_Z.tVq6GAqGGLxAk" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramBBytVq6GAqGGLw.H" coords="50, 321, 387, 692" coords2="50, 321, 387, 692" shape="rect" alt="List View:List View" id="areadiagramBBytVq6GAqGGLw.H_map_c.g1u66GAqBwARj8" href="#BBytVq6GAqGGLw.H;c.g1u66GAqBwARj8" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramBBytVq6GAqGGLw.H" coords="50, 315, 387, 692" coords2="50, 315, 387, 692" shape="rect" alt="Listado pedidos pendientes:Rectangle" id="areadiagramBBytVq6GAqGGLw.H_map_3gtVu66GAqBwARix" href="#BBytVq6GAqGGLw.H;3gtVu66GAqBwARix" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramBBytVq6GAqGGLw.H" coords="62, 255, 260, 278" coords2="62, 255, 260, 278" shape="rect" alt="Listado de pedidos pendientes:Label" id="areadiagramBBytVq6GAqGGLw.H_map_xV2tVq6GAqGGLxAY" href="#BBytVq6GAqGGLw.H;xV2tVq6GAqGGLxAY" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramBBytVq6GAqGGLw.H" coords="40, 226, 391, 703" coords2="40, 226, 391, 703" shape="rect" alt="Ver listado pedidos pendientes:Rectangle" id="areadiagramBBytVq6GAqGGLw.H_map_uDeVu66GAqBwARhx" href="#BBytVq6GAqGGLw.H;uDeVu66GAqBwARhx" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramBBytVq6GAqGGLw.H" coords="2, 2, 442, 852" coords2="2, 2, 442, 852" shape="rect" alt="Android Phone:Phone" id="areadiagramBBytVq6GAqGGLw.H_map_.hytVq6GAqGGLw.I" href="#BBytVq6GAqGGLw.H;.hytVq6GAqGGLw.I" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+</map>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<p>
+	</p>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="Category">
+				Elements			</td>
+		</tr>
+		<tr>
+			<td style="height: 5px">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0" id="elementsBBytVq6GAqGGLw.H">
+		<tr>
+			<td colSpan="4" class="TableHeaderLine">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine1">
+			</td>
+		</tr>
+		<tr class="TableHeader">
+			<td class="TableCellSpaceHolder10Px">
+			</td>
+			<td width="30%">
+<span class="TableHeaderText">Display Text</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Description</span>			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine2">
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Phone.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Phone.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Android Phone : Phone</span>				</span>
+<a name="BBytVq6GAqGGLw.H;.hytVq6GAqGGLw.I"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/RoundedRectangle.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/RoundedRectangle.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Ver listado pedidos pendientes : Rectangle</span>				</span>
+<a name="BBytVq6GAqGGLw.H;uDeVu66GAqBwARhx"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Label.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Label.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Listado de pedidos pendientes : Label</span>				</span>
+<a name="BBytVq6GAqGGLw.H;xV2tVq6GAqGGLxAY"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/RoundedRectangle.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/RoundedRectangle.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Listado pedidos pendientes : Rectangle</span>				</span>
+<a name="BBytVq6GAqGGLw.H;3gtVu66GAqBwARix"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ListView.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ListView.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">List View : List View</span>				</span>
+<a name="BBytVq6GAqGGLw.H;c.g1u66GAqBwARj8"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Label.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Label.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Pedido  3421 - Almería - Calle Jerez, 24<br>Juan Soler  : Label</span>				</span>
+<a name="BBytVq6GAqGGLw.H;_Z.tVq6GAqGGLxAk"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Label.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Label.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Pedido  3422 - Almería - Calle Juan Lirola, 23<br>Francisco Lafarga : Label</span>				</span>
+<a name="BBytVq6GAqGGLw.H;jZltVq6GAqGGLxAy"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Image.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Image.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Image : Image</span>				</span>
+<a name="BBytVq6GAqGGLw.H;c9jtVq6GAqGGLxBI"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Image.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Image.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Image : Image</span>				</span>
+<a name="BBytVq6GAqGGLw.H;VAntVq6GAqGGLxBa"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/RoundedRectangle.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/RoundedRectangle.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">Ir a pagina principal pedidos pendientes : Rectangle</span>				</span>
+<a name="BBytVq6GAqGGLw.H;ohFDu66GAqBwASuT"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Button.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Button.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span class="TableContent">IR A PÁGINA PRINCIPAL : Button</span>				</span>
+<a name="BBytVq6GAqGGLw.H;NCQdu66GAqBwASYh"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="TableCellSpaceHolder1PxTall">
+			</td>
+		</tr>
+		<tr>
+			<td class="TableFooter">
+			</td>
+		</tr>
+	</table>
+	<div style="width:370px; height:255px; position: fixed; _position: absolute; overflow: scroll; background-color: #F0F0F0; top: 100px; left: 100px; padding: 10px; display: none;" id="wireframeStatesDialog">
+		<span data-value="Android Phone Wireframe - Pedidos pendientes - Initial" style="display: none;" id="pageTitleTextBBytVq6GAqGGLw.H">
+		</span>
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style=" left: 30; top: 30; width: 340; height: 225; position: absolute; z-index: 10; background: white; border: black 3px solid; padding: 15px 20px 10px 20px; text-align: center;">
+			<tr>
+				<td>
+<a href="javascript:okWireframeStatesDialog('selectShapeBBytVq6GAqGGLw.H', 'diagramBBytVq6GAqGGLw.H', 'none', 'elementsBBytVq6GAqGGLw.H', 'PageTitleText', 'pageTitleTextBBytVq6GAqGGLw.H')"><img src="../images/Pedidos_pendientes_Initial_preview.png" class="Image" style=" width: 104; height: 200; border: none !important;"/>
+</a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:okWireframeStatesDialog('selectShapeBBytVq6GAqGGLw.H', 'diagramBBytVq6GAqGGLw.H', 'none', 'elementsBBytVq6GAqGGLw.H', 'PageTitleText', 'pageTitleTextBBytVq6GAqGGLw.H')"><span style="color: black !important" class="TableContent ItemLink">Initial</span></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="height: 20px">
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="FooterLine">
+			</td>
+		</tr>
+	</table>
+	<div class="HeaderText">
+		Tiendavirtual	</div>
+</body>
+</html>
